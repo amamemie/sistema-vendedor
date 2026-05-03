@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Login from './Login';
+import RegistroUsuario from './components/RegistroUsuario'; // Importar el nuevo componente
 
 function App() {
   const [user, setUser] = useState(null);
@@ -8,34 +9,34 @@ function App() {
     return <Login onLoginSuccess={(userData) => setUser(userData)} />;
   }
 
-  // Vistas según el rol
   return (
     <div style={{ padding: '20px' }}>
       <nav>
-        <span>Bienvenido, <strong>{user.email}</strong> (Rol: {user.rol})</span>
-        <button onClick={() => setUser(null)} style={{ marginLeft: '10px' }}>Cerrar Sesión</button>
+        <span>Hola, <strong>{user.email}</strong></span>
+        <button onClick={() => setUser(null)}>Cerrar Sesión</button>
       </nav>
-
-      <hr />
 
       {user.rol === 'Admin' && (
         <div>
           <h1>Panel de Administrador</h1>
-          <p>Casos de uso: Validar documentos de vendedores.</p>
+          <button onClick={() => alert("Cargando lista de usuarios...")}>Ver Usuarios Actuales</button>
+          
+          {/* Aquí aparece la opción para crear usuarios */}
+          <RegistroUsuario /> 
         </div>
       )}
 
       {user.rol === 'Vendedor' && (
         <div>
           <h1>Panel de Vendedor</h1>
-          <p>Casos de uso: Monitorear niveles de stock y gestionar tienda.</p>
+          <p>Gestión de productos e inventario.</p>
         </div>
       )}
 
       {user.rol === 'Comprador' && (
         <div>
-          <h1>Portal del Comprador</h1>
-          <p>Casos de uso: Realizar pedidos y procesar pagos.</p>
+          <h1>Portal de Compras</h1>
+          <p>Explora nuestro catálogo.</p>
         </div>
       )}
     </div>
