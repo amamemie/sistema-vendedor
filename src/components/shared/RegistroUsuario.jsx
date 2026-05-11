@@ -18,14 +18,15 @@ function RegistroUsuario() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const resp = await fetch('http://localhost:8000/crear_usuario.php', {
+      // ✅ CORREGIDO: sistema-vendedor con guión, no sistema_vendedor con guión bajo
+      const resp = await fetch('http://localhost:8080/sistema-vendedor/backend/crear_usuario.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
       });
       const data = await resp.json();
       setMsg(data.message);
-      if(data.success) setFormData(initialState);
+      if (data.success) setFormData(initialState);
     } catch (error) {
       setMsg("Error de conexión con el servidor");
     }
@@ -39,7 +40,7 @@ function RegistroUsuario() {
     <div style={{ border: '1px solid #ccc', padding: '20px', borderRadius: '8px', background: '#f9f9f9' }}>
       <h3>Registrar Nuevo {formData.rol}</h3>
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-        
+
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
           <input name="email" type="email" placeholder="Correo Electrónico" required value={formData.email} onChange={handleChange} />
           <input name="password" type="password" placeholder="Contraseña" required value={formData.password} onChange={handleChange} />
@@ -51,7 +52,6 @@ function RegistroUsuario() {
           <option value="Comprador">Comprador</option>
         </select>
 
-        {/* Campos comunes para Vendedor y Comprador */}
         {formData.rol !== 'Admin' && (
           <>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
@@ -62,7 +62,6 @@ function RegistroUsuario() {
           </>
         )}
 
-        {/* Campos exclusivos para Vendedor */}
         {formData.rol === 'Vendedor' && (
           <div style={{ borderTop: '1px solid #ddd', paddingTop: '10px', marginTop: '5px' }}>
             <label style={{ fontSize: '0.8rem' }}>Información de Perfil:</label>
