@@ -6,14 +6,8 @@ const NAV = [
   { icon: 'ti-layout-dashboard', label: 'Resumen',   key: 'resumen' },
   { icon: 'ti-users',            label: 'Usuarios',  key: 'usuarios' },
   { icon: 'ti-store',            label: 'Vendedores',key: 'vendedores' },
+  { icon: 'ti-user-plus',        label: 'Crear Vendedor', key: 'crear-vendedor' },
   { icon: 'ti-chart-bar',        label: 'Reportes',  key: 'reportes' },
-];
-
-const STATS = [
-  { label: 'Usuarios totales',  value: '—', icon: 'ti-users',      color: '#2563eb' },
-  { label: 'Vendedores activos',value: '12', icon: 'ti-store',     color: '#059669' },
-  { label: 'Pedidos del mes',   value: '348', icon: 'ti-shopping-cart', color: '#d97706' },
-  { label: 'Ingresos del mes',  value: '$8,420', icon: 'ti-cash',  color: '#7c3aed' },
 ];
 
 export default function AdminPanel() {
@@ -21,17 +15,57 @@ export default function AdminPanel() {
   const [activeKey, setActiveKey] = useState('resumen');
   const [usuarios, setUsuarios] = useState([]);
   const [loadingUsers, setLoadingUsers] = useState(false);
+  const [vendedores, setVendedores] = useState([]);
+  const [loadingVendedores, setLoadingVendedores] = useState(false);
+  const [statsData, setStatsData] = useState({ compradores: '0', vendedores: '0', pedidos: '0', ingresos: '0.00' });
+
+  const [formData, setFormData] = useState({
+    email: '', password: '', nombres: '', apellidos: '', 
+    telefono: '', tipo_persona: 'Natural', documento_identidad: '',
+    direccion: '', ciudad: '', pais: ''
+  });
+  const [submitting, setSubmitting] = useState(false);
+  const [formMsg, setFormMsg] = useState({ type: '', text: '' });
 
   const initials = user?.email?.substring(0, 2).toUpperCase() ?? 'AD';
 
+  const handleFormChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const handleCreateVendedor = async (e) => {
+    e.preventDefault();
+    setSubmitting(true);
+    const data = await api.post('admin_crear_vendedor.php', formData);
+    setFormMsg({ type: data.success ? 'success' : 'error', text: data.message });
+    if (data.success) setFormData({ 
+      email: '', password: '', nombres: '', apellidos: '', 
+      telefono: '', tipo_persona: 'Natural', documento_identidad: '',
+      direccion: '', ciudad: '', pais: ''
+    });
+    setSubmitting(false);
+  };
+
   useEffect(() => {
+    if (activeKey === 'resumen') {
+      api.get('admin_stats.php').then(data => data.success && setStatsData(data));
+    }
     if (activeKey === 'usuarios') {
       setLoadingUsers(true);
       api.get('usuarios.php')
         .then(data => setUsuarios(Array.isArray(data) ? data : []))
         .finally(() => setLoadingUsers(false));
     }
+    if (activeKey === 'vendedores') {
+      setLoadingVendedores(true);
+      api.get('vendedores.php').then(data => setVendedores(Array.isArray(data) ? data : [])).finally(() => setLoadingVendedores(false));
+    }
   }, [activeKey]);
+
+  const STATS_CARDS = [
+    { label: 'Compradores',      value: statsData.compradores, icon: 'ti-users',      color: '#2563eb' },
+    { label: 'Vendedores activos',value: statsData.vendedores,  icon: 'ti-store',     color: '#059669' },
+    { label: 'Pedidos del mes',   value: statsData.pedidos,     icon: 'ti-shopping-cart', color: '#d97706' },
+    { label: 'Ingresos del mes',  value: `$${statsData.ingresos}`, icon: 'ti-cash',  color: '#7c3aed' },
+  ];
 
   return (
     <div style={{ display: 'flex', height: '100vh', background: '#f6f6f7' }}>
@@ -111,7 +145,7 @@ export default function AdminPanel() {
             <>
               <h1 style={{ fontSize: 18, fontWeight: 500, marginBottom: 16 }}>Resumen general</h1>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10, marginBottom: 20 }}>
-                {STATS.map(s => (
+                {STATS_CARDS.map(s => (
                   <div key={s.label} style={{
                     background: 'var(--color-background-primary)',
                     border: '0.5px solid var(--color-border-tertiary)',
@@ -218,15 +252,58 @@ export default function AdminPanel() {
 
           {/* ── VENDEDORES ── */}
           {activeKey === 'vendedores' && (
-            <div style={{
-              background: 'var(--color-background-primary)',
-              border: '0.5px solid var(--color-border-tertiary)',
-              borderRadius: 10, padding: 30, textAlign: 'center',
-            }}>
-              <i className="ti ti-store" style={{ fontSize: 40, color: 'var(--color-text-secondary)', display: 'block', marginBottom: 12 }} />
-              <p style={{ fontSize: 13, color: 'var(--color-text-secondary)', margin: 0 }}>
-                Gestión de vendedores — próximamente
-              </p>
+            <>
+              <h1 style={{ fontSize: 18, fontWeight: 500, marginBottom: 16 }}>Vendedores registrados</h1>
+              <div style={{ background: '#fff', border: '0.5px solid #e2e8f0', borderRadius: 10, overflow: 'hidden' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '50px 2fr 1.5fr 1fr 100px', padding: '10px 16px', background: '#f9fafb', borderBottom: '0.5px solid #e2e8f0' }}>
+                  {['ID', 'Nombre', 'Email', 'Doc', 'Estado'].map(h => <span key={h} style={{ fontSize: 11, fontWeight: 600, color: '#64748b' }}>{h}</span>)}
+                </div>
+                {!loadingVendedores && vendedores.map(v => (
+                  <div key={v.id_vendedor} style={{ display: 'grid', gridTemplateColumns: '50px 2fr 1.5fr 1fr 100px', padding: '12px 16px', borderBottom: '0.5px solid #f1f5f9', alignItems: 'center' }}>
+                    <span style={{ fontSize: 12 }}>#{v.id_vendedor}</span>
+                    <span style={{ fontSize: 13 }}>{v.nombres} {v.apellidos}</span>
+                    <span style={{ fontSize: 13 }}>{v.email}</span>
+                    <span style={{ fontSize: 12 }}>{v.documento_identidad}</span>
+                    <span style={{ fontSize: 11, background: '#f0fdf4', color: '#166534', padding: '2px 8px', borderRadius: 10 }}>{v.estado}</span>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+
+          {/* ── CREAR VENDEDOR ── */}
+          {activeKey === 'crear-vendedor' && (
+            <div style={{ background: '#fff', border: '0.5px solid #e2e8f0', borderRadius: 12, padding: 24, maxWidth: 600, margin: '0 auto' }}>
+              <h2 style={{ fontSize: 17, marginBottom: 20 }}>Nuevo Vendedor</h2>
+              <form onSubmit={handleCreateVendedor} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+                  <input name="nombres" placeholder="Nombres" required value={formData.nombres} onChange={handleFormChange} style={inputStyle} />
+                  <input name="apellidos" placeholder="Apellidos" required value={formData.apellidos} onChange={handleFormChange} style={inputStyle} />
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+                  <input name="email" type="email" placeholder="Email" required value={formData.email} onChange={handleFormChange} style={inputStyle} />
+                  <input name="password" type="password" placeholder="Contraseña" required value={formData.password} onChange={handleFormChange} style={inputStyle} />
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+                  <input name="telefono" placeholder="Teléfono" value={formData.telefono} onChange={handleFormChange} style={inputStyle} />
+                  <select name="tipo_persona" value={formData.tipo_persona} onChange={handleFormChange} style={inputStyle}>
+                    <option value="Natural">Natural</option>
+                    <option value="Juridica">Jurídica</option>
+                  </select>
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+                  <input name="documento_identidad" placeholder="Documento / NIT" required value={formData.documento_identidad} onChange={handleFormChange} style={inputStyle} />
+                  <input name="pais" placeholder="País" value={formData.pais} onChange={handleFormChange} style={inputStyle} />
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: 10 }}>
+                  <input name="ciudad" placeholder="Ciudad" value={formData.ciudad} onChange={handleFormChange} style={inputStyle} />
+                  <input name="direccion" placeholder="Dirección completa" value={formData.direccion} onChange={handleFormChange} style={inputStyle} />
+                </div>
+                {formMsg.text && <div style={{ fontSize: 13, color: formMsg.type === 'success' ? 'green' : 'red' }}>{formMsg.text}</div>}
+                <button type="submit" disabled={submitting} style={{ background: '#0f172a', color: '#fff', border: 'none', padding: '10px', borderRadius: 8, cursor: 'pointer' }}>
+                  {submitting ? 'Creando...' : 'Registrar Vendedor'}
+                </button>
+              </form>
             </div>
           )}
 
@@ -249,3 +326,13 @@ export default function AdminPanel() {
     </div>
   );
 }
+
+const inputStyle = {
+  padding: '10px',
+  borderRadius: '8px',
+  border: '1px solid #e2e8f0',
+  fontSize: '14px',
+  outline: 'none',
+  width: '100%',
+  boxSizing: 'border-box'
+};

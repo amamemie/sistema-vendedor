@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:8080/sistema-vendedor/backend';
+const BASE_URL = 'http://localhost:8080/';
 
 async function request(endpoint, options = {}) {
   try {
