@@ -224,7 +224,7 @@ INSERT INTO DETALLE_COMPRA (id_compra, id_producto, cantidad, precio_unitario, s
 (1, 1, 1, 500.00, 500.00),
 (1, 2, 2, 50.00, 100.00);
 
--- Pago
+-- Pago 
 INSERT INTO PAGO (id_compra, metodo_pago, estado, monto_total, fecha_pago, referencia_transaccion) VALUES
 (1, 'Tarjeta', 'Exitoso', 600.00, '2026-05-03 10:00:00', 'TRANS-998877');
 

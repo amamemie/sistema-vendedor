@@ -6,7 +6,7 @@ header("Content-Type: application/json; charset=UTF-8");
 include_once 'config.php';
 
 try {
-    $query = "SELECT id_usuario, email, rol FROM CUENTA_USUARIO";
+    $query = "SELECT id_usuario, email, rol, estado FROM CUENTA_USUARIO";
     $stmt = $conn->prepare($query);
     $stmt->execute();
     
