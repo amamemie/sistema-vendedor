@@ -33,14 +33,16 @@ export default function VendorDashboard({ onNavigate }) {
     const cargarDashboard = async () => {
       setLoading(true);
       try {
-        const productos = await api.getProductos(user?.id_tienda);
+        // Solo los productos de este vendedor (productos.php?publico=false no filtra por tienda)
+        const productos = await api.getProductosPorVendedor(user?.id_vendedor);
         if (Array.isArray(productos)) {
-          const activos = productos.filter((p) => p.estado === 'Activo').length;
+          const activos = productos.filter((p) => p.estado === 'Activo' && p.estado_admin === 'Aprobado').length;
           setProductosBajoStock(productos.filter((p) => p.stock > 0 && p.stock <= 5).slice(0, 5));
-          setStats((prev) => ({ ...prev, productosActivos: activos }));
+          const calificacion = Number(productos.find((p) => p.vendedor_calificacion != null)?.vendedor_calificacion || 0);
+          setStats((prev) => ({ ...prev, productosActivos: activos, calificacion }));
         }
 
-        const pedidos = (await api.getPedidosVendedor?.(user?.id_tienda)) || [];
+        const pedidos = (await api.getPedidosVendedor?.(user?.id_vendedor)) || [];
         if (Array.isArray(pedidos)) {
           const mesActual = new Date().getMonth();
           const pedidosMes = pedidos.filter((p) => new Date(p.fecha_compra).getMonth() === mesActual);
@@ -57,7 +59,7 @@ export default function VendorDashboard({ onNavigate }) {
       setLoading(false);
     };
     cargarDashboard();
-  }, [user?.id_tienda]);
+  }, [user?.id_vendedor]);
 
   if (loading) {
     return (

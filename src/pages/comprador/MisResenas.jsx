@@ -3,7 +3,7 @@ import { useAuth } from '../../context/AuthContext';
 import { obtenerResenasUsuario, formatearFecha } from './comprador.utils';
 import './comprador.css';
 import { useTranslation } from 'react-i18next';
-import { Stars } from '../../components/store/Store';
+import { Stars, imgUrl } from '../../components/store/Store';
 
 export default function MisResenas() {
   const { t } = useTranslation();
@@ -73,7 +73,7 @@ export default function MisResenas() {
                 <div className="resena-producto-imagen">
                   {r.imagen_principal ? (
                     <img 
-                      src={`http://localhost/sistema-vendedor/backend/uploads/productos/${r.imagen_principal}`} 
+                      src={imgUrl(r.imagen_principal)} 
                       alt="" 
                     />
                   ) : (
