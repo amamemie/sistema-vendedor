@@ -1,23 +1,26 @@
+// /src/pages/Login.jsx
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { authService } from '../services/auth.service';
+import { authService } from '../services/api';
 
-export default function Login({ onGoToRegister }) {
+export default function Login({ onGoToRegister, onSuccess }) {
   const { login } = useAuth();
-  const [email, setEmail]       = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError]       = useState('');
-  const [loading, setLoading]   = useState(false);
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
+    
     const data = await authService.login(email, password);
     setLoading(false);
 
     if (data.success) {
       login(data);
+      if (onSuccess) onSuccess();
     } else {
       setError(data.message || 'Credenciales incorrectas');
     }
@@ -36,8 +39,6 @@ export default function Login({ onGoToRegister }) {
         background: '#0f172a',
         position: 'relative',
         overflow: 'hidden',
-        // mostrar en pantallas grandes via media query no aplica con inline styles,
-        // pero lo dejamos listo para que lo activen con CSS si quieren
       }} />
 
       {/* Panel derecho — formulario */}
@@ -64,9 +65,8 @@ export default function Login({ onGoToRegister }) {
               background: '#0f172a',
               display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
               color: '#fff', fontWeight: 700, fontSize: 18, marginBottom: 14,
-              letterSpacing: '-0.5px',
             }}>M</div>
-            <h1 style={{ fontSize: 20, fontWeight: 600, margin: '0 0 4px', color: '#0f172a', letterSpacing: '-0.3px' }}>
+            <h1 style={{ fontSize: 20, fontWeight: 600, margin: '0 0 4px', color: '#0f172a' }}>
               Bienvenido
             </h1>
             <p style={{ fontSize: 13, color: '#64748b', margin: 0 }}>
@@ -90,7 +90,6 @@ export default function Login({ onGoToRegister }) {
                   width: '100%', padding: '9px 12px', fontSize: 13,
                   border: '1px solid #e2e8f0', borderRadius: 8,
                   outline: 'none', boxSizing: 'border-box',
-                  transition: 'border-color 0.15s',
                   color: '#0f172a', background: '#fff',
                 }}
                 onFocus={e => e.target.style.borderColor = '#2563eb'}
@@ -126,7 +125,7 @@ export default function Login({ onGoToRegister }) {
                 fontSize: 12, color: '#dc2626',
                 display: 'flex', alignItems: 'center', gap: 6,
               }}>
-                <i className="ti ti-alert-circle" style={{ fontSize: 14 }} aria-hidden="true" />
+                <i className="ti ti-alert-circle" style={{ fontSize: 14 }} />
                 {error}
               </div>
             )}
@@ -139,7 +138,6 @@ export default function Login({ onGoToRegister }) {
                 background: loading ? '#94a3b8' : '#0f172a',
                 color: '#fff', border: 'none', borderRadius: 8,
                 fontSize: 13, fontWeight: 600, cursor: loading ? 'not-allowed' : 'pointer',
-                letterSpacing: '0.01em', transition: 'background 0.15s',
               }}
             >
               {loading ? 'Ingresando...' : 'Ingresar'}

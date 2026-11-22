@@ -9,7 +9,7 @@ function Login({ onLoginSuccess }) {
     e.preventDefault();
     try {
       // ✅ CORREGIDO: URL apunta a login.php (no a crear_usuario.php)
-      const resp = await fetch('http://localhost:8080/sistema-vendedor/backend/login.php', {
+      const resp = await fetch('http://localhost/sistema-vendedor/backend/login.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
