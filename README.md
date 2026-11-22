@@ -7,10 +7,13 @@ compran a todas desde un solo carrito. Tiene tres roles, cada uno con su propio 
 > Proyecto universitario de la materia **Taller Técnico Superior**, liderado por
 > [@amamemie](https://github.com/amamemie).
 
+### 👉 [Ver la demo en vivo](https://amamemie.github.io/sistema-vendedor/)
+
 ![Portada del marketplace](docs/capturas/portada.png)
 
 ## Índice
 
+- [Demo en línea](#demo-en-línea)
 - [Qué hace](#qué-hace)
 - [Tecnologías](#tecnologías)
 - [Capturas](#capturas)
@@ -20,6 +23,20 @@ compran a todas desde un solo carrito. Tiene tres roles, cada uno con su propio 
 - [Base de datos](#base-de-datos)
 - [Limitaciones conocidas](#limitaciones-conocidas)
 - [Créditos](#créditos)
+
+## Demo en línea
+
+**<https://amamemie.github.io/sistema-vendedor/>**
+
+La demo está publicada en GitHub Pages, que solo sirve archivos estáticos. Por eso no usa el backend PHP:
+trae una copia de los datos de demostración y un backend simulado en el navegador (`src/demo/`).
+
+- Se puede recorrer todo con las [cuentas de prueba](#cuentas-de-prueba): catálogo, carrito, checkout y los
+  paneles de comprador, vendedor y administrador, con sus gráficas y reportes (PDF y Excel incluidos).
+- Las acciones que modifican datos (crear productos, cambiar estados, aprobar…) responden, pero **no se guardan**.
+- Las fechas se desplazan solas para que la actividad reciente siempre parezca de esta semana.
+
+Para la versión completa, con base de datos, sigue [Cómo ejecutarlo](#cómo-ejecutarlo).
 
 ## Qué hace
 
@@ -134,10 +151,21 @@ Abre <http://localhost:5173>.
 Otros comandos:
 
 ```bash
-npm run build     # compila a dist/
-npm run preview   # sirve la versión compilada
-npm run lint      # revisa el código con ESLint
+npm run build          # compila a dist/
+npm run preview        # sirve la versión compilada
+npm run lint           # revisa el código con ESLint
+npm run build:demo     # compila la demo estática (sin backend) para GitHub Pages
+npm run preview:demo   # prueba la demo en http://localhost:4173/sistema-vendedor/
+npm run demo:snapshot  # actualiza los datos de la demo desde el backend local
 ```
+
+### Publicar la demo en GitHub Pages
+
+El flujo `.github/workflows/deploy-pages.yml` compila y publica la demo en cada push a `main`.
+Solo hay que activarlo una vez: **Settings → Pages → Build and deployment → Source: GitHub Actions**.
+
+Si cambian los datos o las rutas del backend, ejecuta `npm run demo:snapshot` con el backend local
+corriendo y haz commit de `src/demo/snapshot.json`.
 
 ## Cuentas de prueba
 
@@ -180,6 +208,9 @@ sistema-vendedor/
 │   ├── router/               navegación según el rol (con carga diferida)
 │   ├── services/api.js       cliente de la API
 │   └── styles/               tokens.css (colores y temas), componentes, paneles
+├── src/demo/                 backend simulado y datos de la demo de GitHub Pages
+├── scripts/demo-snapshot.mjs genera src/demo/snapshot.json desde el backend local
+├── .github/workflows/        publicación automática en GitHub Pages
 ├── docker/ y docker-compose.yml
 ├── sistema_ventass.sql       esquema y datos base
 └── docs/capturas/            imágenes de este README

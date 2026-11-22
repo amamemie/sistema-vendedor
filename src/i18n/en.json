@@ -681,5 +681,11 @@
   },
   "a11y": {
     "skip": "Skip to content"
+  },
+  "demo": {
+    "label": "Demo notice",
+    "text": "Demo version: sample data, changes are not saved.",
+    "showAccounts": "See accounts",
+    "hideAccounts": "Hide"
   }
 }

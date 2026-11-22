@@ -3,6 +3,7 @@ import { ThemeProvider } from './context/ThemeContext';
 import { Toaster } from './components/ui/toast';
 import { useTranslation } from 'react-i18next';
 import AppRouter from './router/index';
+import DemoBanner from './demo/DemoBanner';
 
 function SkipLink() {
   const { t } = useTranslation();
@@ -16,6 +17,7 @@ export default function App() {
         <SkipLink />
         <AppRouter />
         <Toaster />
+        {import.meta.env.VITE_DEMO === 'true' && <DemoBanner />}
       </AuthProvider>
     </ThemeProvider>
   );
