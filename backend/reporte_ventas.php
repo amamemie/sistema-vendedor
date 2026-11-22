@@ -17,7 +17,7 @@ try {
                 comp.nombres AS comprador_nombres
          FROM COMPRA c
          LEFT JOIN COMPRADOR comp ON comp.id_comprador = c.id_comprador
-         ORDER BY c.fecha_compra DESC LIMIT 50"
+         ORDER BY c.fecha_compra DESC LIMIT 5000"
     );
     $stmt->execute();
     echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));

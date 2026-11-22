@@ -1,0 +1,29 @@
+# Backend local con Docker (alternativa a XAMPP).
+# PHP se conecta a "localhost" por socket, igual que en XAMPP, así que no hay que tocar backend/config.php.
+services:
+  db:
+    image: mariadb:11
+    command: --lower-case-table-names=1   # el código usa nombres de tabla en MAYÚSCULAS
+    environment:
+      MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: "1"
+      MARIADB_DATABASE: sistema_ventas
+    volumes:
+      - db-data:/var/lib/mysql
+      - mysqld-sock:/run/mysqld
+      - ./sistema_ventass.sql:/docker-entrypoint-initdb.d/01-esquema.sql:ro
+      - ./backend/seed/datos_demo.sql:/docker-entrypoint-initdb.d/02-datos-demo.sql:ro
+    ports:
+      - "3306:3306"
+
+  php:
+    build: ./docker/php
+    depends_on: [db]
+    volumes:
+      - mysqld-sock:/run/mysqld
+      - ./:/var/www/html/sistema-vendedor
+    ports:
+      - "80:80"
+
+volumes:
+  db-data:
+  mysqld-sock:

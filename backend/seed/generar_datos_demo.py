@@ -246,7 +246,7 @@ entregados = []
 fechas = sorted(datetime(2026, 1, 15) + timedelta(minutes=random.randint(0, int((HOY - datetime(2026, 1, 15)).total_seconds() // 60)))
                 for _ in range(118))
 # Los meses recientes venden más
-fechas += sorted(HOY - timedelta(days=random.uniform(0, 18), hours=random.randint(0, 10)) for _ in range(26))
+fechas += sorted(HOY - timedelta(days=random.uniform(0, 18), hours=random.randint(0, 10)) for _ in range(12))
 fechas.sort()
 
 for f in fechas:

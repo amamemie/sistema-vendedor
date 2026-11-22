@@ -571,3 +571,9 @@
 @media (max-width: 960px) {
   .hero3d-stage { overflow: clip; overflow-clip-margin: 0; }
 }
+
+/* La animación de entrada va en el contenido, no en el contenedor de la cabecera fija:
+   animar un ancestro de un elemento sticky con backdrop-filter lo deja "lavado" en Chrome. */
+.store-page.page-enter { animation: none; }
+.store-page.page-enter > main,
+.store-page.page-enter > .store-wrap { animation: pageIn 0.45s var(--ease) both; }
