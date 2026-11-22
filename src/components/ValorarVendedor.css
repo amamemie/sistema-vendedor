@@ -2,25 +2,7 @@
    VALORAR VENDEDOR - MEJORADO
    ============================================ */
 
-:root {
-  --valorar-primary: #f59e0b;
-  --valorar-primary-dark: #d97706;
-  --valorar-primary-light: #fef3c7;
-  --valorar-success: #10b981;
-  --valorar-success-light: #d1fae5;
-  --valorar-gray-100: #f3f4f6;
-  --valorar-gray-200: #e5e7eb;
-  --valorar-gray-300: #d1d5db;
-  --valorar-gray-400: #9ca3af;
-  --valorar-gray-500: #6b7280;
-  --valorar-gray-600: #4b5563;
-  --valorar-gray-700: #374151;
-  --valorar-radius: 12px;
-  --valorar-radius-sm: 8px;
-  --valorar-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
-  --valorar-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-  --valorar-transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
+/* paleta movida a src/styles/tokens.css */
 
 /* ============================================
    ANIMACIONES
@@ -58,25 +40,25 @@
    CONTENEDOR PRINCIPAL
    ============================================ */
 .valorar-vendedor {
-  background: #fff;
-  border: 1px solid var(--valorar-gray-200);
-  border-radius: var(--valorar-radius);
+  background: var(--surface);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius);
   padding: 20px;
   margin-top: 20px;
-  transition: var(--valorar-transition);
+  transition: var(--transition);
   animation: valorarFadeIn 0.3s ease-out;
 }
 
 .valorar-vendedor:hover {
-  box-shadow: var(--valorar-shadow-md);
-  border-color: var(--valorar-gray-300);
+  box-shadow: var(--shadow-md);
+  border-color: var(--gray-300);
 }
 
 .valorar-vendedor h3 {
   font-size: 16px;
   font-weight: 700;
   margin-bottom: 16px;
-  color: var(--valorar-gray-800);
+  color: var(--gray-800);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -101,23 +83,23 @@
 .star {
   font-size: 32px;
   cursor: pointer;
-  color: var(--valorar-gray-300);
-  transition: var(--valorar-transition);
+  color: var(--gray-300);
+  transition: var(--transition);
   display: inline-block;
 }
 
 .star:hover {
   transform: scale(1.15);
-  color: var(--valorar-primary);
+  color: var(--star);
 }
 
 .star-filled {
-  color: var(--valorar-primary);
+  color: var(--star);
   animation: starPop 0.2s ease-out;
 }
 
 .star-filled:hover {
-  color: var(--valorar-primary-dark);
+  color: var(--warning-strong);
 }
 
 /* ============================================
@@ -126,25 +108,25 @@
 .valorar-textarea {
   width: 100%;
   padding: 12px 16px;
-  border: 1px solid var(--valorar-gray-200);
-  border-radius: var(--valorar-radius-sm);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-sm);
   font-size: 13px;
   font-family: inherit;
   resize: vertical;
   margin-bottom: 16px;
-  transition: var(--valorar-transition);
-  background: var(--valorar-gray-100);
+  transition: var(--transition);
+  background: var(--gray-100);
 }
 
 .valorar-textarea:focus {
   outline: none;
-  border-color: var(--valorar-primary);
-  background: #fff;
-  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+  border-color: var(--star);
+  background: var(--surface);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--warning) 10%, transparent);
 }
 
 .valorar-textarea::placeholder {
-  color: var(--valorar-gray-400);
+  color: var(--gray-400);
 }
 
 /* ============================================
@@ -152,20 +134,20 @@
    ============================================ */
 .valorar-btn {
   width: 100%;
-  background: linear-gradient(135deg, var(--valorar-primary) 0%, var(--valorar-primary-dark) 100%);
-  color: #fff;
+  background: linear-gradient(135deg, var(--star) 0%, var(--warning-strong) 100%);
+  color: var(--on-solid);
   border: none;
-  border-radius: var(--valorar-radius-sm);
+  border-radius: var(--radius-sm);
   padding: 12px 20px;
   font-weight: 600;
   font-size: 14px;
   cursor: pointer;
-  transition: var(--valorar-transition);
+  transition: var(--transition);
 }
 
 .valorar-btn:hover:not(:disabled) {
   transform: translateY(-1px);
-  box-shadow: var(--valorar-shadow-md);
+  box-shadow: var(--shadow-md);
 }
 
 .valorar-btn:active:not(:disabled) {
@@ -173,7 +155,7 @@
 }
 
 .valorar-btn:disabled {
-  background: linear-gradient(135deg, var(--valorar-gray-400) 0%, var(--valorar-gray-500) 100%);
+  background: linear-gradient(135deg, var(--gray-400) 0%, var(--gray-500) 100%);
   cursor: not-allowed;
   opacity: 0.7;
 }
@@ -184,9 +166,9 @@
 .valorar-enviado {
   text-align: center;
   padding: 20px;
-  background: var(--valorar-success-light);
-  border-radius: var(--valorar-radius);
-  color: var(--valorar-success);
+  background: var(--success-light);
+  border-radius: var(--radius);
+  color: var(--success);
   font-weight: 500;
   animation: valorarFadeIn 0.3s ease-out;
 }
@@ -202,10 +184,10 @@
    MENSAJE DE ERROR
    ============================================ */
 .valorar-error {
-  background: #fee2e2;
-  color: #dc2626;
+  background: var(--error-light);
+  color: var(--error);
   padding: 10px 16px;
-  border-radius: var(--valorar-radius-sm);
+  border-radius: var(--radius-sm);
   font-size: 12px;
   margin-bottom: 16px;
   animation: shake 0.3s ease-out;
@@ -225,9 +207,9 @@
 .valorar-ya-calificado {
   text-align: center;
   padding: 16px;
-  background: var(--valorar-gray-100);
-  border-radius: var(--valorar-radius);
-  color: var(--valorar-gray-600);
+  background: var(--gray-100);
+  border-radius: var(--radius);
+  color: var(--gray-600);
   font-size: 13px;
 }
 
@@ -235,7 +217,7 @@
   display: inline-block;
   margin-top: 8px;
   font-size: 20px;
-  color: var(--valorar-primary);
+  color: var(--star);
   letter-spacing: 2px;
 }
 

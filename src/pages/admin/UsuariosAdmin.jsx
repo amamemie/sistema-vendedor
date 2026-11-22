@@ -51,7 +51,7 @@ export default function UsuariosAdmin() {
                 <td>
                   {editando === u.id_usuario ? (
                     <div style={{ display: 'flex', gap: 8 }}>
-                      <select value={nuevoRol} onChange={e => setNuevoRol(e.target.value)} style={{ padding: '5px 10px', borderRadius: 6, border: '1px solid #e2e8f0' }}>
+                      <select value={nuevoRol} onChange={e => setNuevoRol(e.target.value)} style={{ padding: '5px 10px', borderRadius: 6, border: '1px solid var(--gray-200)' }}>
                         <option value="Comprador">Comprador</option><option value="Vendedor">Vendedor</option><option value="Admin">Admin</option>
                       </select>
                       <button className="admin-btn-success" onClick={() => cambiarRol(editando, nuevoRol)}>Guardar</button>

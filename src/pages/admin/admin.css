@@ -2,38 +2,7 @@
    ESTILOS UNIFICADOS - ADMINISTRADOR (MEJORADO)
    ============================================ */
 
-:root {
-  --primary: #0f172a;
-  --primary-dark: #020617;
-  --secondary: #3b82f6;
-  --secondary-dark: #2563eb;
-  --success: #10b981;
-  --success-light: #d1fae5;
-  --danger: #ef4444;
-  --danger-light: #fee2e2;
-  --warning: #f59e0b;
-  --warning-light: #fef3c7;
-  --info: #8b5cf6;
-  --info-light: #ede9fe;
-  --gray-50: #f8fafc;
-  --gray-100: #f1f5f9;
-  --gray-200: #e2e8f0;
-  --gray-300: #cbd5e1;
-  --gray-400: #94a3b8;
-  --gray-500: #64748b;
-  --gray-600: #475569;
-  --gray-700: #334155;
-  --gray-800: #1e293b;
-  --gray-900: #0f172a;
-  --radius-sm: 6px;
-  --radius: 12px;
-  --radius-lg: 16px;
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
-  --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
+/* paleta movida a src/styles/tokens.css */
 
 /* Reset y base */
 * {
@@ -42,10 +11,6 @@
   box-sizing: border-box;
 }
 
-body {
-  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  background: var(--gray-100);
-}
 
 /* Scrollbar personalizada */
 ::-webkit-scrollbar {
@@ -101,7 +66,7 @@ body {
 /* Sidebar */
 .admin-sidebar {
   width: 280px;
-  background: linear-gradient(180deg, var(--primary) 0%, var(--primary-dark) 100%);
+  background: var(--sidebar-bg);
   display: flex;
   flex-direction: column;
   position: fixed;
@@ -177,7 +142,7 @@ body {
 
 .admin-sidebar-item-active {
   background: var(--secondary);
-  color: #fff;
+  color: var(--on-solid);
   box-shadow: var(--shadow-sm);
 }
 
@@ -195,7 +160,7 @@ body {
   align-items: center;
   gap: 12px;
   padding: 12px 16px;
-  background: rgba(239, 68, 68, 0.1);
+  background: color-mix(in srgb, var(--error) 10%, transparent);
   border: none;
   border-radius: var(--radius-sm);
   cursor: pointer;
@@ -207,7 +172,7 @@ body {
 }
 
 .admin-sidebar-logout:hover {
-  background: rgba(239, 68, 68, 0.2);
+  background: color-mix(in srgb, var(--error) 20%, transparent);
 }
 
 /* Main content */
@@ -220,7 +185,7 @@ body {
 }
 
 .admin-header {
-  background: #fff;
+  background: var(--surface);
   border-bottom: 1px solid var(--gray-200);
   padding: 0 24px;
   height: 60px;
@@ -255,7 +220,7 @@ body {
 }
 
 .admin-stat-card {
-  background: #fff;
+  background: var(--surface);
   border-radius: var(--radius-lg);
   padding: 20px;
   display: flex;
@@ -303,7 +268,7 @@ body {
    TABLAS MEJORADAS
    ============================================ */
 .admin-table {
-  background: #fff;
+  background: var(--surface);
   border-radius: var(--radius);
   overflow: hidden;
   box-shadow: var(--shadow);
@@ -342,7 +307,7 @@ body {
    ============================================ */
 .admin-btn-primary {
   background: var(--secondary);
-  color: #fff;
+  color: var(--on-solid);
   border: none;
   border-radius: var(--radius-sm);
   padding: 8px 16px;
@@ -362,7 +327,7 @@ body {
 
 .admin-btn-success {
   background: var(--success);
-  color: #fff;
+  color: var(--on-solid);
   border: none;
   border-radius: var(--radius-sm);
   padding: 8px 16px;
@@ -373,12 +338,12 @@ body {
 }
 
 .admin-btn-success:hover {
-  background: #059669;
+  background: var(--success);
 }
 
 .admin-btn-danger {
   background: var(--danger);
-  color: #fff;
+  color: var(--on-solid);
   border: none;
   border-radius: var(--radius-sm);
   padding: 8px 16px;
@@ -389,7 +354,7 @@ body {
 }
 
 .admin-btn-danger:hover {
-  background: #dc2626;
+  background: var(--error);
 }
 
 /* ============================================
@@ -401,7 +366,7 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: var(--overlay);
   backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
@@ -411,7 +376,7 @@ body {
 }
 
 .admin-modal {
-  background: #fff;
+  background: var(--surface);
   border-radius: var(--radius-lg);
   width: 500px;
   max-width: 90%;
@@ -438,7 +403,7 @@ body {
    CATEGORÍAS ADMIN
    ============================================ */
 .categorias-admin {
-  background: #fff;
+  background: var(--surface);
   border-radius: var(--radius-lg);
   padding: 24px;
   box-shadow: var(--shadow);
@@ -516,7 +481,7 @@ body {
    PRODUCTOS PENDIENTES
    ============================================ */
 .productos-admin {
-  background: #fff;
+  background: var(--surface);
   border-radius: var(--radius-lg);
   padding: 24px;
 }
@@ -530,7 +495,7 @@ body {
   padding: 8px 20px;
   border-radius: 40px;
   border: 1px solid var(--gray-200);
-  background: #fff;
+  background: var(--surface);
   cursor: pointer;
   font-size: 13px;
   font-weight: 500;
@@ -544,7 +509,7 @@ body {
 
 .filtro-btn-active {
   background: var(--secondary);
-  color: #fff;
+  color: var(--on-solid);
   border-color: var(--secondary);
 }
 
@@ -557,7 +522,7 @@ body {
 .producto-pendiente-card {
   display: flex;
   gap: 24px;
-  background: #fff;
+  background: var(--surface);
   border-radius: var(--radius);
   padding: 20px;
   border: 1px solid var(--gray-200);
@@ -667,22 +632,22 @@ body {
 
 .btn-aprobar {
   background: var(--success);
-  color: #fff;
+  color: var(--on-solid);
   border: none;
 }
 
 .btn-aprobar:hover {
-  background: #059669;
+  background: var(--success);
 }
 
 .btn-rechazar {
   background: var(--danger);
-  color: #fff;
+  color: var(--on-solid);
   border: none;
 }
 
 .btn-rechazar:hover {
-  background: #dc2626;
+  background: var(--error);
 }
 
 /* ============================================

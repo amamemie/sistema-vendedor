@@ -217,7 +217,7 @@ export default function VendorProductos() {
       </div>
 
       {!idTienda && modoVista === 'mis_productos' && (
-        <div style={{ background: '#fef3c7', border: '1px solid #fde047', borderRadius: 8, padding: 12, marginBottom: 16, fontSize: 13 }}>
+        <div style={{ background: 'var(--warning-light)', border: '1px solid var(--star)', borderRadius: 8, padding: 12, marginBottom: 16, fontSize: 13 }}>
           ⚠️ Tu cuenta aún no tiene una tienda asignada. Espera la aprobación del administrador.
         </div>
       )}
@@ -326,7 +326,7 @@ export default function VendorProductos() {
                     </div>
                   ))}
                 </div>
-                <small style={{ fontSize: 11, color: '#94a3b8' }}>Puedes seleccionar múltiples imágenes manteniendo Ctrl</small>
+                <small style={{ fontSize: 11, color: 'var(--gray-400)' }}>Puedes seleccionar múltiples imágenes manteniendo Ctrl</small>
               </div>
             </div>
             <div className="modal-footer">

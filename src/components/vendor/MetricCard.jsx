@@ -1,8 +1,8 @@
 export default function MetricCard({ label, value, change, changeType = 'neutral' }) {
   const changeColor = {
-    up: '#059669',
-    down: '#dc2626',
-    neutral: '#6b7280',
+    up: 'var(--success)',
+    down: 'var(--error)',
+    neutral: 'var(--gray-500)',
   }[changeType];
 
   const changeIcon = {

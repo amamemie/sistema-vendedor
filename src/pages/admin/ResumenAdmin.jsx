@@ -57,16 +57,16 @@ export default function ResumenAdmin() {
   }, []);
 
   const cards = [
-    { label: 'Usuarios totales', value: stats.totalUsuarios, icon: 'ti-users', color: '#2563eb' },
-    { label: 'Vendedores', value: stats.totalVendedores, icon: 'ti-store', color: '#059669' },
-    { label: 'Solicitudes vendedores', value: stats.solicitudesVendedores, icon: 'ti-user-plus', color: '#8b5cf6' },
-    { label: 'Productos pendientes', value: stats.productosPendientes, icon: 'ti-package', color: '#d97706' },
-    { label: 'Devoluciones pendientes', value: stats.devolucionesPendientes, icon: 'ti-rotate', color: '#dc2626' }
+    { label: 'Usuarios totales', value: stats.totalUsuarios, icon: 'ti-users', color: 'var(--accent)' },
+    { label: 'Vendedores', value: stats.totalVendedores, icon: 'ti-store', color: 'var(--success)' },
+    { label: 'Solicitudes vendedores', value: stats.solicitudesVendedores, icon: 'ti-user-plus', color: 'var(--accent)' },
+    { label: 'Productos pendientes', value: stats.productosPendientes, icon: 'ti-package', color: 'var(--warning)' },
+    { label: 'Devoluciones pendientes', value: stats.devolucionesPendientes, icon: 'ti-rotate', color: 'var(--error)' }
   ];
 
   if (loading) {
     return (
-      <div style={{ padding: 40, textAlign: 'center', color: '#64748b' }}>
+      <div style={{ padding: 40, textAlign: 'center', color: 'var(--gray-500)' }}>
         <i className="ti ti-loader-2" style={{ fontSize: 40, display: 'inline-block', marginBottom: 12 }} />
         <p>Cargando estadísticas...</p>
       </div>

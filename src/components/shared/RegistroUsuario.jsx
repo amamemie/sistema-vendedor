@@ -37,7 +37,7 @@ function RegistroUsuario() {
   };
 
   return (
-    <div style={{ border: '1px solid #ccc', padding: '20px', borderRadius: '8px', background: '#f9f9f9' }}>
+    <div style={{ border: '1px solid var(--gray-300)', padding: '20px', borderRadius: '8px', background: 'var(--gray-50)' }}>
       <h3>Registrar Nuevo {formData.rol}</h3>
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
 
@@ -63,7 +63,7 @@ function RegistroUsuario() {
         )}
 
         {formData.rol === 'Vendedor' && (
-          <div style={{ borderTop: '1px solid #ddd', paddingTop: '10px', marginTop: '5px' }}>
+          <div style={{ borderTop: '1px solid var(--gray-200)', paddingTop: '10px', marginTop: '5px' }}>
             <label style={{ fontSize: '0.8rem' }}>Información de Perfil:</label>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginTop: '5px' }}>
               <input name="documento_identidad" placeholder="N° Documento / NIT" required value={formData.documento_identidad} onChange={handleChange} />

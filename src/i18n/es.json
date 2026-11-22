@@ -1,0 +1,154 @@
+{
+  "prefs": {
+    "dark": "Oscuro",
+    "light": "Claro",
+    "toDark": "Cambiar a modo oscuro",
+    "toLight": "Cambiar a modo claro",
+    "language": "Idioma"
+  },
+  "brand": {
+    "name": "MarketPlace Paceño"
+  },
+  "common": {
+    "close": "Cerrar",
+    "optional": "opcional",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "loading": "Cargando…",
+    "back": "Volver",
+    "yes": "Sí",
+    "no": "No",
+    "search": "Buscar",
+    "all": "Todos",
+    "actions": "Acciones",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "confirm": "Confirmar",
+    "view": "Ver",
+    "status": "Estado",
+    "date": "Fecha",
+    "total": "Total",
+    "export": "Exportar",
+    "refresh": "Actualizar",
+    "send": "Enviar",
+    "details": "Detalles",
+    "prev": "Anterior",
+    "next": "Siguiente"
+  },
+  "nav": {
+    "profile": "Mi perfil"
+  },
+  "errors": {
+    "loadProducts": "No se pudieron cargar los productos",
+    "connection": "Error de conexión con el servidor",
+    "unknownRole": "Rol no reconocido: {{role}}",
+    "generic": "Ocurrió un error. Inténtalo de nuevo."
+  },
+  "store": {
+    "search": "Buscar productos",
+    "searchPlaceholder": "Buscar productos, tiendas…",
+    "openCart": "Abrir carrito",
+    "categories": "Categorías",
+    "all": "Todos",
+    "soldOut": "Agotado",
+    "lowStock": "Quedan {{count}}",
+    "store": "Tienda",
+    "new": "Nuevo",
+    "inStock_one": "{{count}} disponible",
+    "inStock_other": "{{count}} disponibles",
+    "details": "Ver",
+    "add": "Agregar",
+    "noStock": "Sin stock",
+    "added": "«{{name}}» se agregó al carrito",
+    "catalogTitle": "Explora el catálogo",
+    "resultsFor": "Resultados para «{{q}}»",
+    "productCount_one": "{{count}} producto",
+    "productCount_other": "{{count}} productos",
+    "noResults": "No encontramos productos",
+    "noResultsHint": "Prueba con otra palabra o cambia de categoría."
+  },
+  "cart": {
+    "title": "Tu carrito",
+    "items_one": "{{count}} artículo",
+    "items_other": "{{count}} artículos",
+    "empty": "Tu carrito está vacío",
+    "emptyHint": "Agrega productos del catálogo para empezar.",
+    "less": "Quitar uno",
+    "more": "Agregar uno",
+    "remove": "Eliminar del carrito",
+    "total": "Total",
+    "clear": "Vaciar",
+    "checkout": "Pagar",
+    "continue": "Continuar compra",
+    "buyNow": "Comprar ahora",
+    "confirmClear": "¿Vaciar todo el carrito?"
+  },
+  "checkoutGate": {
+    "title": "Ya casi es tuyo",
+    "body": "Para terminar la compra, inicia sesión o crea una cuenta. Guardamos tu carrito.",
+    "keepShopping": "Seguir comprando",
+    "newAccount": "Crear una cuenta nueva"
+  },
+  "checkout": {
+    "success": "Compra realizada. Total: {{total}}"
+  },
+  "hero": {
+    "eyebrow_one": "{{count}} tienda de La Paz",
+    "eyebrow_other": "{{count}} tiendas de La Paz",
+    "title": "Compra a las tiendas de La Paz en un solo carrito",
+    "lead_one": "{{count}} producto con stock en vivo, precios en bolivianos y seguimiento de cada pedido.",
+    "lead_other": "{{count}} productos con stock en vivo, precios en bolivianos y seguimiento de cada pedido.",
+    "primary": "Ver productos",
+    "secondary": "Crear cuenta gratis",
+    "fact1": "Vendedores verificados",
+    "fact2": "Seguimiento del pedido",
+    "fact3": "Chat con la tienda"
+  },
+  "footer": {
+    "tagline": "Hecho para vendedores y compradores de La Paz."
+  },
+  "buyer": {
+    "welcomeEyebrow": "Tu marketplace",
+    "welcome": "Hola, {{name}}",
+    "welcomeLead": "Novedades de tus tiendas favoritas, tu carrito y tus pedidos en un solo lugar.",
+    "myAccount": "Mi cuenta",
+    "goToCart": "Ir al carrito"
+  },
+  "auth": {
+    "login": "Iniciar sesión",
+    "logout": "Cerrar sesión",
+    "createAccount": "Crear cuenta",
+    "createAccountLead": "Regístrate como comprador en menos de un minuto.",
+    "welcome": "Bienvenido de nuevo",
+    "welcomeLead": "Ingresa para ver tus pedidos, tu carrito y tus mensajes.",
+    "email": "Correo electrónico",
+    "emailPlaceholder": "tu@correo.com",
+    "password": "Contraseña",
+    "showPassword": "Mostrar contraseña",
+    "hidePassword": "Ocultar contraseña",
+    "signIn": "Ingresar",
+    "signingIn": "Ingresando…",
+    "noAccount": "¿No tienes cuenta?",
+    "haveAccount": "¿Ya tienes cuenta?",
+    "wantToSell": "¿Quieres vender?",
+    "wantToSellHint": "Solicítalo desde tu cuenta de comprador.",
+    "badCredentials": "Correo o contraseña incorrectos",
+    "firstName": "Nombres",
+    "lastName": "Apellidos",
+    "phone": "Teléfono",
+    "register": "Crear mi cuenta",
+    "creating": "Creando cuenta…",
+    "registerError": "No se pudo crear la cuenta",
+    "accountCreated": "¡Cuenta creada!",
+    "redirecting": "Te llevamos al inicio de sesión…",
+    "backToStore": "Volver a la tienda"
+  },
+  "authScene": {
+    "sales": "Ventas del mes",
+    "order": "Pedido #1048 entregado",
+    "orderSub": "Hace 2 minutos",
+    "review": "«Llegó rapidísimo y bien embalado»",
+    "title": "Tu tienda, tus pedidos y tus clientes en un panel",
+    "lead": "Publica productos, responde mensajes y sigue tus ventas en tiempo real."
+  }
+}

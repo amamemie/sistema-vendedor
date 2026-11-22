@@ -44,28 +44,28 @@ export default function FormProducto({ idTienda, onGuardado, onCerrar }) {
   return (
     // Overlay
     <div style={{
-      position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)',
+      position: 'fixed', inset: 0, background: 'var(--overlay)',
       display: 'flex', alignItems: 'center', justifyContent: 'center',
       zIndex: 50, padding: 16,
     }}
       onClick={e => { if (e.target === e.currentTarget) onCerrar(); }}
     >
       <div style={{
-        background: '#fff', borderRadius: 14, width: '100%', maxWidth: 480,
+        background: 'var(--surface)', borderRadius: 14, width: '100%', maxWidth: 480,
         boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
         display: 'flex', flexDirection: 'column', maxHeight: '90vh',
       }}>
         {/* Header */}
         <div style={{
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-          padding: '18px 20px', borderBottom: '0.5px solid #e2e8f0',
+          padding: '18px 20px', borderBottom: '0.5px solid var(--gray-200)',
         }}>
           <div>
-            <h2 style={{ fontSize: 16, fontWeight: 600, margin: 0, color: '#0f172a' }}>Nuevo producto</h2>
-            <p style={{ fontSize: 12, color: '#64748b', margin: '2px 0 0' }}>Completa los datos del producto</p>
+            <h2 style={{ fontSize: 16, fontWeight: 600, margin: 0, color: 'var(--gray-900)' }}>Nuevo producto</h2>
+            <p style={{ fontSize: 12, color: 'var(--gray-500)', margin: '2px 0 0' }}>Completa los datos del producto</p>
           </div>
           <button onClick={onCerrar}
-            style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#94a3b8', fontSize: 20, padding: 4 }}>
+            style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--gray-400)', fontSize: 20, padding: 4 }}>
             <i className="ti ti-x" />
           </button>
         </div>
@@ -78,18 +78,18 @@ export default function FormProducto({ idTienda, onGuardado, onCerrar }) {
             <input name="nombre" required value={form.nombre} onChange={handleChange}
               placeholder="Ej: Camiseta Premium Talla M"
               style={inputStyle}
-              onFocus={e => e.target.style.borderColor = '#2563eb'}
-              onBlur={e => e.target.style.borderColor = '#e2e8f0'} />
+              onFocus={e => e.target.style.borderColor = 'var(--accent)'}
+              onBlur={e => e.target.style.borderColor = 'var(--gray-200)'} />
           </div>
 
           <div>
-            <label style={labelStyle}>Descripción <span style={{ color: '#94a3b8', fontWeight: 400 }}>(opcional)</span></label>
+            <label style={labelStyle}>Descripción <span style={{ color: 'var(--gray-400)', fontWeight: 400 }}>(opcional)</span></label>
             <textarea name="descripcion" value={form.descripcion} onChange={handleChange}
               placeholder="Describe el producto brevemente..."
               rows={3}
               style={{ ...inputStyle, resize: 'vertical', lineHeight: 1.5 }}
-              onFocus={e => e.target.style.borderColor = '#2563eb'}
-              onBlur={e => e.target.style.borderColor = '#e2e8f0'} />
+              onFocus={e => e.target.style.borderColor = 'var(--accent)'}
+              onBlur={e => e.target.style.borderColor = 'var(--gray-200)'} />
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
@@ -99,8 +99,8 @@ export default function FormProducto({ idTienda, onGuardado, onCerrar }) {
                 value={form.precio_unitario} onChange={handleChange}
                 placeholder="0.00"
                 style={inputStyle}
-                onFocus={e => e.target.style.borderColor = '#2563eb'}
-                onBlur={e => e.target.style.borderColor = '#e2e8f0'} />
+                onFocus={e => e.target.style.borderColor = 'var(--accent)'}
+                onBlur={e => e.target.style.borderColor = 'var(--gray-200)'} />
             </div>
             <div>
               <label style={labelStyle}>Stock inicial</label>
@@ -108,8 +108,8 @@ export default function FormProducto({ idTienda, onGuardado, onCerrar }) {
                 value={form.stock} onChange={handleChange}
                 placeholder="0"
                 style={inputStyle}
-                onFocus={e => e.target.style.borderColor = '#2563eb'}
-                onBlur={e => e.target.style.borderColor = '#e2e8f0'} />
+                onFocus={e => e.target.style.borderColor = 'var(--accent)'}
+                onBlur={e => e.target.style.borderColor = 'var(--gray-200)'} />
             </div>
           </div>
 
@@ -123,7 +123,7 @@ export default function FormProducto({ idTienda, onGuardado, onCerrar }) {
               ))}
             </select>
             {categorias.length === 0 && (
-              <p style={{ fontSize: 11, color: '#94a3b8', margin: '4px 0 0' }}>
+              <p style={{ fontSize: 11, color: 'var(--gray-400)', margin: '4px 0 0' }}>
                 No se encontraron categorías — verifica tu conexión al backend.
               </p>
             )}
@@ -131,8 +131,8 @@ export default function FormProducto({ idTienda, onGuardado, onCerrar }) {
 
           {error && (
             <div style={{
-              background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 8,
-              padding: '8px 12px', fontSize: 12, color: '#dc2626',
+              background: 'var(--error-light)', border: '1px solid var(--error-light)', borderRadius: 8,
+              padding: '8px 12px', fontSize: 12, color: 'var(--error)',
               display: 'flex', alignItems: 'center', gap: 6,
             }}>
               <i className="ti ti-alert-circle" style={{ fontSize: 14 }} />
@@ -143,8 +143,8 @@ export default function FormProducto({ idTienda, onGuardado, onCerrar }) {
           <div style={{ display: 'flex', gap: 10, marginTop: 4 }}>
             <button type="button" onClick={onCerrar}
               style={{
-                flex: 1, padding: '10px 0', background: '#f8fafc',
-                color: '#64748b', border: '0.5px solid #e2e8f0',
+                flex: 1, padding: '10px 0', background: 'var(--gray-50)',
+                color: 'var(--gray-500)', border: '0.5px solid var(--gray-200)',
                 borderRadius: 8, fontSize: 13, fontWeight: 500, cursor: 'pointer',
               }}>
               Cancelar
@@ -152,7 +152,7 @@ export default function FormProducto({ idTienda, onGuardado, onCerrar }) {
             <button type="submit" disabled={loading}
               style={{
                 flex: 1, padding: '10px 0',
-                background: loading ? '#94a3b8' : '#0f172a',
+                background: loading ? 'var(--gray-400)' : 'var(--gray-900)',
                 color: '#fff', border: 'none', borderRadius: 8,
                 fontSize: 13, fontWeight: 600,
                 cursor: loading ? 'not-allowed' : 'pointer',
@@ -167,14 +167,14 @@ export default function FormProducto({ idTienda, onGuardado, onCerrar }) {
 }
 
 const labelStyle = {
-  fontSize: 12, fontWeight: 500, color: '#374151',
+  fontSize: 12, fontWeight: 500, color: 'var(--gray-700)',
   display: 'block', marginBottom: 5,
 };
 
 const inputStyle = {
   width: '100%', padding: '9px 12px', fontSize: 13,
-  border: '1px solid #e2e8f0', borderRadius: 8,
+  border: '1px solid var(--gray-200)', borderRadius: 8,
   outline: 'none', boxSizing: 'border-box',
-  color: '#0f172a', background: '#fff',
+  color: 'var(--gray-900)', background: 'var(--surface)',
   transition: 'border-color 0.15s',
 };

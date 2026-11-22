@@ -79,10 +79,10 @@ export default function VendorDashboard() {
     <div className="vendor-content">
       {/* Tarjetas de métricas */}
       <div className="dashboard-stats">
-        <MetricCard label="Ventas del mes" value={stats.ventasMes} icon="cash" color="#059669" />
-        <MetricCard label="Pedidos" value={stats.pedidosMes} icon="shopping-cart" color="#2563eb" />
-        <MetricCard label="Productos activos" value={stats.productosActivos} icon="package" color="#d97706" />
-        <MetricCard label="Calificación" value={`${stats.calificacion} ★`} icon="star" color="#8b5cf6" />
+        <MetricCard label="Ventas del mes" value={stats.ventasMes} icon="cash" color="var(--success)" />
+        <MetricCard label="Pedidos" value={stats.pedidosMes} icon="shopping-cart" color="var(--accent)" />
+        <MetricCard label="Productos activos" value={stats.productosActivos} icon="package" color="var(--warning)" />
+        <MetricCard label="Calificación" value={`${stats.calificacion} ★`} icon="star" color="var(--accent)" />
       </div>
 
       {/* Gráfico de ventas semanales */}
@@ -105,12 +105,12 @@ export default function VendorDashboard() {
             <span className="dashboard-chart-link">Ver todos →</span>
           </div>
           {pedidosRecientes.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: 40, color: '#94a3b8' }}>No hay pedidos recientes</div>
+            <div style={{ textAlign: 'center', padding: 40, color: 'var(--gray-400)' }}>No hay pedidos recientes</div>
           ) : (
             pedidosRecientes.map(p => (
-              <div key={p.id_compra} style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #e2e8f0' }}>
+              <div key={p.id_compra} style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid var(--gray-200)' }}>
                 <span style={{ fontWeight: 500 }}>#{p.id_compra}</span>
-                <span style={{ fontSize: 12, color: '#64748b' }}>{new Date(p.fecha_compra).toLocaleDateString()}</span>
+                <span style={{ fontSize: 12, color: 'var(--gray-500)' }}>{new Date(p.fecha_compra).toLocaleDateString()}</span>
                 <span>{formatearPrecio(p.total_bruto)}</span>
               </div>
             ))
@@ -124,12 +124,12 @@ export default function VendorDashboard() {
             <span className="dashboard-chart-link">Gestionar →</span>
           </div>
           {productosBajoStock.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: 40, color: '#94a3b8' }}>✓ Todos los productos tienen stock suficiente</div>
+            <div style={{ textAlign: 'center', padding: 40, color: 'var(--gray-400)' }}>✓ Todos los productos tienen stock suficiente</div>
           ) : (
             productosBajoStock.map(p => (
-              <div key={p.id_producto} style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #e2e8f0' }}>
+              <div key={p.id_producto} style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid var(--gray-200)' }}>
     <span>{p.nombre}</span>
-    <span style={{ color: '#dc2626', fontWeight: 600 }}>{p.stock} und.</span>
+    <span style={{ color: 'var(--error)', fontWeight: 600 }}>{p.stock} und.</span>
   </div>
             ))
           )}

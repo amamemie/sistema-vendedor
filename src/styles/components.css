@@ -15,8 +15,8 @@
 
 .pagination-btn {
   padding: 6px 12px;
-  border: 1px solid #e2e8f0;
-  background: #fff;
+  border: 1px solid var(--gray-200);
+  background: var(--surface);
   border-radius: 6px;
   cursor: pointer;
   font-size: 12px;
@@ -24,14 +24,14 @@
 }
 
 .pagination-btn:hover:not(:disabled) {
-  background: #f1f5f9;
-  border-color: #cbd5e1;
+  background: var(--gray-100);
+  border-color: var(--gray-300);
 }
 
 .pagination-btn.active {
-  background: #2563eb;
-  color: #fff;
-  border-color: #2563eb;
+  background: var(--accent);
+  color: var(--on-solid);
+  border-color: var(--accent);
 }
 
 .pagination-btn:disabled {
@@ -48,7 +48,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: var(--overlay);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -56,8 +56,10 @@
 }
 
 .modal-content {
-  background: #fff;
-  border-radius: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-xl);
+  border-radius: var(--radius-lg);
   width: 500px;
   max-width: 90%;
   max-height: 90vh;
@@ -66,7 +68,7 @@
 
 .modal-header {
   padding: 16px 20px;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid var(--gray-200);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -83,12 +85,12 @@
   border: none;
   font-size: 20px;
   cursor: pointer;
-  color: #94a3b8;
+  color: var(--gray-400);
   transition: color 0.2s;
 }
 
 .modal-close:hover {
-  color: #dc2626;
+  color: var(--error);
 }
 
 .modal-body {
@@ -97,7 +99,7 @@
 
 .modal-footer {
   padding: 16px 20px;
-  border-top: 1px solid #e2e8f0;
+  border-top: 1px solid var(--gray-200);
   display: flex;
   justify-content: flex-end;
   gap: 12px;
@@ -110,8 +112,8 @@
   display: inline-block;
   width: 40px;
   height: 40px;
-  border: 3px solid #e2e8f0;
-  border-top-color: #2563eb;
+  border: 3px solid var(--gray-200);
+  border-top-color: var(--accent);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
@@ -128,91 +130,20 @@
 }
 
 /* --------------------------------------------
-   BADGES (compartido)
+   BADGES y BOTONES: definidos en src/index.css (.badge-*, .btn, .btn-ink…)
+   Aquí solo se mapean los nombres antiguos al sistema nuevo.
 --------------------------------------------- */
-.badge {
-  display: inline-block;
-  padding: 3px 8px;
-  border-radius: 20px;
-  font-size: 10px;
-  font-weight: 600;
-}
+.badge-danger { background: var(--error-light); color: var(--error); }
+.badge-info { background: var(--info-light); color: var(--info); }
 
-.badge-success {
-  background: #d1fae5;
-  color: #065f46;
-}
-
-.badge-warning {
-  background: #fef3c7;
-  color: #92400e;
-}
-
-.badge-danger {
-  background: #fee2e2;
-  color: #991b1b;
-}
-
-.badge-info {
-  background: #dbeafe;
-  color: #1e40af;
-}
-
-/* --------------------------------------------
-   BOTONES COMPARTIDOS
---------------------------------------------- */
-.btn {
-  padding: 8px 16px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 13px;
-  font-weight: 500;
-  transition: all 0.2s;
-}
-
-.btn-primary {
-  background: #1a1a1a;
-  color: #fff;
-}
-
-.btn-primary:hover:not(:disabled) {
-  background: #0f172a;
-}
-
-.btn-primary:disabled {
-  background: #94a3b8;
-  cursor: not-allowed;
-}
-
-.btn-secondary {
-  background: #fff;
-  border: 1px solid #e2e8f0;
-  color: #64748b;
-}
-
-.btn-secondary:hover {
-  background: #f1f5f9;
-  border-color: #cbd5e1;
-}
-
-.btn-success {
-  background: #059669;
-  color: #fff;
-}
-
-.btn-success:hover {
-  background: #047857;
-}
-
-.btn-danger {
-  background: #dc2626;
-  color: #fff;
-}
-
-.btn-danger:hover {
-  background: #b91c1c;
-}
+.btn-primary { background: var(--ink); color: var(--on-ink); }
+.btn-primary:hover:not(:disabled) { background: var(--ink-hover); box-shadow: var(--shadow-md); }
+.btn-secondary { background: var(--surface); border: 1px solid var(--border-strong); color: var(--text); }
+.btn-secondary:hover { background: var(--surface-2); border-color: var(--text-3); }
+.btn-success { background: var(--accent); color: var(--on-accent); }
+.btn-success:hover { background: var(--accent-hover); }
+.btn-danger { background: var(--error); color: var(--on-solid); }
+.btn-danger:hover { filter: brightness(1.08); }
 
 /* --------------------------------------------
    FORMULARIOS COMPARTIDOS
@@ -225,7 +156,7 @@
   display: block;
   font-size: 12px;
   font-weight: 500;
-  color: #374151;
+  color: var(--gray-700);
   margin-bottom: 5px;
 }
 
@@ -233,10 +164,13 @@
 .form-select,
 .form-textarea {
   width: 100%;
-  padding: 8px 12px;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  font-size: 13px;
+  min-height: 42px;
+  padding: 9px 12px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  background: var(--surface);
+  color: var(--text);
   transition: all 0.2s;
   box-sizing: border-box;
 }
@@ -245,8 +179,8 @@
 .form-select:focus,
 .form-textarea:focus {
   outline: none;
-  border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 10%, transparent);
 }
 
 .form-textarea {
@@ -264,8 +198,8 @@
    TABLAS COMPARTIDAS
 --------------------------------------------- */
 .table {
-  background: #fff;
-  border: 1px solid #e2e8f0;
+  background: var(--surface);
+  border: 1px solid var(--gray-200);
   border-radius: 12px;
   overflow: hidden;
   width: 100%;
@@ -274,11 +208,11 @@
 .table-header {
   display: grid;
   padding: 12px 16px;
-  background: #f9fafb;
-  border-bottom: 1px solid #e2e8f0;
+  background: var(--gray-50);
+  border-bottom: 1px solid var(--gray-200);
   font-size: 11px;
   font-weight: 600;
-  color: #64748b;
+  color: var(--gray-500);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -287,10 +221,10 @@
   display: grid;
   padding: 12px 16px;
   align-items: center;
-  border-bottom: 1px solid #f1f5f9;
+  border-bottom: 1px solid var(--gray-100);
   transition: background 0.2s;
 }
 
 .table-row:hover {
-  background: #fafafa;
+  background: var(--gray-50);
 }

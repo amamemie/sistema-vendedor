@@ -1,0 +1,154 @@
+{
+  "prefs": {
+    "dark": "Dark",
+    "light": "Light",
+    "toDark": "Switch to dark mode",
+    "toLight": "Switch to light mode",
+    "language": "Language"
+  },
+  "brand": {
+    "name": "MarketPlace Paceño"
+  },
+  "common": {
+    "close": "Close",
+    "optional": "optional",
+    "cancel": "Cancel",
+    "save": "Save",
+    "loading": "Loading…",
+    "back": "Back",
+    "yes": "Yes",
+    "no": "No",
+    "search": "Search",
+    "all": "All",
+    "actions": "Actions",
+    "edit": "Edit",
+    "delete": "Delete",
+    "confirm": "Confirm",
+    "view": "View",
+    "status": "Status",
+    "date": "Date",
+    "total": "Total",
+    "export": "Export",
+    "refresh": "Refresh",
+    "send": "Send",
+    "details": "Details",
+    "prev": "Previous",
+    "next": "Next"
+  },
+  "nav": {
+    "profile": "My profile"
+  },
+  "errors": {
+    "loadProducts": "Products could not be loaded",
+    "connection": "Could not reach the server",
+    "unknownRole": "Unknown role: {{role}}",
+    "generic": "Something went wrong. Please try again."
+  },
+  "store": {
+    "search": "Search products",
+    "searchPlaceholder": "Search products, stores…",
+    "openCart": "Open cart",
+    "categories": "Categories",
+    "all": "All",
+    "soldOut": "Sold out",
+    "lowStock": "{{count}} left",
+    "store": "Store",
+    "new": "New",
+    "inStock_one": "{{count}} available",
+    "inStock_other": "{{count}} available",
+    "details": "View",
+    "add": "Add",
+    "noStock": "Out of stock",
+    "added": "“{{name}}” was added to your cart",
+    "catalogTitle": "Browse the catalog",
+    "resultsFor": "Results for “{{q}}”",
+    "productCount_one": "{{count}} product",
+    "productCount_other": "{{count}} products",
+    "noResults": "No products found",
+    "noResultsHint": "Try another word or switch category."
+  },
+  "cart": {
+    "title": "Your cart",
+    "items_one": "{{count}} item",
+    "items_other": "{{count}} items",
+    "empty": "Your cart is empty",
+    "emptyHint": "Add products from the catalog to get started.",
+    "less": "Remove one",
+    "more": "Add one",
+    "remove": "Remove from cart",
+    "total": "Total",
+    "clear": "Clear",
+    "checkout": "Checkout",
+    "continue": "Continue to checkout",
+    "buyNow": "Buy now",
+    "confirmClear": "Empty the whole cart?"
+  },
+  "checkoutGate": {
+    "title": "Almost yours",
+    "body": "Sign in or create an account to finish your purchase. We saved your cart.",
+    "keepShopping": "Keep shopping",
+    "newAccount": "Create a new account"
+  },
+  "checkout": {
+    "success": "Order placed. Total: {{total}}"
+  },
+  "hero": {
+    "eyebrow_one": "{{count}} store in La Paz",
+    "eyebrow_other": "{{count}} stores in La Paz",
+    "title": "Shop La Paz stores in a single cart",
+    "lead_one": "{{count}} product with live stock, prices in bolivianos and tracking for every order.",
+    "lead_other": "{{count}} products with live stock, prices in bolivianos and tracking for every order.",
+    "primary": "Browse products",
+    "secondary": "Create a free account",
+    "fact1": "Verified sellers",
+    "fact2": "Order tracking",
+    "fact3": "Chat with the store"
+  },
+  "footer": {
+    "tagline": "Made for La Paz sellers and shoppers."
+  },
+  "buyer": {
+    "welcomeEyebrow": "Your marketplace",
+    "welcome": "Hi, {{name}}",
+    "welcomeLead": "New arrivals from your favourite stores, your cart and your orders in one place.",
+    "myAccount": "My account",
+    "goToCart": "Go to cart"
+  },
+  "auth": {
+    "login": "Sign in",
+    "logout": "Sign out",
+    "createAccount": "Create account",
+    "createAccountLead": "Sign up as a shopper in under a minute.",
+    "welcome": "Welcome back",
+    "welcomeLead": "Sign in to see your orders, cart and messages.",
+    "email": "Email",
+    "emailPlaceholder": "you@email.com",
+    "password": "Password",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "signIn": "Sign in",
+    "signingIn": "Signing in…",
+    "noAccount": "Don't have an account?",
+    "haveAccount": "Already have an account?",
+    "wantToSell": "Want to sell?",
+    "wantToSellHint": "Apply from your shopper account.",
+    "badCredentials": "Wrong email or password",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "phone": "Phone",
+    "register": "Create my account",
+    "creating": "Creating account…",
+    "registerError": "The account could not be created",
+    "accountCreated": "Account created!",
+    "redirecting": "Taking you to sign in…",
+    "backToStore": "Back to store"
+  },
+  "authScene": {
+    "sales": "Sales this month",
+    "order": "Order #1048 delivered",
+    "orderSub": "2 minutes ago",
+    "review": "“Arrived fast and well packed”",
+    "title": "Your store, orders and customers in one dashboard",
+    "lead": "List products, answer messages and follow your sales in real time."
+  }
+}

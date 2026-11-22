@@ -1,0 +1,183 @@
+/* ==========================================================================
+   Design tokens — Sistema Vendedor
+   Inspirado en el lenguaje de comercio de Shopify: lienzo crema, tinta casi
+   negra, un único acento verde, botones píldora y tipografía Inter.
+   Claro por defecto; oscuro con [data-theme="dark"] en <html>.
+   ========================================================================== */
+
+:root {
+  color-scheme: light;
+
+  /* Tipografía */
+  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* Superficies */
+  --bg: #f6f6f1;
+  --bg-elevated: #fbfbf7;
+  --surface: #ffffff;
+  --surface-2: #f2f2ec;
+  --surface-3: #e9e9e2;
+  --overlay: rgb(17 20 19 / 0.45);
+
+  /* Texto */
+  --text: #151816;
+  --text-2: #4b524e;
+  --text-3: #6f7672;
+  --text-inverse: #ffffff;
+
+  /* Bordes */
+  --border: #e3e3dc;
+  --border-strong: #cfd0c8;
+
+  /* Acento (verde comercio) */
+  --accent: #0b7a4f;
+  --accent-hover: #086640;
+  --accent-soft: #e1f4ea;
+  --accent-ring: rgb(11 122 79 / 0.28);
+  --on-accent: #ffffff;
+  --on-solid: #ffffff;
+
+  /* Tinta: botón principal píldora */
+  --ink: #111413;
+  --ink-hover: #2a2f2c;
+  --on-ink: #ffffff;
+
+  /* Barra lateral (oscura en ambos temas) */
+  --sidebar-bg: #111413;
+  --sidebar-text: #c9cdca;
+  --sidebar-muted: #7f8783;
+  --sidebar-hover: rgb(255 255 255 / 0.06);
+  --sidebar-active: rgb(62 207 142 / 0.14);
+  --sidebar-active-text: #6ee7b0;
+  --sidebar-border: rgb(255 255 255 / 0.08);
+
+  /* Estados */
+  --success: #15803d;
+  --success-strong: #14532d;
+  --success-light: #dcfce7;
+  --danger: #dc2626;
+  --danger-strong: #991b1b;
+  --danger-light: #fee2e2;
+  --error: #dc2626;
+  --error-light: #fee2e2;
+  --warning: #b45309;
+  --warning-strong: #92400e;
+  --warning-light: #fef3c7;
+  --info: #0e7490;
+  --info-light: #cffafe;
+  --star: #f5a524;
+
+  /* Escala neutra (legado: --gray-*) */
+  --gray-50: #f6f6f1;
+  --gray-100: #efefe9;
+  --gray-200: #e3e3dc;
+  --gray-300: #cfd0c8;
+  --gray-400: #9ea39f;
+  --gray-500: #6f7672;
+  --gray-600: #555c58;
+  --gray-700: #3d4440;
+  --gray-800: #262b28;
+  --gray-900: #151816;
+
+  /* Radios */
+  --radius-xs: 6px;
+  --radius-sm: 8px;
+  --radius: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 22px;
+  --radius-pill: 9999px;
+
+  /* Sombras (cálidas, suaves) */
+  --shadow-sm: 0 1px 2px rgb(20 24 22 / 0.05);
+  --shadow: 0 1px 3px rgb(20 24 22 / 0.07), 0 1px 2px rgb(20 24 22 / 0.04);
+  --shadow-md: 0 6px 16px -6px rgb(20 24 22 / 0.12), 0 2px 4px rgb(20 24 22 / 0.04);
+  --shadow-lg: 0 18px 40px -16px rgb(20 24 22 / 0.22), 0 4px 10px rgb(20 24 22 / 0.05);
+  --shadow-xl: 0 32px 70px -24px rgb(20 24 22 / 0.32);
+
+  /* Movimiento */
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --transition: all 0.22s var(--ease);
+  --dur-fast: 0.15s;
+  --dur: 0.25s;
+  --dur-slow: 0.5s;
+
+  /* Alias de legado de los módulos anteriores */
+  --primary: var(--ink);
+  --primary-dark: var(--ink-hover);
+  --secondary: var(--accent);
+  --secondary-dark: var(--accent-hover);
+  --danger-dark: var(--danger-strong);
+  --success-dark: var(--success-strong);
+  --warning-dark: var(--warning-strong);
+  --info-dark: var(--info);
+  --primary-light: var(--accent-soft);
+  --text-h: var(--text);
+}
+
+/* -------- Modo oscuro -------- */
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --bg: #0c0f0e;
+  --bg-elevated: #111514;
+  --surface: #151a18;
+  --surface-2: #1b211f;
+  --surface-3: #232a27;
+  --overlay: rgb(0 0 0 / 0.6);
+
+  --text: #ecefec;
+  --text-2: #b0b7b3;
+  --text-3: #8b938f;
+  --text-inverse: #0c0f0e;
+
+  --border: #262d2a;
+  --border-strong: #353e3a;
+
+  --accent: #3ecf8e;
+  --accent-hover: #5cdca2;
+  --accent-soft: rgb(62 207 142 / 0.13);
+  --accent-ring: rgb(62 207 142 / 0.35);
+  --on-accent: #04140c;
+  --on-solid: #04140c;
+
+  --ink: #f1f3ef;
+  --ink-hover: #d6dad5;
+  --on-ink: #0c0f0e;
+
+  --sidebar-bg: #0a0d0c;
+  --sidebar-border: rgb(255 255 255 / 0.06);
+
+  --success: #4ade80;
+  --success-strong: #86efac;
+  --success-light: rgb(74 222 128 / 0.13);
+  --danger: #f87171;
+  --danger-strong: #fca5a5;
+  --danger-light: rgb(248 113 113 / 0.14);
+  --error: #f87171;
+  --error-light: rgb(248 113 113 / 0.14);
+  --warning: #fbbf24;
+  --warning-strong: #fcd34d;
+  --warning-light: rgb(251 191 36 / 0.13);
+  --info: #22d3ee;
+  --info-light: rgb(34 211 238 / 0.12);
+
+  --gray-50: #121615;
+  --gray-100: #1b211f;
+  --gray-200: #262d2a;
+  --gray-300: #353e3a;
+  --gray-400: #6c7570;
+  --gray-500: #8b938f;
+  --gray-600: #a3aaa6;
+  --gray-700: #c2c8c4;
+  --gray-800: #dde1de;
+  --gray-900: #ecefec;
+
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.4);
+  --shadow: 0 1px 3px rgb(0 0 0 / 0.45);
+  --shadow-md: 0 8px 20px -8px rgb(0 0 0 / 0.6);
+  --shadow-lg: 0 20px 44px -18px rgb(0 0 0 / 0.75);
+  --shadow-xl: 0 36px 80px -28px rgb(0 0 0 / 0.85);
+}

@@ -15,16 +15,16 @@ export default function VendorSidebar({ activePage, onNavigate }) {
 
   return (
     <aside style={{
-      width: '220px', background: '#1a1a1a', display: 'flex',
+      width: '220px', background: 'var(--gray-900)', display: 'flex',
       flexDirection: 'column', flexShrink: 0, height: '100vh',
       position: 'sticky', top: 0,
     }}>
       <div style={{
-        padding: '16px 18px', borderBottom: '0.5px solid #333',
+        padding: '16px 18px', borderBottom: '0.5px solid var(--gray-800)',
         display: 'flex', alignItems: 'center', gap: '10px',
       }}>
         <div style={{
-          width: 28, height: 28, borderRadius: 6, background: '#2563eb',
+          width: 28, height: 28, borderRadius: 6, background: 'var(--accent)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           color: '#fff', fontSize: 12, fontWeight: 500,
         }}>{initials}</div>
@@ -42,7 +42,7 @@ export default function VendorSidebar({ activePage, onNavigate }) {
               width: '100%', display: 'flex', alignItems: 'center',
               gap: 10, padding: '8px 18px', background: 'none', border: 'none',
               cursor: 'pointer', textAlign: 'left',
-              color: activePage === item.page ? '#fff' : '#aaa',
+              color: activePage === item.page ? '#fff' : 'var(--gray-400)',
               backgroundColor: activePage === item.page ? '#2a2a2a' : 'transparent',
               fontSize: 13,
             }}
@@ -51,7 +51,7 @@ export default function VendorSidebar({ activePage, onNavigate }) {
             <span style={{ flex: 1 }}>{item.label}</span>
             {item.badge && (
               <span style={{
-                background: '#2563eb', color: '#fff', fontSize: 10,
+                background: 'var(--accent)', color: '#fff', fontSize: 10,
                 padding: '2px 6px', borderRadius: 10,
               }}>{item.badge}</span>
             )}
@@ -59,13 +59,13 @@ export default function VendorSidebar({ activePage, onNavigate }) {
         ))}
       </nav>
 
-      <div style={{ borderTop: '0.5px solid #333', padding: '8px 0' }}>
+      <div style={{ borderTop: '0.5px solid var(--gray-800)', padding: '8px 0' }}>
         <button
           onClick={() => onNavigate('configuracion')}
           style={{
             width: '100%', display: 'flex', alignItems: 'center', gap: 10,
             padding: '8px 18px', background: 'none', border: 'none',
-            cursor: 'pointer', color: '#aaa', fontSize: 13,
+            cursor: 'pointer', color: 'var(--gray-400)', fontSize: 13,
           }}
         >
           <i className="ti ti-settings" style={{ fontSize: 16 }} aria-hidden="true" />
@@ -76,7 +76,7 @@ export default function VendorSidebar({ activePage, onNavigate }) {
           style={{
             width: '100%', display: 'flex', alignItems: 'center', gap: 10,
             padding: '8px 18px', background: 'none', border: 'none',
-            cursor: 'pointer', color: '#aaa', fontSize: 13,
+            cursor: 'pointer', color: 'var(--gray-400)', fontSize: 13,
           }}
         >
           <i className="ti ti-logout" style={{ fontSize: 16 }} aria-hidden="true" />

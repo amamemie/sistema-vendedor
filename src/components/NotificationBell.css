@@ -2,33 +2,7 @@
    NOTIFICATION BELL - MEJORADO
    ============================================ */
 
-:root {
-  --notif-primary: #2563eb;
-  --notif-primary-dark: #1d4ed8;
-  --notif-success: #10b981;
-  --notif-success-light: #d1fae5;
-  --notif-warning: #f59e0b;
-  --notif-warning-light: #fef3c7;
-  --notif-danger: #ef4444;
-  --notif-danger-light: #fee2e2;
-  --notif-gray-50: #f8fafc;
-  --notif-gray-100: #f1f5f9;
-  --notif-gray-200: #e2e8f0;
-  --notif-gray-300: #cbd5e1;
-  --notif-gray-400: #94a3b8;
-  --notif-gray-500: #64748b;
-  --notif-gray-600: #475569;
-  --notif-gray-700: #334155;
-  --notif-gray-800: #1e293b;
-  --notif-gray-900: #0f172a;
-  --notif-radius-sm: 8px;
-  --notif-radius: 12px;
-  --notif-radius-lg: 16px;
-  --notif-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
-  --notif-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-  --notif-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
-  --notif-transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
+/* paleta movida a src/styles/tokens.css */
 
 /* ============================================
    ANIMACIONES
@@ -101,15 +75,15 @@
   cursor: pointer;
   padding: 10px;
   border-radius: 50%;
-  transition: var(--notif-transition);
+  transition: var(--transition);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--notif-gray-600);
+  color: var(--gray-600);
 }
 
 .notification-bell:hover {
-  background: var(--notif-gray-100);
+  background: var(--gray-100);
   transform: scale(1.05);
 }
 
@@ -120,7 +94,7 @@
 /* Animación de la campana cuando hay notificaciones */
 .notification-bell.has-notifications {
   animation: notifRing 0.5s ease-in-out;
-  color: var(--notif-primary);
+  color: var(--accent);
 }
 
 /* ============================================
@@ -130,15 +104,15 @@
   position: absolute;
   top: 2px;
   right: 2px;
-  background: linear-gradient(135deg, var(--notif-danger) 0%, #dc2626 100%);
-  color: #fff;
+  background: linear-gradient(135deg, var(--danger) 0%, var(--error) 100%);
+  color: var(--on-solid);
   font-size: 10px;
   font-weight: 700;
   border-radius: 20px;
   padding: 2px 6px;
   min-width: 18px;
   text-align: center;
-  box-shadow: var(--notif-shadow);
+  box-shadow: var(--shadow);
   animation: notifBounce 0.3s ease-out;
 }
 
@@ -151,10 +125,10 @@
   right: 0;
   width: 360px;
   max-height: 480px;
-  background: #fff;
-  border: 1px solid var(--notif-gray-200);
-  border-radius: var(--notif-radius-lg);
-  box-shadow: var(--notif-shadow-lg);
+  background: var(--surface);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
   z-index: 1000;
   overflow: hidden;
   animation: notifFadeIn 0.2s ease-out;
@@ -168,9 +142,9 @@
   right: 20px;
   width: 16px;
   height: 16px;
-  background: #fff;
-  border-left: 1px solid var(--notif-gray-200);
-  border-top: 1px solid var(--notif-gray-200);
+  background: var(--surface);
+  border-left: 1px solid var(--gray-200);
+  border-top: 1px solid var(--gray-200);
   transform: rotate(45deg);
 }
 
@@ -182,11 +156,11 @@
   justify-content: space-between;
   align-items: center;
   padding: 14px 18px;
-  border-bottom: 1px solid var(--notif-gray-200);
+  border-bottom: 1px solid var(--gray-200);
   font-weight: 700;
   font-size: 14px;
-  color: var(--notif-gray-800);
-  background: linear-gradient(135deg, var(--notif-gray-50) 0%, #fff 100%);
+  color: var(--gray-800);
+  background: linear-gradient(135deg, var(--gray-50) 0%, #fff 100%);
 }
 
 .notification-header span:first-child {
@@ -204,15 +178,15 @@
   background: none;
   border: none;
   font-size: 11px;
-  color: var(--notif-primary);
+  color: var(--accent);
   cursor: pointer;
-  transition: var(--notif-transition);
+  transition: var(--transition);
   padding: 4px 8px;
-  border-radius: var(--notif-radius-sm);
+  border-radius: var(--radius-sm);
 }
 
 .notification-mark-all:hover {
-  background: var(--notif-gray-100);
+  background: var(--gray-100);
   text-decoration: underline;
 }
 
@@ -230,16 +204,16 @@
 }
 
 .notification-list::-webkit-scrollbar-track {
-  background: var(--notif-gray-100);
+  background: var(--gray-100);
 }
 
 .notification-list::-webkit-scrollbar-thumb {
-  background: var(--notif-gray-300);
+  background: var(--gray-300);
   border-radius: 10px;
 }
 
 .notification-list::-webkit-scrollbar-thumb:hover {
-  background: var(--notif-gray-400);
+  background: var(--gray-400);
 }
 
 /* ============================================
@@ -249,25 +223,25 @@
   display: flex;
   gap: 14px;
   padding: 14px 18px;
-  border-bottom: 1px solid var(--notif-gray-100);
+  border-bottom: 1px solid var(--gray-100);
   cursor: pointer;
-  transition: var(--notif-transition);
+  transition: var(--transition);
   animation: notifSlideIn 0.2s ease-out;
 }
 
 .notification-item:hover {
-  background: var(--notif-gray-50);
+  background: var(--gray-50);
   transform: translateX(2px);
 }
 
 /* Notificación no leída */
 .notification-item.unread {
-  background: linear-gradient(135deg, var(--notif-primary-light) 0%, #eff6ff 100%);
-  border-left: 3px solid var(--notif-primary);
+  background: linear-gradient(135deg, var(--accent-soft) 0%, var(--accent-soft) 100%);
+  border-left: 3px solid var(--accent);
 }
 
 .notification-item.unread:hover {
-  background: #dbeafe;
+  background: var(--accent-soft);
 }
 
 /* ============================================
@@ -276,7 +250,7 @@
 .notification-icon {
   width: 40px;
   height: 40px;
-  border-radius: var(--notif-radius);
+  border-radius: var(--radius);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -286,23 +260,23 @@
 
 /* Iconos por tipo */
 .notification-icon.success {
-  background: var(--notif-success-light);
-  color: var(--notif-success);
+  background: var(--success-light);
+  color: var(--success);
 }
 
 .notification-icon.warning {
-  background: var(--notif-warning-light);
-  color: var(--notif-warning);
+  background: var(--warning-light);
+  color: var(--warning);
 }
 
 .notification-icon.danger {
-  background: var(--notif-danger-light);
-  color: var(--notif-danger);
+  background: var(--danger-light);
+  color: var(--danger);
 }
 
 .notification-icon.info {
-  background: #dbeafe;
-  color: var(--notif-primary);
+  background: var(--accent-soft);
+  color: var(--accent);
 }
 
 /* ============================================
@@ -316,13 +290,13 @@
 .notification-title {
   font-weight: 700;
   font-size: 13px;
-  color: var(--notif-gray-800);
+  color: var(--gray-800);
   margin-bottom: 4px;
 }
 
 .notification-message {
   font-size: 12px;
-  color: var(--notif-gray-500);
+  color: var(--gray-500);
   margin-bottom: 4px;
   line-height: 1.4;
   display: -webkit-box;
@@ -333,7 +307,7 @@
 
 .notification-date {
   font-size: 10px;
-  color: var(--notif-gray-400);
+  color: var(--gray-400);
   display: flex;
   align-items: center;
   gap: 4px;
@@ -350,7 +324,7 @@
 .notification-empty {
   padding: 60px 20px;
   text-align: center;
-  color: var(--notif-gray-400);
+  color: var(--gray-400);
   font-size: 13px;
   display: flex;
   flex-direction: column;
@@ -370,7 +344,7 @@
 .notification-loading {
   padding: 40px;
   text-align: center;
-  color: var(--notif-gray-400);
+  color: var(--gray-400);
   font-size: 13px;
   display: flex;
   align-items: center;
@@ -382,8 +356,8 @@
   content: "";
   width: 16px;
   height: 16px;
-  border: 2px solid var(--notif-gray-300);
-  border-top-color: var(--notif-primary);
+  border: 2px solid var(--gray-300);
+  border-top-color: var(--accent);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }

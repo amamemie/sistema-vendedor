@@ -57,7 +57,7 @@ export default function ReportesVendedor() {
 
       <div className="reportes-table">
         <div className="reportes-table-header"><span>Pedido</span><span>Fecha</span><span>Cliente</span><span>Total</span></div>
-        {ventas.length === 0 ? <div style={{ textAlign: 'center', padding: 40, color: '#94a3b8' }}>No hay ventas en este período</div> : ventas.map(v => (
+        {ventas.length === 0 ? <div style={{ textAlign: 'center', padding: 40, color: 'var(--gray-400)' }}>No hay ventas en este período</div> : ventas.map(v => (
           <div key={v.id_compra} className="reportes-table-row">
             <span>#{v.id_compra}</span><span>{formatearFecha(v.fecha_compra)}</span><span>{v.cliente_nombre || 'Cliente'}</span><span>{formatearPrecio(v.total_bruto)}</span>
           </div>

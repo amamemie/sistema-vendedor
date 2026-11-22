@@ -1,7 +1,9 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import './styles/components.css'  // ← CSS global de componentes (paginación, modales, etc.)
+import './i18n'
+import './styles/tokens.css'
 import './index.css'
+import './styles/components.css'
 import App from './App.jsx'
 
 createRoot(document.getElementById('root')).render(

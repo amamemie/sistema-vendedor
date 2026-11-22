@@ -1,4 +1,7 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { toast } from '../components/ui/toast';
+import { formatMoney } from '../i18n/format';
 import { useAuth } from '../context/AuthContext';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
@@ -13,6 +16,7 @@ import PerfilComprador from '../pages/comprador/PerfilComprador';
 
 export default function AppRouter() {
   const { user } = useAuth();
+  const { t } = useTranslation();
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
   
@@ -26,11 +30,11 @@ export default function AppRouter() {
   if (!user) {
     if (showAuthModal) {
       if (showRegister) {
-        return <Register onGoToLogin={() => setShowRegister(false)} onSuccess={() => setShowAuthModal(false)} />;
+        return <Register onGoToLogin={() => setShowRegister(false)} onSuccess={() => setShowAuthModal(false)} onBack={() => { setShowRegister(false); setShowAuthModal(false); }} />;
       }
-      return <Login onGoToRegister={() => setShowRegister(true)} onSuccess={() => setShowAuthModal(false)} />;
+      return <Login onGoToRegister={() => setShowRegister(true)} onSuccess={() => setShowAuthModal(false)} onBack={() => setShowAuthModal(false)} />;
     }
-    return <CatalogoPublico onLoginClick={() => setShowAuthModal(true)} onRegisterClick={() => { setShowRegister(true); setShowAuthModal(true); }} />;
+    return <CatalogoPublico onLoginClick={() => { setShowRegister(false); setShowAuthModal(true); }} onRegisterClick={() => { setShowRegister(true); setShowAuthModal(true); }} />;
   }
 
   // Panel según rol
@@ -78,7 +82,7 @@ if (user.rol === 'Comprador') {
               carritoActual.push({ ...producto, cantidad: producto.cantidad || 1 });
             }
             localStorage.setItem('carrito', JSON.stringify(carritoActual));
-            alert('✅ Producto agregado al carrito');
+            toast(t('store.added', { name: producto.nombre }));
             setVistaComprador('catalogo');
             setProductoSeleccionado(null);
           }}
@@ -103,7 +107,7 @@ if (user.rol === 'Comprador') {
           carrito={carritoCompra}
           total={totalCompra}
           onConfirm={(datos) => {
-            alert(`✅ Compra realizada con éxito!\nTotal: Bs. ${totalCompra.toFixed(2)}\nMétodo: ${datos.metodoPago}\nDirección: ${datos.direccion}`);
+            toast(t('checkout.success', { total: formatMoney(totalCompra) }));
             localStorage.removeItem('carrito');
             setVistaComprador('catalogo');
           }}
@@ -129,5 +133,5 @@ if (user.rol === 'Comprador') {
     );
   }
 
-  return <div>Rol no reconocido: {user.rol}</div>;
+  return <div className="empty-state">{t('errors.unknownRole', { role: user.rol })}</div>;
 }

@@ -48,7 +48,7 @@ export default function DevolucionesAdmin() {
     <div>
       <h1 style={{ fontSize: 20, marginBottom: 16 }}>🔄 Solicitudes de Devolución</h1>
       {solicitudes.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: 60, color: '#94a3b8' }}>
+        <div style={{ textAlign: 'center', padding: 60, color: 'var(--gray-400)' }}>
           <i className="ti ti-rotate-clockwise" style={{ fontSize: 48, marginBottom: 12 }} />
           <p>No hay solicitudes de devolución pendientes</p>
         </div>
@@ -57,14 +57,14 @@ export default function DevolucionesAdmin() {
           {solicitudes.map(s => {
             const badge = getEstadoDevolucionBadge(s.solicita_devolucion);
             return (
-              <div key={s.id_compra} style={{ background: '#fff', borderRadius: 12, padding: 16, border: '1px solid #e2e8f0' }}>
+              <div key={s.id_compra} style={{ background: 'var(--surface)', borderRadius: 12, padding: 16, border: '1px solid var(--gray-200)' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 12 }}>
                   <span style={{ fontWeight: 600 }}>Orden #{s.id_compra}</span>
                   <span style={{ background: badge.bg, color: badge.color, padding: '3px 8px', borderRadius: 20, fontSize: 11 }}>{badge.text}</span>
                 </div>
-                <div style={{ fontSize: 13, color: '#64748b', marginBottom: 4 }}>Comprador: {s.comprador_nombres} {s.comprador_apellidos}</div>
-                <div style={{ fontSize: 13, color: '#64748b', marginBottom: 4 }}>Tienda: {s.nombre_tienda}</div>
-                <div style={{ fontSize: 13, marginBottom: 12, background: '#f8fafc', padding: 10, borderRadius: 8 }}>
+                <div style={{ fontSize: 13, color: 'var(--gray-500)', marginBottom: 4 }}>Comprador: {s.comprador_nombres} {s.comprador_apellidos}</div>
+                <div style={{ fontSize: 13, color: 'var(--gray-500)', marginBottom: 4 }}>Tienda: {s.nombre_tienda}</div>
+                <div style={{ fontSize: 13, marginBottom: 12, background: 'var(--gray-50)', padding: 10, borderRadius: 8 }}>
                   <strong>Motivo:</strong> {s.devolucion_motivo}
                 </div>
                 <div style={{ display: 'flex', gap: 10 }}>

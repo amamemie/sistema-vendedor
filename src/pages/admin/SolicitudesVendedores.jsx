@@ -50,14 +50,14 @@ export default function SolicitudesVendedores() {
     <div>
       <h1 style={{ fontSize: 20, marginBottom: 16 }}>📋 Solicitudes de vendedores</h1>
       {solicitudes.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: 60, color: '#94a3b8' }}>No hay solicitudes pendientes</div>
+        <div style={{ textAlign: 'center', padding: 60, color: 'var(--gray-400)' }}>No hay solicitudes pendientes</div>
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
           {solicitudes.map(s => (
-            <div key={s.id_vendedor} style={{ background: '#fff', borderRadius: 12, padding: 16, border: '1px solid #e2e8f0' }}>
+            <div key={s.id_vendedor} style={{ background: 'var(--surface)', borderRadius: 12, padding: 16, border: '1px solid var(--gray-200)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 12 }}>
                 <span style={{ fontWeight: 600 }}>{s.nombre_tienda || 'Sin nombre'}</span>
-                <span style={{ background: '#fef3c7', color: '#92400e', padding: '3px 8px', borderRadius: 20, fontSize: 11 }}>Pendiente</span>
+                <span style={{ background: 'var(--warning-light)', color: 'var(--warning-strong)', padding: '3px 8px', borderRadius: 20, fontSize: 11 }}>Pendiente</span>
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, fontSize: 13, marginBottom: 16 }}>
                 <div><strong>NIT/RUT:</strong> {s.documento_identidad || '—'}</div>

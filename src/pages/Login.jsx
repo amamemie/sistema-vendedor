@@ -1,12 +1,16 @@
-// /src/pages/Login.jsx
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
 import { authService } from '../services/api';
+import AuthShell from '../components/auth/AuthShell';
+import Icon from '../components/ui/Icon';
 
-export default function Login({ onGoToRegister, onSuccess }) {
+export default function Login({ onGoToRegister, onSuccess, onBack }) {
+  const { t } = useTranslation();
   const { login } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPass, setShowPass] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -14,170 +18,57 @@ export default function Login({ onGoToRegister, onSuccess }) {
     e.preventDefault();
     setLoading(true);
     setError('');
-    
-    const data = await authService.login(email, password);
-    setLoading(false);
-
-    if (data.success) {
-      login(data);
-      if (onSuccess) onSuccess();
-    } else {
-      setError(data.message || 'Credenciales incorrectas');
+    try {
+      const data = await authService.login(email, password);
+      if (data.success) {
+        login(data);
+        onSuccess?.();
+      } else {
+        setError(data.message || t('auth.badCredentials'));
+      }
+    } catch {
+      setError(t('errors.connection'));
     }
+    setLoading(false);
   };
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      display: 'flex',
-      background: '#f6f6f7',
-    }}>
-      {/* Panel izquierdo — decorativo */}
-      <div style={{
-        display: 'none',
-        width: '45%',
-        background: '#0f172a',
-        position: 'relative',
-        overflow: 'hidden',
-      }} />
-
-      {/* Panel derecho — formulario */}
-      <div style={{
-        flex: 1,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '24px 16px',
-      }}>
-        <div style={{
-          background: '#ffffff',
-          border: '0.5px solid #e2e8f0',
-          borderRadius: 16,
-          padding: '36px 32px',
-          width: '100%',
-          maxWidth: 380,
-          boxShadow: '0 4px 24px rgba(0,0,0,0.06)',
-        }}>
-          {/* Logo + título */}
-          <div style={{ textAlign: 'center', marginBottom: 28 }}>
-            <div style={{
-              width: 44, height: 44, borderRadius: 10,
-              background: '#0f172a',
-              display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-              color: '#fff', fontWeight: 700, fontSize: 18, marginBottom: 14,
-            }}>M</div>
-            <h1 style={{ fontSize: 20, fontWeight: 600, margin: '0 0 4px', color: '#0f172a' }}>
-              Bienvenido
-            </h1>
-            <p style={{ fontSize: 13, color: '#64748b', margin: 0 }}>
-              Ingresa a tu cuenta del Marketplace
-            </p>
-          </div>
-
-          {/* Formulario */}
-          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-            <div>
-              <label style={{ fontSize: 12, fontWeight: 500, color: '#374151', display: 'block', marginBottom: 5 }}>
-                Correo electrónico
-              </label>
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="correo@ejemplo.com"
-                style={{
-                  width: '100%', padding: '9px 12px', fontSize: 13,
-                  border: '1px solid #e2e8f0', borderRadius: 8,
-                  outline: 'none', boxSizing: 'border-box',
-                  color: '#0f172a', background: '#fff',
-                }}
-                onFocus={e => e.target.style.borderColor = '#2563eb'}
-                onBlur={e => e.target.style.borderColor = '#e2e8f0'}
-              />
-            </div>
-
-            <div>
-              <label style={{ fontSize: 12, fontWeight: 500, color: '#374151', display: 'block', marginBottom: 5 }}>
-                Contraseña
-              </label>
-              <input
-                type="password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                style={{
-                  width: '100%', padding: '9px 12px', fontSize: 13,
-                  border: '1px solid #e2e8f0', borderRadius: 8,
-                  outline: 'none', boxSizing: 'border-box',
-                  color: '#0f172a', background: '#fff',
-                }}
-                onFocus={e => e.target.style.borderColor = '#2563eb'}
-                onBlur={e => e.target.style.borderColor = '#e2e8f0'}
-              />
-            </div>
-
-            {error && (
-              <div style={{
-                background: '#fef2f2', border: '1px solid #fecaca',
-                borderRadius: 8, padding: '8px 12px',
-                fontSize: 12, color: '#dc2626',
-                display: 'flex', alignItems: 'center', gap: 6,
-              }}>
-                <i className="ti ti-alert-circle" style={{ fontSize: 14 }} />
-                {error}
-              </div>
-            )}
-
-            <button
-              type="submit"
-              disabled={loading}
-              style={{
-                width: '100%', padding: '10px 0', marginTop: 2,
-                background: loading ? '#94a3b8' : '#0f172a',
-                color: '#fff', border: 'none', borderRadius: 8,
-                fontSize: 13, fontWeight: 600, cursor: loading ? 'not-allowed' : 'pointer',
-              }}
-            >
-              {loading ? 'Ingresando...' : 'Ingresar'}
+    <AuthShell
+      title={t('auth.welcome')}
+      subtitle={t('auth.welcomeLead')}
+      onBack={onBack}
+      footer={<>{t('auth.wantToSell')} <strong>{t('auth.wantToSellHint')}</strong></>}
+    >
+      <form className="auth-form" onSubmit={handleSubmit} noValidate={false}>
+        <label className="field">
+          <span className="field-label">{t('auth.email')}</span>
+          <span className="input-wrap">
+            <Icon name="mail" size={17} />
+            <input className="input" type="email" required autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder={t('auth.emailPlaceholder')} />
+          </span>
+        </label>
+        <label className="field">
+          <span className="field-label">{t('auth.password')}</span>
+          <span className="input-wrap">
+            <Icon name="lock" size={17} />
+            <input className="input" type={showPass ? 'text' : 'password'} required autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" />
+            <button type="button" className="input-toggle" onClick={() => setShowPass((v) => !v)} aria-label={showPass ? t('auth.hidePassword') : t('auth.showPassword')}>
+              <Icon name={showPass ? 'eyeOff' : 'eye'} size={17} />
             </button>
-          </form>
+          </span>
+        </label>
 
-          {/* Separador */}
-          <div style={{
-            display: 'flex', alignItems: 'center', gap: 10,
-            margin: '20px 0',
-          }}>
-            <div style={{ flex: 1, height: '0.5px', background: '#e2e8f0' }} />
-            <span style={{ fontSize: 11, color: '#94a3b8' }}>¿No tienes cuenta?</span>
-            <div style={{ flex: 1, height: '0.5px', background: '#e2e8f0' }} />
-          </div>
+        {error && <div className="alert alert-error" role="alert">{error}</div>}
 
-          {/* Botón registrarse */}
-          <button
-            onClick={onGoToRegister}
-            style={{
-              width: '100%', padding: '10px 0',
-              background: 'transparent',
-              color: '#0f172a', border: '1px solid #e2e8f0', borderRadius: 8,
-              fontSize: 13, fontWeight: 500, cursor: 'pointer',
-              transition: 'border-color 0.15s, background 0.15s',
-            }}
-            onMouseEnter={e => { e.target.style.borderColor = '#0f172a'; e.target.style.background = '#f8fafc'; }}
-            onMouseLeave={e => { e.target.style.borderColor = '#e2e8f0'; e.target.style.background = 'transparent'; }}
-          >
-            Crear cuenta
-          </button>
+        <button type="submit" className="btn btn-ink btn-lg btn-block" disabled={loading}>
+          {loading ? <><span className="btn-spinner" /> {t('auth.signingIn')}</> : <>{t('auth.signIn')} <Icon name="arrowRight" size={17} /></>}
+        </button>
+      </form>
 
-          <p style={{ fontSize: 11, color: '#94a3b8', textAlign: 'center', margin: '16px 0 0' }}>
-            ¿Quieres vender?{' '}
-            <span style={{ color: '#2563eb', cursor: 'default' }}>
-              Contacta al administrador
-            </span>
-          </p>
-        </div>
-      </div>
-    </div>
+      <div className="auth-divider">{t('auth.noAccount')}</div>
+      <button type="button" className="btn btn-outline btn-lg btn-block" onClick={onGoToRegister}>
+        {t('auth.createAccount')}
+      </button>
+    </AuthShell>
   );
 }

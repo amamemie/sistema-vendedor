@@ -13,29 +13,29 @@ export const formatearFecha = (fecha) => {
 
 export const getEstadoBadge = (estado) => {
   const estados = {
-    'Pendiente': { bg: '#fef3c7', color: '#92400e', text: '⏳ Pendiente' },
-    'Aprobado': { bg: '#d1fae5', color: '#065f46', text: '✅ Aprobado' },
-    'Rechazado': { bg: '#fee2e2', color: '#991b1b', text: '❌ Rechazado' },
-    'Activo': { bg: '#d1fae5', color: '#065f46', text: '✅ Activo' },
-    'Inactivo': { bg: '#fee2e2', color: '#991b1b', text: '❌ Inactivo' }
+    'Pendiente': { bg: 'var(--warning-light)', color: 'var(--warning-strong)', text: '⏳ Pendiente' },
+    'Aprobado': { bg: 'var(--success-light)', color: 'var(--success-strong)', text: '✅ Aprobado' },
+    'Rechazado': { bg: 'var(--error-light)', color: '#991b1b', text: '❌ Rechazado' },
+    'Activo': { bg: 'var(--success-light)', color: 'var(--success-strong)', text: '✅ Activo' },
+    'Inactivo': { bg: 'var(--error-light)', color: '#991b1b', text: '❌ Inactivo' }
   };
-  return estados[estado] || { bg: '#f1f5f9', color: '#64748b', text: estado };
+  return estados[estado] || { bg: 'var(--gray-100)', color: 'var(--gray-500)', text: estado };
 };
 
 export const getEstadoDevolucionBadge = (estado) => {
   const estados = {
-    'Pendiente': { bg: '#fef3c7', color: '#92400e', text: '⏳ Pendiente' },
-    'Aprobado': { bg: '#d1fae5', color: '#065f46', text: '✅ Aprobado' },
-    'Rechazado': { bg: '#fee2e2', color: '#991b1b', text: '❌ Rechazado' }
+    'Pendiente': { bg: 'var(--warning-light)', color: 'var(--warning-strong)', text: '⏳ Pendiente' },
+    'Aprobado': { bg: 'var(--success-light)', color: 'var(--success-strong)', text: '✅ Aprobado' },
+    'Rechazado': { bg: 'var(--error-light)', color: '#991b1b', text: '❌ Rechazado' }
   };
-  return estados[estado] || { bg: '#f1f5f9', color: '#64748b', text: estado };
+  return estados[estado] || { bg: 'var(--gray-100)', color: 'var(--gray-500)', text: estado };
 };
 
 export const getRolBadge = (rol) => {
   const roles = {
-    'Admin': { bg: '#ede9fe', color: '#6d28d9', text: '👑 Admin' },
-    'Vendedor': { bg: '#dbeafe', color: '#1d4ed8', text: '🏪 Vendedor' },
+    'Admin': { bg: 'var(--accent-soft)', color: '#6d28d9', text: '👑 Admin' },
+    'Vendedor': { bg: 'var(--accent-soft)', color: 'var(--accent-hover)', text: '🏪 Vendedor' },
     'Comprador': { bg: '#f0fdf4', color: '#166534', text: '🛒 Comprador' }
   };
-  return roles[rol] || { bg: '#f1f5f9', color: '#64748b', text: rol };
+  return roles[rol] || { bg: 'var(--gray-100)', color: 'var(--gray-500)', text: rol };
 };

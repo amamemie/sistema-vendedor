@@ -58,7 +58,7 @@ export default function DetalleProducto({ producto, onBack, onAddToCart }) {
         <div className="detalle-card">
           {/* Imagen */}
           <div className="detalle-imagen">
-            <div style={{ background: '#f8fafc', borderRadius: 12, padding: 20, textAlign: 'center' }}>
+            <div style={{ background: 'var(--gray-50)', borderRadius: 12, padding: 20, textAlign: 'center' }}>
               {producto.imagen_principal ? (
                 <img 
                   src={`http://localhost/sistema-vendedor/backend/${producto.imagen_principal}`} 
@@ -95,11 +95,11 @@ export default function DetalleProducto({ producto, onBack, onAddToCart }) {
               
               {/* Calificación del vendedor */}
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 8 }}>
-                <span style={{ fontSize: 12, color: '#f59e0b' }}>
+                <span style={{ fontSize: 12, color: 'var(--warning)' }}>
                   {'★'.repeat(Math.round(producto.vendedor_calificacion || 0))}
                   {'☆'.repeat(5 - Math.round(producto.vendedor_calificacion || 0))}
                 </span>
-                <span style={{ fontSize: 11, color: '#64748b' }}>
+                <span style={{ fontSize: 11, color: 'var(--gray-500)' }}>
                   {producto.vendedor_calificacion?.toFixed(1) || 'Nuevo'} · 
                   {producto.vendedor_total_resenas || 0} reseñas
                 </span>

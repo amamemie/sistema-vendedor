@@ -17,10 +17,10 @@ export default function NotificationBell({ userId }) {
 
   const getTipoColor = (tipo) => {
     switch(tipo) {
-      case 'pedido': return '#2563eb';
-      case 'pago': return '#059669';
-      case 'reporte': return '#dc2626';
-      default: return '#64748b';
+      case 'pedido': return 'var(--accent)';
+      case 'pago': return 'var(--success)';
+      case 'reporte': return 'var(--error)';
+      default: return 'var(--gray-500)';
     }
   };
 

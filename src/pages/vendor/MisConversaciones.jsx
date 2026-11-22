@@ -47,7 +47,7 @@ export default function MisConversaciones() {
       </div>
 
       {conversaciones.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: 60, color: '#94a3b8' }}>
+        <div style={{ textAlign: 'center', padding: 60, color: 'var(--gray-400)' }}>
           No tienes conversaciones aún
         </div>
       ) : (

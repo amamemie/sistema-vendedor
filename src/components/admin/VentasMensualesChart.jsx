@@ -8,7 +8,7 @@ export default function VentasMensualesChart({ ventasMensuales = [0,0,0,0,0,0,0,
     datasets: [{
       label: 'Ventas (Bs.)',
       data: ventasMensuales,
-      backgroundColor: '#3b82f6',
+      backgroundColor: 'var(--accent)',
       borderRadius: 8,
       borderColor: '#fff',
       borderWidth: 1

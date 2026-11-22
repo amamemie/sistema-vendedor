@@ -58,7 +58,7 @@ export default function ReportesAdmin() {
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
         <h1 style={{ fontSize: 20, margin: 0 }}>📈 Reportes</h1>
-        <span style={{ fontSize: 12, color: '#64748b' }}>
+        <span style={{ fontSize: 12, color: 'var(--gray-500)' }}>
           Última actualización: {new Date().toLocaleString()}
         </span>
       </div>
@@ -105,13 +105,13 @@ export default function ReportesAdmin() {
       {/* Reporte de Ventas */}
       {tipo === 'ventas' ? (
         <>
-          <div style={{ background: '#fff', padding: 16, borderRadius: 12, marginBottom: 20, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div style={{ background: 'var(--surface)', padding: 16, borderRadius: 12, marginBottom: 20, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <strong>Total de ventas:</strong>
-            <span style={{ fontSize: 24, fontWeight: 700, color: '#059669' }}>{formatearPrecio(totalVentas)}</span>
+            <span style={{ fontSize: 24, fontWeight: 700, color: 'var(--success)' }}>{formatearPrecio(totalVentas)}</span>
           </div>
 
           {ventas.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: 60, color: '#94a3b8' }}>No hay ventas registradas</div>
+            <div style={{ textAlign: 'center', padding: 60, color: 'var(--gray-400)' }}>No hay ventas registradas</div>
           ) : (
             <table className="admin-table">
               <thead>
@@ -132,8 +132,8 @@ export default function ReportesAdmin() {
                     <td>{formatearPrecio(v.total_bruto)}</td>
                     <td>
                       <span style={{ 
-                        background: v.estado === 'Pagada' ? '#d1fae5' : '#fef3c7', 
-                        color: v.estado === 'Pagada' ? '#065f46' : '#92400e', 
+                        background: v.estado === 'Pagada' ? 'var(--success-light)' : 'var(--warning-light)', 
+                        color: v.estado === 'Pagada' ? 'var(--success-strong)' : 'var(--warning-strong)', 
                         padding: '2px 8px', 
                         borderRadius: 20, 
                         fontSize: 10 
@@ -150,13 +150,13 @@ export default function ReportesAdmin() {
       ) : (
         // Reporte de Comisiones
         <>
-          <div style={{ background: '#fff', padding: 16, borderRadius: 12, marginBottom: 20, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div style={{ background: 'var(--surface)', padding: 16, borderRadius: 12, marginBottom: 20, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <strong>Total comisiones generadas:</strong>
-            <span style={{ fontSize: 24, fontWeight: 700, color: '#059669' }}>{formatearPrecio(totalComisiones)}</span>
+            <span style={{ fontSize: 24, fontWeight: 700, color: 'var(--success)' }}>{formatearPrecio(totalComisiones)}</span>
           </div>
 
           {comisiones.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: 60, color: '#94a3b8' }}>No hay comisiones registradas</div>
+            <div style={{ textAlign: 'center', padding: 60, color: 'var(--gray-400)' }}>No hay comisiones registradas</div>
           ) : (
             <table className="admin-table">
               <thead>
@@ -176,8 +176,8 @@ export default function ReportesAdmin() {
                     <td>{formatearPrecio(c.vendedor_monto)}</td>
                     <td>
                       <span style={{ 
-                        background: c.dispersion_estado === 'Enviada' ? '#d1fae5' : '#fef3c7', 
-                        color: c.dispersion_estado === 'Enviada' ? '#065f46' : '#92400e', 
+                        background: c.dispersion_estado === 'Enviada' ? 'var(--success-light)' : 'var(--warning-light)', 
+                        color: c.dispersion_estado === 'Enviada' ? 'var(--success-strong)' : 'var(--warning-strong)', 
                         padding: '2px 8px', 
                         borderRadius: 20 
                       }}>

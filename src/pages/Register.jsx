@@ -1,204 +1,93 @@
-// /src/pages/Register.jsx
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { authService } from '../services/api';
+import AuthShell from '../components/auth/AuthShell';
+import Icon from '../components/ui/Icon';
 
-export default function Register({ onGoToLogin, onSuccess }) {
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    nombres: '',
-    apellidos: '',
-    telefono: '',
-  });
+export default function Register({ onGoToLogin, onSuccess, onBack }) {
+  const { t } = useTranslation();
+  const [formData, setFormData] = useState({ email: '', password: '', nombres: '', apellidos: '', telefono: '' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
-
-    const data = await authService.register({
-      ...formData,
-      rol: 'Comprador',
-    });
-
-    setLoading(false);
-
-    if (data.success) {
-      setSuccess(true);
-      setTimeout(() => {
-        if (onSuccess) onSuccess();
-        if (onGoToLogin) onGoToLogin();
-      }, 2000);
-    } else {
-      setError(data.message || 'Error al registrar');
+    try {
+      const data = await authService.register({ ...formData, rol: 'Comprador' });
+      if (data.success) {
+        setSuccess(true);
+        setTimeout(() => {
+          onSuccess?.();
+          onGoToLogin?.();
+        }, 2000);
+      } else {
+        setError(data.message || t('auth.registerError'));
+      }
+    } catch {
+      setError(t('errors.connection'));
     }
+    setLoading(false);
   };
 
   if (success) {
     return (
-      <div style={{
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: '#f6f6f7',
-      }}>
-        <div style={{
-          background: '#fff',
-          padding: '40px',
-          borderRadius: 16,
-          textAlign: 'center',
-          maxWidth: 400,
-        }}>
-          <i className="ti ti-circle-check" style={{ fontSize: 48, color: '#059669', marginBottom: 16 }} />
-          <h2 style={{ fontSize: 20, marginBottom: 8 }}>¡Cuenta creada!</h2>
-          <p style={{ color: '#64748b', fontSize: 13 }}>Redirigiendo al inicio de sesión...</p>
+      <AuthShell title={t('auth.accountCreated')} onBack={onBack}>
+        <div className="auth-success">
+          <div className="auth-success-icon"><Icon name="check" size={34} strokeWidth={2.5} /></div>
+          <p className="auth-sub">{t('auth.redirecting')}</p>
         </div>
-      </div>
+      </AuthShell>
     );
   }
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      background: '#f6f6f7',
-      padding: '20px',
-    }}>
-      <div style={{
-        background: '#fff',
-        borderRadius: 16,
-        padding: '32px',
-        width: '100%',
-        maxWidth: 420,
-        border: '0.5px solid #e2e8f0',
-      }}>
-        <div style={{ textAlign: 'center', marginBottom: 24 }}>
-          <div style={{
-            width: 44, height: 44, borderRadius: 10,
-            background: '#0f172a',
-            display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-            color: '#fff', fontWeight: 700, fontSize: 18, marginBottom: 14,
-          }}>M</div>
-          <h1 style={{ fontSize: 20, fontWeight: 600, margin: 0 }}>Crear cuenta</h1>
-          <p style={{ fontSize: 13, color: '#64748b', marginTop: 4 }}>Como comprador</p>
+    <AuthShell title={t('auth.createAccount')} subtitle={t('auth.createAccountLead')} onBack={onBack}>
+      <form className="auth-form" onSubmit={handleSubmit}>
+        <div className="auth-row">
+          <label className="field">
+            <span className="field-label">{t('auth.firstName')}</span>
+            <input className="input" type="text" name="nombres" autoComplete="given-name" value={formData.nombres} onChange={handleChange} required />
+          </label>
+          <label className="field">
+            <span className="field-label">{t('auth.lastName')}</span>
+            <input className="input" type="text" name="apellidos" autoComplete="family-name" value={formData.apellidos} onChange={handleChange} required />
+          </label>
         </div>
+        <label className="field">
+          <span className="field-label">{t('auth.email')}</span>
+          <span className="input-wrap">
+            <Icon name="mail" size={17} />
+            <input className="input" type="email" name="email" autoComplete="email" placeholder={t('auth.emailPlaceholder')} value={formData.email} onChange={handleChange} required />
+          </span>
+        </label>
+        <label className="field">
+          <span className="field-label">{t('auth.password')}</span>
+          <span className="input-wrap">
+            <Icon name="lock" size={17} />
+            <input className="input" type="password" name="password" autoComplete="new-password" value={formData.password} onChange={handleChange} required />
+          </span>
+        </label>
+        <label className="field">
+          <span className="field-label">{t('auth.phone')} <span style={{ color: 'var(--text-3)', fontWeight: 400 }}>({t('common.optional')})</span></span>
+          <input className="input" type="tel" name="telefono" autoComplete="tel" value={formData.telefono} onChange={handleChange} />
+        </label>
 
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-          <input
-            type="text"
-            name="nombres"
-            placeholder="Nombres"
-            value={formData.nombres}
-            onChange={handleChange}
-            required
-            style={{
-              padding: '10px 12px', fontSize: 13, border: '1px solid #e2e8f0', borderRadius: 8,
-              outline: 'none',
-            }}
-            onFocus={e => e.target.style.borderColor = '#2563eb'}
-            onBlur={e => e.target.style.borderColor = '#e2e8f0'}
-          />
-          <input
-            type="text"
-            name="apellidos"
-            placeholder="Apellidos"
-            value={formData.apellidos}
-            onChange={handleChange}
-            required
-            style={{
-              padding: '10px 12px', fontSize: 13, border: '1px solid #e2e8f0', borderRadius: 8,
-              outline: 'none',
-            }}
-            onFocus={e => e.target.style.borderColor = '#2563eb'}
-            onBlur={e => e.target.style.borderColor = '#e2e8f0'}
-          />
-          <input
-            type="email"
-            name="email"
-            placeholder="Correo electrónico"
-            value={formData.email}
-            onChange={handleChange}
-            required
-            style={{
-              padding: '10px 12px', fontSize: 13, border: '1px solid #e2e8f0', borderRadius: 8,
-              outline: 'none',
-            }}
-            onFocus={e => e.target.style.borderColor = '#2563eb'}
-            onBlur={e => e.target.style.borderColor = '#e2e8f0'}
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Contraseña"
-            value={formData.password}
-            onChange={handleChange}
-            required
-            style={{
-              padding: '10px 12px', fontSize: 13, border: '1px solid #e2e8f0', borderRadius: 8,
-              outline: 'none',
-            }}
-            onFocus={e => e.target.style.borderColor = '#2563eb'}
-            onBlur={e => e.target.style.borderColor = '#e2e8f0'}
-          />
-          <input
-            type="tel"
-            name="telefono"
-            placeholder="Teléfono (opcional)"
-            value={formData.telefono}
-            onChange={handleChange}
-            style={{
-              padding: '10px 12px', fontSize: 13, border: '1px solid #e2e8f0', borderRadius: 8,
-              outline: 'none',
-            }}
-            onFocus={e => e.target.style.borderColor = '#2563eb'}
-            onBlur={e => e.target.style.borderColor = '#e2e8f0'}
-          />
+        {error && <div className="alert alert-error" role="alert">{error}</div>}
 
-          {error && (
-            <div style={{
-              background: '#fef2f2', border: '1px solid #fecaca',
-              borderRadius: 8, padding: '8px 12px', fontSize: 12, color: '#dc2626',
-            }}>
-              {error}
-            </div>
-          )}
+        <button type="submit" className="btn btn-ink btn-lg btn-block" disabled={loading}>
+          {loading ? <><span className="btn-spinner" /> {t('auth.creating')}</> : t('auth.register')}
+        </button>
+      </form>
 
-          <button
-            type="submit"
-            disabled={loading}
-            style={{
-              padding: '11px', marginTop: 6,
-              background: loading ? '#94a3b8' : '#0f172a',
-              color: '#fff', border: 'none', borderRadius: 8,
-              fontSize: 13, fontWeight: 600, cursor: loading ? 'not-allowed' : 'pointer',
-            }}
-          >
-            {loading ? 'Creando cuenta...' : 'Registrarse'}
-          </button>
-        </form>
-
-        <div style={{ textAlign: 'center', marginTop: 20 }}>
-          <button
-            onClick={onGoToLogin}
-            style={{
-              background: 'none', border: 'none', color: '#2563eb', fontSize: 13,
-              cursor: 'pointer',
-            }}
-          >
-            ← Volver al inicio de sesión
-          </button>
-        </div>
-      </div>
-    </div>
+      <div className="auth-divider">{t('auth.haveAccount')}</div>
+      <button type="button" className="btn btn-outline btn-lg btn-block" onClick={onGoToLogin}>
+        {t('auth.login')}
+      </button>
+    </AuthShell>
   );
 }

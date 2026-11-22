@@ -78,14 +78,14 @@ export default function VendorPedidos() {
       </div>
 
       {pedidosFiltrados.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: 60, color: '#94a3b8' }}>No hay pedidos en esta categoría</div>
+        <div style={{ textAlign: 'center', padding: 60, color: 'var(--gray-400)' }}>No hay pedidos en esta categoría</div>
       ) : (
         pedidosFiltrados.map(p => (
           <div key={p.id_compra} className="pedido-card">
             <div className="pedido-header">
               <div>
                 <span className="pedido-id">Pedido #{p.id_compra}</span>
-                <span className="pedido-fecha" style={{ marginLeft: 16, fontSize: 12, color: '#64748b' }}>
+                <span className="pedido-fecha" style={{ marginLeft: 16, fontSize: 12, color: 'var(--gray-500)' }}>
                   📅 {formatearFecha(p.fecha_compra)}
                 </span>
               </div>
