@@ -22,7 +22,7 @@ export default function Pagination({ paginaActual, totalPaginas, irPagina }) {
       
       {pages.map((page, idx) => (
         page === '...' ? (
-          <span key={idx} style={{ padding: '6px 10px', color: 'var(--gray-400)' }}>...</span>
+          <span key={idx} style={{ padding: '6px 10px', color: 'var(--text-3)' }} aria-hidden="true">…</span>
         ) : (
           <button
             key={idx}

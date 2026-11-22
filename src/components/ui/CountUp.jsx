@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
+import { formatNumber } from '../../i18n/format';
 
 /** Número que cuenta desde 0 hasta `value`. `format` recibe el número y devuelve el texto. */
-export default function CountUp({ value, duration = 900, format = (n) => Math.round(n).toLocaleString() }) {
+export default function CountUp({ value, duration = 900, format = (n) => formatNumber(Math.round(n)) }) {
   const target = Number(value) || 0;
   const [n, setN] = useState(target);
   const from = useRef(0);

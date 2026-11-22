@@ -110,11 +110,13 @@ export default function CatalogoPublico({ onLoginClick, onRegisterClick }) {
   return (
     <div className="store-page page-enter">
       <StoreHeader search={busqueda} onSearch={setBusqueda} cartCount={cantidadCarrito} onCart={() => setMostrarCarrito(true)}>
-        <button type="button" className="btn btn-ghost hide-sm" onClick={onLoginClick}>{t('auth.login')}</button>
-        <button type="button" className="btn btn-ink" onClick={onRegisterClick}>{t('auth.createAccount')}</button>
+        <button type="button" className="btn btn-ghost login-btn" onClick={onLoginClick} aria-label={t('auth.login')}>
+          <Icon name="user" size={17} className="show-sm" /><span className="hide-sm">{t('auth.login')}</span>
+        </button>
+        <button type="button" className="btn btn-ink hide-sm" onClick={onRegisterClick}>{t('auth.createAccount')}</button>
       </StoreHeader>
 
-      <main className="store-wrap">
+      <main id="main" tabIndex={-1} className="store-wrap">
         {!busqueda && (
           <Hero3D products={productos} storeCount={storeCount} onPrimary={scrollToCatalog} onSecondary={onRegisterClick} />
         )}

@@ -20,7 +20,7 @@
   border-radius: 6px;
   cursor: pointer;
   font-size: 12px;
-  transition: all 0.2s;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s, opacity 0.2s;
 }
 
 .pagination-btn:hover:not(:disabled) {
@@ -171,7 +171,7 @@
   font-size: 14px;
   background: var(--surface);
   color: var(--text);
-  transition: all 0.2s;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s, opacity 0.2s;
   box-sizing: border-box;
 }
 

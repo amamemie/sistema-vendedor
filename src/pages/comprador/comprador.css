@@ -281,7 +281,7 @@
    ============================================ */
 .carrito-container {
   min-height: 100vh;
-  background: var(--gray-100);
+  background: var(--bg);
 }
 
 .carrito-content {
@@ -472,7 +472,7 @@
    ============================================ */
 .detalle-container {
   min-height: 100vh;
-  background: var(--gray-100);
+  background: var(--bg);
 }
 
 .detalle-content {
@@ -594,11 +594,11 @@
    ============================================ */
 .perfil-container {
   min-height: 100vh;
-  background: var(--gray-100);
+  background: var(--bg);
 }
 
 .perfil-content {
-  max-width: 800px;
+  max-width: 920px;
   margin: 0 auto;
   padding: 24px;
 }
@@ -709,34 +709,44 @@
 
 .perfil-options-bar {
   display: flex;
-  gap: 12px;
+  gap: 4px;
   margin-bottom: 28px;
-  flex-wrap: wrap;
-  border-bottom: 2px solid var(--gray-200);
-  padding-bottom: 12px;
+  padding: 4px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  border-radius: var(--radius-pill);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
 }
+.perfil-options-bar::-webkit-scrollbar { display: none; }
 
 .perfil-option-btn {
-  padding: 8px 20px;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 38px;
+  padding: 0 16px;
   background: transparent;
   border: none;
-  border-radius: 40px;
+  border-radius: var(--radius-pill);
   cursor: pointer;
   font-size: 14px;
-  font-weight: 500;
-  color: var(--gray-600);
-  transition: var(--transition);
+  font-weight: 600;
+  color: var(--text-2);
+  white-space: nowrap;
+  transition: background-color var(--dur) var(--ease), color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
 }
 
-.perfil-option-btn:hover {
-  background: var(--gray-100);
-  color: var(--gray-900);
-}
+.perfil-option-btn:hover { color: var(--text); }
 
 .perfil-option-btn-active {
-  background: var(--secondary);
-  color: var(--on-solid);
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow);
 }
+
+.perfil-option-danger { color: var(--accent); }
 
 /* ============================================
    MIS PEDIDOS
@@ -1110,7 +1120,7 @@
   border-radius: 20px;
   overflow: hidden;
   border: 1px solid var(--warning-light);
-  transition: all 0.3s ease;
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, opacity 0.3s ease;
   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
@@ -1212,7 +1222,7 @@
   padding: 6px 10px;
   border-radius: 8px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s, opacity 0.2s;
   font-size: 14px;
 }
 
@@ -1406,3 +1416,43 @@
   color: var(--success);
   text-align: center;
 }
+/* Botones del carrito con el sistema */
+.carrito-btn-pagar {
+  width: 100%; min-height: 50px; border: 0; border-radius: var(--radius-pill);
+  background: var(--ink) !important; color: var(--on-ink) !important;
+  font-size: 15px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  transition: transform var(--dur-fast) var(--ease), box-shadow var(--dur) var(--ease);
+}
+.carrito-btn-pagar:hover { transform: translateY(-1px); box-shadow: var(--shadow-lg); }
+.carrito-btn-vaciar {
+  width: 100%; min-height: 42px; margin-top: 10px; border: 1px solid var(--border-strong); border-radius: var(--radius-pill);
+  background: transparent; color: var(--text-2); font-weight: 600; font-size: 14px; cursor: pointer;
+  transition: background-color var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+.carrito-btn-vaciar:hover { background: var(--error-light); color: var(--error); border-color: transparent; }
+.carrito-title span { color: var(--text-3); font-weight: 600; }
+.descuento-btn { border-radius: var(--radius-pill) !important; }
+
+/* ============================================
+   QUIERO VENDER
+   ============================================ */
+.solicitar-vendedor-card { display: grid; gap: 14px; animation: riseIn 0.5s var(--ease) both; }
+.solicitar-vendedor-icon {
+  width: 60px; height: 60px; border-radius: 18px; display: grid; place-items: center;
+  background: linear-gradient(145deg, var(--accent), var(--accent-hover)); color: var(--on-accent); font-size: 28px;
+  box-shadow: 0 14px 30px -12px var(--accent-ring);
+  animation: float3d 6s ease-in-out infinite;
+}
+@keyframes float3d {
+  0%, 100% { transform: perspective(300px) rotateX(0) rotateY(0) translateY(0); }
+  50% { transform: perspective(300px) rotateX(12deg) rotateY(-14deg) translateY(-4px); }
+}
+.solicitar-vendedor-title { font-size: clamp(22px, 2.6vw, 28px); font-weight: 800; letter-spacing: -0.03em; }
+.solicitar-vendedor-desc { color: var(--text-2); max-width: 560px; }
+.solicitar-beneficios { padding: 16px 18px; border-radius: var(--radius); background: var(--surface-2); border: 1px solid var(--border); }
+.solicitar-beneficios h4 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-3); margin: 0 0 10px; }
+.solicitar-beneficios ul { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px 16px; }
+.solicitar-beneficios li { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+.solicitar-beneficios li i { width: 28px; height: 28px; border-radius: 8px; display: grid; place-items: center; background: var(--accent-soft); color: var(--accent); font-size: 16px; flex: none; }
+.solicitar-vendedor-card form { display: grid; gap: 4px; margin-top: 4px; }
+@media (prefers-reduced-motion: reduce) { .solicitar-vendedor-icon { animation: none; } }

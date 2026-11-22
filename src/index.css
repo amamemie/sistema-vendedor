@@ -396,3 +396,23 @@ textarea:focus {
 @media (max-width: 720px) {
   .hide-sm { display: none !important; }
 }
+.show-sm { display: none; }
+@media (max-width: 720px) {
+  .show-sm { display: inline-block; }
+  .login-btn { width: 42px; padding: 0; border: 1px solid var(--border); background: var(--surface); }
+}
+
+/* ---------- Accesibilidad e interacción ---------- */
+.skip-link {
+  position: fixed; left: 16px; top: -60px; z-index: 2000;
+  padding: 10px 16px; border-radius: var(--radius-pill);
+  background: var(--ink); color: var(--on-ink); font-weight: 600;
+  transition: top var(--dur) var(--ease);
+}
+.skip-link:focus-visible { top: 12px; }
+main:focus { outline: none; }
+button, a, [role='tab'], label { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+td, .list-amount, .metric-value, .product-price { font-variant-numeric: tabular-nums; }
+h1, h2, h3 { text-wrap: balance; }
+.drawer-list, .nb-list, .modal-content, [class*='modal-content'], .shell-side, .shell-nav, .chat-messages { overscroll-behavior: contain; }
+.shell .productos-search:focus-within { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-ring); }

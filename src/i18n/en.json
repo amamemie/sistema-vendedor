@@ -610,5 +610,8 @@
     "validNext": "Valid on your next purchase",
     "howTitle": "How do I use my discount?",
     "how": "In your cart, type the code in “Discount code” and press Apply."
+  },
+  "a11y": {
+    "skip": "Skip to content"
   }
 }

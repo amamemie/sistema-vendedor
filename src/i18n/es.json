@@ -610,5 +610,8 @@
     "validNext": "Válido para tu próxima compra",
     "howTitle": "¿Cómo uso mi descuento?",
     "how": "En el carrito, escribe el código en «Código de descuento» y pulsa Aplicar."
+  },
+  "a11y": {
+    "skip": "Saltar al contenido"
   }
 }

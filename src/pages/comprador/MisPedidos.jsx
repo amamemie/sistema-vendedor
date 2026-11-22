@@ -138,7 +138,7 @@ export default function MisPedidos() {
                   <strong>{t('vendor.orders.order', { id: p.id_compra })}</strong>
                   <span className="pedido-fecha"><i className="ti ti-calendar" aria-hidden="true" /> {formatearFecha(p.fecha_compra)}</span>
                 </div>
-                <span className={`pedido-estado ${esPendiente ? 'estado-pendiente' : esPagada ? 'estado-pagado' : 'estado-cancelado'}`}>
+                <span className={`pedido-estado ${({ Pendiente: 'estado-pendiente', Pagada: 'estado-pagado', Enviado: 'estado-enviado', Entregado: 'estado-entregado' })[p.estado || 'Pendiente'] || 'estado-cancelado'}`}>
                   {t(`orderStatus.${p.estado || 'Pendiente'}`, { defaultValue: p.estado })}
                 </span>
               </div>

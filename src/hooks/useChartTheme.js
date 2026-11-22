@@ -1,5 +1,8 @@
 import { useMemo } from 'react';
+import { Chart as ChartJS } from 'chart.js';
 import { useTheme } from '../context/ThemeContext';
+
+ChartJS.defaults.font.family = "'Inter', system-ui, sans-serif";
 
 const read = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 

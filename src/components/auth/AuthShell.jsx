@@ -86,7 +86,7 @@ export default function AuthShell({ title, subtitle, onBack, children, footer })
         <div className="auth-form-wrap">
           <div className="auth-brand">
             <span className="store-brand-mark"><span>M</span></span>
-            <span>{t('brand.name')}</span>
+            <span translate="no">{t('brand.name')}</span>
           </div>
           <h1>{title}</h1>
           {subtitle && <p className="auth-sub">{subtitle}</p>}

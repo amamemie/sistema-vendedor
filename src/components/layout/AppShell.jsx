@@ -34,7 +34,7 @@ export default function AppShell({ roleLabel, workspace, user, items, active, on
         <div className="shell-brand">
           <span className="shell-brand-mark">M</span>
           <div>
-            <strong>{t('brand.name')}</strong>
+            <strong translate="no">{t('brand.name')}</strong>
             <span>{workspace}</span>
           </div>
         </div>
@@ -83,7 +83,7 @@ export default function AppShell({ roleLabel, workspace, user, items, active, on
             <Prefs compact />
           </div>
         </header>
-        <main className="shell-content" key={active}>
+        <main id="main" tabIndex={-1} className="shell-content" key={active}>
           {children}
         </main>
       </div>

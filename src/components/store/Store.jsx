@@ -17,7 +17,7 @@ export function Brand({ onClick }) {
       <span className="store-brand-mark" aria-hidden="true">
         <span>M</span>
       </span>
-      <span className="store-brand-name">{t('brand.name')}</span>
+      <span className="store-brand-name" translate="no">{t('brand.name')}</span>
     </button>
   );
 }

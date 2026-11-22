@@ -51,7 +51,7 @@ export default function ReportesAdmin() {
     [h('date')]: formatearFecha(v.fecha_compra),
     [h('buyer')]: `${v.comprador_nombres || ''} ${v.comprador_apellidos || ''}`.trim(),
     [h('totalBs')]: parseFloat(v.total_bruto || 0).toFixed(2),
-    [h('status')]: t(`orderStatus.${v.estado}`, { defaultValue: v.estado }),
+    [h('status')]: t(`orderStatus.${v.estado || 'Pendiente'}`, { defaultValue: v.estado }),
   }));
   const comisionesParaExportar = comisiones.map((c) => ({
     [h('seller')]: `${c.vendedor_nombres || ''} ${c.vendedor_apellidos || ''}`.trim(),
@@ -142,7 +142,7 @@ export default function ReportesAdmin() {
                       <td>{formatearFecha(v.fecha_compra)}</td>
                       <td>{v.comprador_nombres || ''} {v.comprador_apellidos || ''}</td>
                       <td style={{ fontWeight: 600 }}>{formatearPrecio(v.total_bruto)}</td>
-                      <td><span className={`badge ${toneFor(v.estado)}`}>{t(`orderStatus.${v.estado}`, { defaultValue: v.estado })}</span></td>
+                      <td><span className={`badge ${toneFor(v.estado || 'Pendiente')}`}>{t(`orderStatus.${v.estado || 'Pendiente'}`, { defaultValue: v.estado })}</span></td>
                     </tr>
                   ))}
                 </tbody>

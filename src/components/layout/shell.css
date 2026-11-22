@@ -136,3 +136,61 @@
   .shell-top { gap: 8px; }
   .shell-title p { display: none; }
 }
+
+/* ==========================================================================
+   Ajustes de los módulos antiguos dentro del shell (prioridad con .shell)
+   ========================================================================== */
+.shell .productos-header,
+.shell .admin-section-header {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px 16px;
+  flex-wrap: wrap; margin-bottom: 18px;
+}
+.shell .productos-title,
+.shell .admin-section-header h2 { font-size: 17px; font-weight: 700; letter-spacing: -0.015em; margin: 0; }
+.shell .productos-count { font-size: 13px; color: var(--text-3); margin-top: 2px; }
+.shell .productos-toolbar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.shell .productos-search {
+  display: flex; align-items: center; gap: 8px; height: 40px; padding: 0 14px; min-width: 220px;
+  border-radius: var(--radius-pill); border: 1px solid var(--border); background: var(--surface); color: var(--text-3);
+}
+.shell .productos-search input { border: 0 !important; background: transparent; outline: none; box-shadow: none !important; flex: 1; min-width: 0; font-size: 14px; }
+.shell .productos-vista-toggle {
+  display: inline-flex; gap: 2px; padding: 3px; border-radius: var(--radius-pill);
+  background: var(--surface-2); border: 1px solid var(--border);
+}
+.shell .vista-btn {
+  display: inline-flex; align-items: center; gap: 6px; min-height: 34px; padding: 0 14px;
+  border: 0; border-radius: var(--radius-pill); background: transparent; color: var(--text-2);
+  font-size: 13.5px; font-weight: 600; cursor: pointer;
+  transition: background-color var(--dur) var(--ease), color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+}
+.shell .vista-btn:hover { color: var(--text); }
+.shell .vista-btn-active { background: var(--surface); color: var(--text); box-shadow: var(--shadow); }
+
+/* Botones antiguos del admin con el aspecto del sistema */
+.shell [class^='admin-btn-'] {
+  display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 0 16px;
+  border-radius: var(--radius-pill); font-weight: 600; font-size: 13.5px; border: 1px solid transparent; cursor: pointer;
+  transition: transform var(--dur-fast) var(--ease), background-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+}
+.shell [class^='admin-btn-']:hover { transform: translateY(-1px); }
+.shell [class^='admin-btn-']:active { transform: scale(0.97); }
+.shell .admin-btn-primary { background: var(--ink); color: var(--on-ink); }
+.shell .admin-btn-secondary { background: var(--surface); color: var(--text); border-color: var(--border-strong); }
+.shell .admin-btn-success { background: var(--accent); color: var(--on-accent); }
+.shell .admin-btn-danger { background: var(--error-light); color: var(--error); }
+.shell .admin-btn-danger:hover { background: var(--error); color: var(--on-solid); }
+
+/* Tablas antiguas */
+.shell .admin-table { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+.shell .panel .admin-table { border: 0; border-radius: 0; }
+.shell .admin-table th { background: var(--surface-2); color: var(--text-3); padding: 12px 16px; border-bottom: 1px solid var(--border); }
+.shell .admin-table td { padding: 12px 16px; border-bottom: 1px solid var(--border); color: var(--text); }
+
+.shell .filtro-btn, .shell .filter-btn {
+  min-height: 36px; padding: 0 14px; border-radius: var(--radius-pill);
+  border: 1px solid var(--border); background: var(--surface); color: var(--text-2); font-weight: 600; font-size: 13px; cursor: pointer;
+  transition: background-color var(--dur) var(--ease), color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.shell .filtro-btn:hover, .shell .filter-btn:hover { border-color: var(--border-strong); color: var(--text); }
+.shell .filtro-btn-active, .shell .filter-btn-active { background: var(--ink); border-color: var(--ink); color: var(--on-ink); }

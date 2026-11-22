@@ -7,7 +7,7 @@
   overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
 }
 
-.store-page { min-height: 100svh; background: var(--bg); }
+.store-page { min-height: 100svh; background: var(--bg); overflow-x: clip; }
 .store-wrap { width: min(1240px, 100% - 32px); margin-inline: auto; }
 .store-main { padding: 28px 0 80px; }
 
@@ -442,7 +442,7 @@
   .product-buttons { display: grid; grid-template-columns: 1fr; }
   .product-buttons .btn { width: 100%; }
   .product-buttons .btn-ghost { display: none; }
-  .hero3d-stage { height: 300px; margin-inline: -16px; }
+  .hero3d-stage { height: 300px; }
   .hero3d-cta .btn { flex: 1; }
 }
 @media (max-width: 420px) {
@@ -567,4 +567,7 @@
 @media (max-width: 860px) {
   .checkout-grid { grid-template-columns: 1fr; }
   .checkout-summary { position: relative; top: 0; order: -1; }
+}
+@media (max-width: 960px) {
+  .hero3d-stage { overflow: clip; overflow-clip-margin: 0; }
 }

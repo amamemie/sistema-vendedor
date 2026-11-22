@@ -92,7 +92,7 @@ export default function CatalogoComprador({ user, onViewProduct, onViewCart, onV
         </button>
       </StoreHeader>
 
-      <main className="store-wrap store-main">
+      <main id="main" tabIndex={-1} className="store-wrap store-main">
         <section className="buyer-welcome">
           <div>
             <span className="buyer-welcome-eyebrow">{t('buyer.welcomeEyebrow')}</span>
