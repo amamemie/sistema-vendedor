@@ -32,9 +32,19 @@ try {
         exit;
     }
     
-    // Verificar contraseña
-    if ($user['password_hash'] !== $data->password) {
+    // Verificar contraseña: acepta contraseñas cifradas (password_hash, p. ej. vendedores creados
+    // por el admin) y las cuentas antiguas guardadas en texto plano.
+    $hash = $user['password_hash'];
+    $esHash = strlen($hash) >= 60 && str_starts_with($hash, '$2');
+    $valida = $esHash ? password_verify($data->password, $hash) : hash_equals($hash, $data->password);
+    if (!$valida) {
         echo json_encode(["success" => false, "message" => "Contraseña incorrecta"]);
+        exit;
+    }
+
+    // Cuentas desactivadas por el administrador
+    if (strcasecmp($user['estado'] ?? '', 'Inactivo') === 0) {
+        echo json_encode(["success" => false, "message" => "Tu cuenta está desactivada. Contacta al administrador."]);
         exit;
     }
     

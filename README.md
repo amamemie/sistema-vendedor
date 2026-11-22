@@ -42,11 +42,14 @@ compran a todas desde un solo carrito. Tiene tres roles, cada uno con su propio 
 - Reportes por rango de fechas y datos de la empresa.
 
 ### Administrador
-- Resumen de la plataforma: usuarios, vendedores y pendientes.
-- Gestión de usuarios y roles, y de categorías.
+- Resumen de la plataforma: ingresos y pedidos del mes, usuarios, vendedores y pendientes.
+- Gestión de usuarios: cambiar el rol y **activar o desactivar cuentas** (una cuenta desactivada no puede iniciar sesión).
+- Lista de vendedores y **alta directa de vendedores** con su tienda, ya aprobados.
+- Gestión de categorías.
 - Aprueba o rechaza productos antes de que aparezcan en el catálogo.
 - Aprueba o rechaza las solicitudes de nuevos vendedores y las devoluciones.
 - Reportes de ventas y comisiones (3% por venta) con gráfica mensual y exportación a **Excel** y **CSV**.
+- Reportes detallados por rango de fechas (ganancias, vendedores, compradores y productos vendidos) con exportación a **PDF** y Excel.
 
 ### En toda la aplicación
 - **Modo claro y oscuro**: recuerda la preferencia y, la primera vez, sigue la del sistema.
@@ -64,7 +67,7 @@ compran a todas desde un solo carrito. Tiene tres roles, cada uno con su propio 
 | Estilos | CSS propio con *design tokens* (variables CSS), sin framework; fuentes Inter y Plus Jakarta Sans; iconos [Tabler](https://tabler.io/icons) |
 | Idiomas | [i18next](https://www.i18next.com) + react-i18next, con detección automática del idioma |
 | Gráficas | [Chart.js](https://www.chartjs.org) + react-chartjs-2 |
-| Exportación | [SheetJS (xlsx)](https://sheetjs.com) + file-saver |
+| Exportación | [SheetJS (xlsx)](https://sheetjs.com) + file-saver (Excel/CSV), [jsPDF](https://github.com/parallax/jsPDF) + jspdf-autotable (PDF) |
 | Backend | PHP 8 (API REST en archivos `.php`, respuestas JSON) con PDO |
 | Base de datos | MySQL / MariaDB |
 | Entorno local | XAMPP, o Docker con `docker-compose.yml` |
@@ -205,7 +208,7 @@ Siempre se generan los mismos datos (semilla fija).
 
 Es un proyecto académico; antes de usarlo en producción habría que resolver esto:
 
-- Las contraseñas se guardan y comparan **en texto plano**. Habría que usar `password_hash()` y `password_verify()`.
+- Las cuentas de comprador se registran con la contraseña **en texto plano**. El inicio de sesión ya acepta contraseñas cifradas con `password_hash()` (las de los vendedores creados por el administrador), pero el registro todavía no cifra.
 - No hay tokens de sesión: la API confía en los IDs que envía el frontend.
 - La URL del backend (`http://localhost/sistema-vendedor/backend`) está escrita directamente en el código, en vez de venir de una variable de entorno.
 - El pago es simulado y los códigos de descuento se registran en un archivo de log, no en la base.

@@ -9,6 +9,8 @@ import DevolucionesAdmin from './DevolucionesAdmin';
 import ReportesAdmin from './ReportesAdmin';
 import SolicitudesVendedores from './SolicitudesVendedores';
 import CategoriasAdmin from './CategoriasAdmin';
+import VendedoresAdmin from './VendedoresAdmin';
+import CrearVendedor from './CrearVendedor';
 import './admin.css';
 
 export default function AdminPanel() {
@@ -19,7 +21,9 @@ export default function AdminPanel() {
   const menuItems = [
     { key: 'resumen', label: t('admin.nav.summary'), icon: 'ti-layout-dashboard' },
     { key: 'usuarios', label: t('admin.nav.users'), icon: 'ti-users' },
-    { key: 'solicitudes', label: t('admin.nav.requests'), icon: 'ti-user-plus' },
+    { key: 'vendedores', label: t('admin.nav.sellers'), icon: 'ti-building-store' },
+    { key: 'crear-vendedor', label: t('admin.nav.createSeller'), icon: 'ti-user-plus' },
+    { key: 'solicitudes', label: t('admin.nav.requests'), icon: 'ti-user-question' },
     { key: 'categorias', label: t('admin.nav.categories'), icon: 'ti-folder' },
     { key: 'productos', label: t('admin.nav.products'), icon: 'ti-package' },
     { key: 'devoluciones', label: t('admin.nav.returns'), icon: 'ti-rotate' },
@@ -29,6 +33,8 @@ export default function AdminPanel() {
   const renderContent = () => {
     switch (activeTab) {
       case 'usuarios': return <UsuariosAdmin />;
+      case 'vendedores': return <VendedoresAdmin onCrear={() => setActiveTab('crear-vendedor')} />;
+      case 'crear-vendedor': return <CrearVendedor onCreado={() => setActiveTab('vendedores')} />;
       case 'solicitudes': return <SolicitudesVendedores />;
       case 'categorias': return <CategoriasAdmin />;
       case 'productos': return <ProductosAdmin />;

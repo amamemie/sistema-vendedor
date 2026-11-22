@@ -384,7 +384,9 @@
       "categories": "Categorías",
       "products": "Aprobar productos",
       "returns": "Devoluciones",
-      "reports": "Reportes"
+      "reports": "Reportes",
+      "sellers": "Vendedores",
+      "createSeller": "Crear vendedor"
     },
     "subtitle": {
       "resumen": "El estado del marketplace de un vistazo",
@@ -393,7 +395,9 @@
       "categorias": "Organiza el catálogo",
       "productos": "Revisa publicaciones antes de mostrarlas",
       "devoluciones": "Solicitudes de devolución pendientes",
-      "reportes": "Ventas, comisiones y exportaciones"
+      "reportes": "Ventas, comisiones y exportaciones",
+      "vendedores": "Todos los vendedores registrados",
+      "crear-vendedor": "Da de alta un vendedor con su tienda"
     },
     "approve": "Aprobar",
     "reject": "Rechazar",
@@ -402,12 +406,23 @@
       "sellers": "Vendedores",
       "requests": "Solicitudes de vendedores",
       "pendingProducts": "Productos pendientes",
-      "pendingReturns": "Devoluciones pendientes"
+      "pendingReturns": "Devoluciones pendientes",
+      "monthRevenue": "Ingresos del mes",
+      "monthOrders": "Pedidos del mes"
     },
     "users": {
       "roleUpdated": "Rol actualizado",
       "role": "Rol",
-      "changeRole": "Cambiar rol"
+      "changeRole": "Cambiar rol",
+      "count_one": "{{count}} usuario",
+      "count_other": "{{count}} usuarios",
+      "search": "Buscar por correo…",
+      "activate": "Activar",
+      "deactivate": "Desactivar",
+      "confirmActivate": "¿Activar la cuenta {{email}}?",
+      "confirmDeactivate": "¿Desactivar la cuenta {{email}}? No podrá iniciar sesión.",
+      "activated": "Cuenta activada",
+      "deactivated": "Cuenta desactivada"
     },
     "requests": {
       "empty": "No hay solicitudes pendientes",
@@ -472,6 +487,59 @@
         "seller": "Vendedor",
         "commissionBs": "Comisión (Bs.)",
         "sellerAmountBs": "Monto vendedor (Bs.)"
+      }
+    },
+    "sellers": {
+      "count_one": "{{count}} vendedor",
+      "count_other": "{{count}} vendedores",
+      "search": "Buscar por nombre, correo o documento…",
+      "empty": "No hay vendedores que coincidan",
+      "document": "Documento (CI / NIT)",
+      "personType": "Tipo de persona",
+      "types": {
+        "Natural": "Persona natural",
+        "Juridica": "Persona jurídica"
+      }
+    },
+    "createSeller": {
+      "title": "Nuevo vendedor",
+      "lead": "La cuenta queda activa y aprobada al instante, con su tienda lista para publicar productos.",
+      "account": "Cuenta",
+      "password": "Contraseña inicial",
+      "passwordShort": "La contraseña debe tener al menos 6 caracteres",
+      "personal": "Datos del vendedor",
+      "documentPh": "Ej.: 6234871 LP",
+      "country": "País",
+      "store": "Tienda",
+      "storeName": "Nombre de la tienda",
+      "storeNamePh": "Ej.: Librería Illimani",
+      "clear": "Limpiar",
+      "submit": "Crear vendedor",
+      "created": "Se creó el vendedor {{name}}"
+    },
+    "detailed": {
+      "title": "Reportes detallados",
+      "pickDates": "Elige las dos fechas para filtrar",
+      "period": "Del {{from}} al {{to}}",
+      "allTime": "Todo el historial",
+      "generated": "Generado: {{date}}",
+      "page": "Página {{n}} de {{total}}",
+      "pdfError": "No se pudo generar el PDF",
+      "clearDates": "Quitar fechas",
+      "empty": "No hay datos en este período",
+      "types": {
+        "ganancias": "Ganancias",
+        "vendedores": "Vendedores",
+        "compradores": "Compradores",
+        "productos": "Productos vendidos"
+      },
+      "cols": {
+        "payment": "Pago",
+        "gross": "Venta bruta",
+        "pct": "% comisión",
+        "sales": "Ventas",
+        "purchases": "Compras",
+        "amount": "Monto"
       }
     }
   },

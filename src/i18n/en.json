@@ -384,7 +384,9 @@
       "categories": "Categories",
       "products": "Approve products",
       "returns": "Returns",
-      "reports": "Reports"
+      "reports": "Reports",
+      "sellers": "Sellers",
+      "createSeller": "Create seller"
     },
     "subtitle": {
       "resumen": "The marketplace at a glance",
@@ -393,7 +395,9 @@
       "categorias": "Organise the catalog",
       "productos": "Review listings before they go live",
       "devoluciones": "Pending return requests",
-      "reportes": "Sales, commissions and exports"
+      "reportes": "Sales, commissions and exports",
+      "vendedores": "Every registered seller",
+      "crear-vendedor": "Add a seller together with their store"
     },
     "approve": "Approve",
     "reject": "Reject",
@@ -402,12 +406,23 @@
       "sellers": "Sellers",
       "requests": "Seller requests",
       "pendingProducts": "Pending products",
-      "pendingReturns": "Pending returns"
+      "pendingReturns": "Pending returns",
+      "monthRevenue": "Revenue this month",
+      "monthOrders": "Orders this month"
     },
     "users": {
       "roleUpdated": "Role updated",
       "role": "Role",
-      "changeRole": "Change role"
+      "changeRole": "Change role",
+      "count_one": "{{count}} user",
+      "count_other": "{{count}} users",
+      "search": "Search by email…",
+      "activate": "Activate",
+      "deactivate": "Deactivate",
+      "confirmActivate": "Activate the account {{email}}?",
+      "confirmDeactivate": "Deactivate the account {{email}}? They won't be able to sign in.",
+      "activated": "Account activated",
+      "deactivated": "Account deactivated"
     },
     "requests": {
       "empty": "No pending requests",
@@ -472,6 +487,59 @@
         "seller": "Seller",
         "commissionBs": "Commission (Bs.)",
         "sellerAmountBs": "Seller amount (Bs.)"
+      }
+    },
+    "sellers": {
+      "count_one": "{{count}} seller",
+      "count_other": "{{count}} sellers",
+      "search": "Search by name, email or ID…",
+      "empty": "No sellers match",
+      "document": "ID / tax number",
+      "personType": "Entity type",
+      "types": {
+        "Natural": "Individual",
+        "Juridica": "Company"
+      }
+    },
+    "createSeller": {
+      "title": "New seller",
+      "lead": "The account is active and approved right away, with a store ready to list products.",
+      "account": "Account",
+      "password": "Initial password",
+      "passwordShort": "The password must have at least 6 characters",
+      "personal": "Seller details",
+      "documentPh": "E.g. 6234871 LP",
+      "country": "Country",
+      "store": "Store",
+      "storeName": "Store name",
+      "storeNamePh": "E.g. Illimani Books",
+      "clear": "Clear",
+      "submit": "Create seller",
+      "created": "Seller {{name}} created"
+    },
+    "detailed": {
+      "title": "Detailed reports",
+      "pickDates": "Pick both dates to filter",
+      "period": "From {{from}} to {{to}}",
+      "allTime": "All time",
+      "generated": "Generated: {{date}}",
+      "page": "Page {{n}} of {{total}}",
+      "pdfError": "The PDF could not be generated",
+      "clearDates": "Clear dates",
+      "empty": "No data in this period",
+      "types": {
+        "ganancias": "Earnings",
+        "vendedores": "Sellers",
+        "compradores": "Buyers",
+        "productos": "Products sold"
+      },
+      "cols": {
+        "payment": "Payment",
+        "gross": "Gross sale",
+        "pct": "Commission %",
+        "sales": "Sales",
+        "purchases": "Purchases",
+        "amount": "Amount"
       }
     }
   },

@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 include_once 'config.php';
 
 try {
-    $stmt = $conn->prepare("SELECT id_usuario, email, rol FROM CUENTA_USUARIO ORDER BY id_usuario");
+    $stmt = $conn->prepare("SELECT id_usuario, email, rol, estado FROM CUENTA_USUARIO ORDER BY id_usuario");
     $stmt->execute();
     echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
 } catch (Exception $e) {

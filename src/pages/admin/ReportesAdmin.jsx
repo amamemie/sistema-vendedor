@@ -4,6 +4,7 @@ import { api } from '../../services/api';
 import { formatearPrecio, formatearFecha } from './admin.utils';
 import { exportToExcel, exportToCSV } from '../../utils/exportUtils';
 import VentasMensualesChart from '../../components/admin/VentasMensualesChart';
+import ReportesDetallados from './ReportesDetallados';
 import Tilt from '../../components/ui/Tilt';
 import CountUp from '../../components/ui/CountUp';
 import { formatMoney, formatDateTime } from '../../i18n/format';
@@ -170,6 +171,8 @@ export default function ReportesAdmin() {
           )}
         </div>
       </section>
+
+      <ReportesDetallados />
     </div>
   );
 }

@@ -242,4 +242,14 @@ calificarProducto: (idProducto, calificacion, comentario = '', idUsuario = null)
       id_usuario: idUsuario
     }) 
   }),
+
+  // ── Administración (módulo fusionado desde main) ──
+  getAdminStats: () => request('admin_stats.php', { method: 'GET' }),
+  getVendedores: () => request('vendedores.php', { method: 'GET' }),
+  toggleUsuario: (idUsuario, estado) =>
+    request('admin_toggle_usuario.php', { method: 'POST', body: JSON.stringify({ id_usuario: idUsuario, estado }) }),
+  crearVendedor: (datos) =>
+    request('admin_crear_vendedor.php', { method: 'POST', body: JSON.stringify(datos) }),
+  getReporteAdmin: (tipo, fechaInicio = null, fechaFin = null) =>
+    request(`admin_reporte_${tipo}.php`, { method: 'POST', body: JSON.stringify({ fecha_inicio: fechaInicio, fecha_fin: fechaFin }) }),
 };

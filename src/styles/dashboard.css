@@ -89,3 +89,22 @@
 }
 .segmented button:hover { color: var(--text); }
 .segmented button[aria-selected='true'] { background: var(--surface); color: var(--text); box-shadow: var(--shadow); }
+
+/* Formularios por secciones (crear vendedor) */
+.form-section { border: 0; padding: 0; margin: 0 0 22px; }
+.form-section legend {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 12px;
+  font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-3);
+}
+.form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px 16px; }
+.create-seller { max-width: 980px; }
+.create-seller-actions { display: flex; justify-content: flex-end; gap: 10px; padding-top: 8px; border-top: 1px solid var(--border); margin-top: 4px; padding-top: 16px; }
+
+/* Reportes detallados */
+.report-controls { display: flex; align-items: flex-end; justify-content: space-between; gap: 14px; flex-wrap: wrap; margin-bottom: 16px; }
+.report-controls .segmented { overflow-x: auto; max-width: 100%; }
+.report-dates { display: flex; align-items: flex-end; gap: 10px; flex-wrap: wrap; }
+.report-dates .input { min-height: 40px; width: 160px; }
+.report-total { display: flex; justify-content: space-between; align-items: baseline; padding: 14px 16px; margin-bottom: 14px; border-radius: var(--radius); background: var(--accent-soft); }
+.report-total span { color: var(--text-2); font-weight: 600; }
+.report-total strong { font-family: var(--font-display); font-size: 22px; color: var(--accent); }
