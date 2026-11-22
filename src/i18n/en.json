@@ -33,7 +33,15 @@
     "send": "Send",
     "details": "Details",
     "prev": "Previous",
-    "next": "Next"
+    "next": "Next",
+    "select": "Select…",
+    "saving": "Saving…",
+    "saveChanges": "Save changes",
+    "from": "From",
+    "to": "To",
+    "applyFilter": "Apply filter",
+    "processing": "Processing…",
+    "sending": "Sending…"
   },
   "nav": {
     "profile": "My profile"
@@ -42,7 +50,9 @@
     "loadProducts": "Products could not be loaded",
     "connection": "Could not reach the server",
     "unknownRole": "Unknown role: {{role}}",
-    "generic": "Something went wrong. Please try again."
+    "generic": "Something went wrong. Please try again.",
+    "noUser": "We couldn't identify your account. Please sign in again.",
+    "noOrder": "The order number is missing"
   },
   "store": {
     "search": "Search products",
@@ -90,7 +100,30 @@
     "newAccount": "Create a new account"
   },
   "checkout": {
-    "success": "Order placed. Total: {{total}}"
+    "success": "Order placed. Total: {{total}}",
+    "back": "Back to cart",
+    "steps": "Checkout steps",
+    "payment": "Payment",
+    "confirmation": "Confirmation",
+    "title": "Payment details",
+    "address": "Shipping address",
+    "addressPh": "Street and area, city",
+    "method": "Payment method",
+    "processing": "Processing payment…",
+    "pay": "Pay {{total}}",
+    "secure": "Simulated secure payment · your card is not stored",
+    "yourOrder": "Your order",
+    "methods": {
+      "tarjeta": "Credit or debit card",
+      "qr": "QR code",
+      "transferencia": "Bank transfer",
+      "contraentrega": "Cash on delivery"
+    },
+    "methodsHint": {
+      "tarjeta": "Visa, Mastercard",
+      "qr": "Scan it with your banking app",
+      "transferencia": "We'll send you the account details"
+    }
   },
   "hero": {
     "eyebrow_one": "{{count}} store in La Paz",
@@ -112,7 +145,22 @@
     "welcome": "Hi, {{name}}",
     "welcomeLead": "New arrivals from your favourite stores, your cart and your orders in one place.",
     "myAccount": "My account",
-    "goToCart": "Go to cart"
+    "goToCart": "Go to cart",
+    "tabs": {
+      "profile": "My profile",
+      "orders": "My orders",
+      "reviews": "My reviews",
+      "discounts": "My discounts",
+      "sell": "Start selling"
+    },
+    "profile": {
+      "saved": "Profile saved",
+      "edit": "Edit profile",
+      "photo": "Profile photo",
+      "changePhoto": "Change photo",
+      "errName": "The first name is required",
+      "errLastName": "The last name is required"
+    }
   },
   "auth": {
     "login": "Sign in",
@@ -150,5 +198,417 @@
     "review": "“Arrived fast and well packed”",
     "title": "Your store, orders and customers in one dashboard",
     "lead": "List products, answer messages and follow your sales in real time."
+  },
+  "roles": {
+    "seller": "Seller",
+    "admin": "Administrator",
+    "buyer": "Shopper"
+  },
+  "shell": {
+    "navigation": "Main navigation",
+    "openMenu": "Open menu"
+  },
+  "charts": {
+    "weekdays": [
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu",
+      "Fri",
+      "Sat",
+      "Sun"
+    ],
+    "months": [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec"
+    ],
+    "salesBs": "Sales (Bs.)",
+    "monthsLong": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December"
+    ]
+  },
+  "vendor": {
+    "workspace": "Seller dashboard",
+    "nav": {
+      "dashboard": "Home",
+      "products": "My products",
+      "orders": "Orders",
+      "analytics": "Sales analytics",
+      "reports": "Reports",
+      "company": "My company"
+    },
+    "subtitle": {
+      "dashboard": "Your store at a glance today",
+      "productos": "List, edit and control stock",
+      "pedidos": "Prepare and update every order",
+      "analisis": "What sells, when and to whom",
+      "reportes": "Export your sales and commissions",
+      "perfil": "Your store's details and logo"
+    },
+    "dash": {
+      "salesMonth": "Sales this month",
+      "orders": "Orders this month",
+      "activeProducts": "Active products",
+      "rating": "Rating",
+      "last7": "Sales in the last 7 days",
+      "last7Hint": "In bolivianos, per day",
+      "seeMore": "See analytics",
+      "recentOrders": "Recent orders",
+      "seeAll": "See all",
+      "noOrders": "No orders yet",
+      "lowStock": "Low stock",
+      "manage": "Manage",
+      "stockOk": "All your products have enough stock",
+      "units_one": "{{count}} unit",
+      "units_other": "{{count}} units"
+    },
+    "products": {
+      "required": "Fill in the required fields",
+      "saved": "Product saved",
+      "saveError": "The product could not be saved",
+      "confirmDelete": "Delete this product?",
+      "catalog": "Full catalog",
+      "mine": "My products",
+      "add": "Add product",
+      "noStore": "Your account has no store yet. Wait for the administrator's approval.",
+      "photo": "Photo",
+      "product": "Product",
+      "category": "Category",
+      "price": "Price",
+      "stock": "Stock",
+      "otherSeller": "Another seller",
+      "myProduct": "My product",
+      "edit": "Edit product",
+      "new": "New product",
+      "name": "Name",
+      "namePh": "Product name",
+      "description": "Description",
+      "descriptionPh": "What it is, materials, size…",
+      "priceBs": "Price (Bs.)",
+      "currentImages": "Current images",
+      "addImages": "Add images",
+      "multiHint": "You can pick several images at once.",
+      "save": "Save product"
+    },
+    "orders": {
+      "title": "Orders received",
+      "count_one": "{{count}} order",
+      "count_other": "{{count}} orders",
+      "empty": "No orders in this category",
+      "order": "Order #{{id}}",
+      "customer": "Customer",
+      "customerFallback": "Customer",
+      "noItems": "No products",
+      "markShipped": "Mark as shipped",
+      "markDelivered": "Mark as delivered",
+      "returnPending": "Return pending"
+    },
+    "reports": {
+      "title": "Sales reports",
+      "totalSales": "Total sales",
+      "avgTicket": "Average ticket",
+      "order": "Order",
+      "empty": "No sales in this period"
+    },
+    "company": {
+      "saved": "Company details saved",
+      "back": "Back to dashboard",
+      "edit": "Edit details",
+      "logo": "Store logo",
+      "changeLogo": "Change logo",
+      "name": "Company name",
+      "nit": "Tax ID (NIT / RUT)",
+      "address": "Address",
+      "city": "City",
+      "description": "Store description",
+      "errName": "The company name is required",
+      "errNit": "The tax ID is required",
+      "errPhone": "The phone number is required",
+      "errPhoneLen": "The phone number must have 7 to 15 digits"
+    },
+    "analytics": {
+      "discountRange": "The discount must be between 1 and 100",
+      "discountApplied": "Discount applied",
+      "byStatus": "Summary by status",
+      "topProducts": "Best-selling products",
+      "quantity": "Units sold",
+      "earned": "Total earned",
+      "timesBought": "Times bought",
+      "noSales": "No sales yet",
+      "times_one": "{{count}} time",
+      "times_other": "{{count}} times",
+      "topCustomers": "Top customers",
+      "contact": "Contact",
+      "spent": "Total spent",
+      "noCustomers": "No customers yet",
+      "noPhone": "No phone",
+      "discount": "Discount",
+      "topCancelled": "Most cancelled products",
+      "timesCancelled": "Times cancelled",
+      "noCancelled": "No cancelled products",
+      "discountTitle": "Give this customer a discount",
+      "discountPct": "Discount percentage (%)",
+      "discountPctPh": "E.g. 10, 15, 20",
+      "discountReason": "Reason for the discount",
+      "discountReasonPh": "E.g. loyal customer, promotion…",
+      "applyDiscount": "Apply discount"
+    }
+  },
+  "admin": {
+    "workspace": "Administration",
+    "nav": {
+      "summary": "Overview",
+      "users": "Users",
+      "requests": "Seller requests",
+      "categories": "Categories",
+      "products": "Approve products",
+      "returns": "Returns",
+      "reports": "Reports"
+    },
+    "subtitle": {
+      "resumen": "The marketplace at a glance",
+      "usuarios": "Platform accounts and roles",
+      "solicitudes": "Shoppers who want to sell",
+      "categorias": "Organise the catalog",
+      "productos": "Review listings before they go live",
+      "devoluciones": "Pending return requests",
+      "reportes": "Sales, commissions and exports"
+    },
+    "approve": "Approve",
+    "reject": "Reject",
+    "summary": {
+      "users": "Total users",
+      "sellers": "Sellers",
+      "requests": "Seller requests",
+      "pendingProducts": "Pending products",
+      "pendingReturns": "Pending returns"
+    },
+    "users": {
+      "roleUpdated": "Role updated",
+      "role": "Role",
+      "changeRole": "Change role"
+    },
+    "requests": {
+      "empty": "No pending requests",
+      "noName": "Unnamed",
+      "date": "Request date"
+    },
+    "returns": {
+      "approved": "Return approved",
+      "rejected": "Return rejected",
+      "empty": "No pending returns",
+      "reason": "Reason"
+    },
+    "products": {
+      "approved": "Product approved",
+      "rejected": "Product rejected",
+      "reasonRequired": "Write the reason for rejecting it",
+      "title": "Product approval",
+      "pending": "Pending",
+      "approvedTab": "Approved",
+      "rejectedTab": "Rejected",
+      "empty": "No products in this category",
+      "noDescription": "No description",
+      "noCategory": "No category",
+      "liveInfo": "Approved and visible in the catalog",
+      "rejectReason": "Rejection reason",
+      "rejectTitle": "Reject product",
+      "rejectQuestion": "Why are you rejecting this product? The seller will see this reason.",
+      "rejectPh": "Write the reason…"
+    },
+    "categories": {
+      "nameRequired": "The name is required",
+      "updated": "Category updated",
+      "created": "Category created",
+      "confirmDelete": "Delete the “{{name}}” category? Its products will have no category.",
+      "deleted": "Category deleted",
+      "title": "Categories",
+      "new": "New category",
+      "edit": "Edit category",
+      "empty": "No categories yet",
+      "namePh": "E.g. Electronics, Clothing, Home…",
+      "descPh": "Which products it includes"
+    },
+    "reports": {
+      "totalSales": "Total sales",
+      "totalCommissions": "Commissions earned",
+      "orders": "Orders",
+      "monthly": "Sales by month · {{year}}",
+      "updated": "Updated: {{date}}",
+      "type": "Report type",
+      "sales": "Sales",
+      "commissions": "Commissions",
+      "noSales": "No sales yet",
+      "noCommissions": "No commissions yet",
+      "commission": "Commission",
+      "sellerAmount": "Seller amount",
+      "cols": {
+        "orderId": "Order ID",
+        "date": "Date",
+        "buyer": "Buyer",
+        "totalBs": "Total (Bs.)",
+        "status": "Status",
+        "seller": "Seller",
+        "commissionBs": "Commission (Bs.)",
+        "sellerAmountBs": "Seller amount (Bs.)"
+      }
+    }
+  },
+  "stock": {
+    "none": "Out of stock",
+    "low_one": "Low stock ({{count}})",
+    "low_other": "Low stock ({{count}})",
+    "units_one": "{{count}} unit",
+    "units_other": "{{count}} units"
+  },
+  "orderStatus": {
+    "Pendiente": "Pending",
+    "Pagada": "Paid",
+    "Enviado": "Shipped",
+    "Entregado": "Delivered",
+    "Cancelado": "Cancelled",
+    "Cancelada": "Cancelled"
+  },
+  "productStatus": {
+    "Activo": "Active",
+    "Inactivo": "Inactive",
+    "Pendiente": "Pending",
+    "Aprobado": "Approved",
+    "Rechazado": "Rejected"
+  },
+  "export": {
+    "empty": "There is no data to export"
+  },
+  "chat": {
+    "open": "Open chat",
+    "loading": "Loading conversation…",
+    "with": "Chat with {{name}}",
+    "empty": "No messages yet. Send your question!",
+    "placeholder": "Write a message…"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "markAll": "Mark all as read",
+    "empty": "You have no notifications"
+  },
+  "report": {
+    "title": "Report product",
+    "pickReason": "Pick a reason for the report",
+    "sent": "Report sent. The administrator will review it.",
+    "error": "The report could not be sent",
+    "describe": "Describe the problem (optional)",
+    "describePh": "Tell us what happened…",
+    "send": "Send report",
+    "reasons": {
+      "1": "Damaged or defective product",
+      "2": "Doesn't match the description",
+      "3": "Counterfeit product",
+      "4": "Banned or illegal product",
+      "5": "Fraudulent seller",
+      "6": "Misleading advertising",
+      "7": "Other reason"
+    }
+  },
+  "rate": {
+    "pick": "Pick a rating",
+    "title": "Rate {{name}}",
+    "stars_one": "{{count}} star",
+    "stars_other": "{{count}} stars",
+    "placeholder": "Tell us about your experience with this seller…",
+    "thanks": "Thanks for your rating!",
+    "send": "Send rating"
+  },
+  "detail": {
+    "back": "Back to catalog",
+    "officialStore": "Official store",
+    "lastUnits_one": "Last unit",
+    "lastUnits_other": "Last {{count}} units",
+    "noDescription": "No description available",
+    "reviews_one": "{{count}} review",
+    "reviews_other": "{{count}} reviews",
+    "verified": "Verified",
+    "quantity": "Quantity",
+    "addToCart": "Add"
+  },
+  "cartPage": {
+    "enterCode": "Enter a discount code",
+    "codeOk": "Valid code: {{pct}}% discount applied",
+    "codeError": "The code could not be validated",
+    "startShopping": "Start shopping",
+    "summary": "Order summary",
+    "code": "Discount code",
+    "apply": "Apply",
+    "subtotal_one": "Subtotal ({{count}} item)",
+    "subtotal_other": "Subtotal ({{count}} items)",
+    "discount": "Discount ({{pct}}%)",
+    "shipping": "Shipping",
+    "free": "Free",
+    "saved": "You saved {{amount}}",
+    "pay": "Go to checkout",
+    "clear": "Empty cart"
+  },
+  "sell": {
+    "sent": "Request sent. Wait for the administrator's approval.",
+    "title": "Sell on MarketPlace Paceño",
+    "lead": "Turn your account into a seller account and list your products for shoppers across La Paz.",
+    "benefits": "What you get",
+    "b1": "Reach more customers",
+    "b2": "Low commission: just 3%",
+    "b3": "Sales statistics",
+    "b4": "A complete management dashboard",
+    "submit": "Send request"
+  },
+  "myOrders": {
+    "confirmCancel": "Are you sure you want to cancel this order?",
+    "cancelled": "Order cancelled",
+    "reasonRequired": "Write the reason for the return",
+    "returnSent": "Return request sent",
+    "empty": "You have no orders yet",
+    "cancel": "Cancel order",
+    "requestReturn": "Request a return",
+    "returnReview": "Return under review",
+    "isCancelled": "Order cancelled",
+    "returnQuestion": "Why do you want to return this order?",
+    "returnPh": "Write the reason…",
+    "sendRequest": "Send request"
+  },
+  "myReviews": {
+    "empty": "You haven't written any reviews yet",
+    "emptyHint": "Buy products and rate your experience.",
+    "noComment": "No comment"
+  },
+  "myDiscounts": {
+    "subtitle": "Discounts sellers have given you",
+    "empty": "No discounts yet",
+    "emptyHint": "Keep shopping at your favourite stores to get discounts.",
+    "off": "OFF",
+    "special": "Special discount",
+    "code": "Code",
+    "copied": "Code copied",
+    "copy": "Copy code",
+    "validNext": "Valid on your next purchase",
+    "howTitle": "How do I use my discount?",
+    "how": "In your cart, type the code in “Discount code” and press Apply."
   }
 }

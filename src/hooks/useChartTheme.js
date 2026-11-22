@@ -38,6 +38,5 @@ export default function useChartTheme() {
       },
     };
     return { colors: c, base, theme };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [theme]);
 }

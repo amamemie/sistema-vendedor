@@ -33,7 +33,15 @@
     "send": "Enviar",
     "details": "Detalles",
     "prev": "Anterior",
-    "next": "Siguiente"
+    "next": "Siguiente",
+    "select": "Seleccionar…",
+    "saving": "Guardando…",
+    "saveChanges": "Guardar cambios",
+    "from": "Desde",
+    "to": "Hasta",
+    "applyFilter": "Aplicar filtro",
+    "processing": "Procesando…",
+    "sending": "Enviando…"
   },
   "nav": {
     "profile": "Mi perfil"
@@ -42,7 +50,9 @@
     "loadProducts": "No se pudieron cargar los productos",
     "connection": "Error de conexión con el servidor",
     "unknownRole": "Rol no reconocido: {{role}}",
-    "generic": "Ocurrió un error. Inténtalo de nuevo."
+    "generic": "Ocurrió un error. Inténtalo de nuevo.",
+    "noUser": "No pudimos identificar tu cuenta. Inicia sesión de nuevo.",
+    "noOrder": "Falta el número de pedido"
   },
   "store": {
     "search": "Buscar productos",
@@ -90,7 +100,30 @@
     "newAccount": "Crear una cuenta nueva"
   },
   "checkout": {
-    "success": "Compra realizada. Total: {{total}}"
+    "success": "Compra realizada. Total: {{total}}",
+    "back": "Volver al carrito",
+    "steps": "Pasos de la compra",
+    "payment": "Pago",
+    "confirmation": "Confirmación",
+    "title": "Datos de pago",
+    "address": "Dirección de envío",
+    "addressPh": "Calle y zona, ciudad",
+    "method": "Método de pago",
+    "processing": "Procesando pago…",
+    "pay": "Pagar {{total}}",
+    "secure": "Pago simulado de forma segura · no se guarda tu tarjeta",
+    "yourOrder": "Tu pedido",
+    "methods": {
+      "tarjeta": "Tarjeta de crédito o débito",
+      "qr": "Código QR",
+      "transferencia": "Transferencia bancaria",
+      "contraentrega": "Contra entrega"
+    },
+    "methodsHint": {
+      "tarjeta": "Visa, Mastercard",
+      "qr": "Escanea con tu app bancaria",
+      "transferencia": "Te enviamos los datos de la cuenta"
+    }
   },
   "hero": {
     "eyebrow_one": "{{count}} tienda de La Paz",
@@ -112,7 +145,22 @@
     "welcome": "Hola, {{name}}",
     "welcomeLead": "Novedades de tus tiendas favoritas, tu carrito y tus pedidos en un solo lugar.",
     "myAccount": "Mi cuenta",
-    "goToCart": "Ir al carrito"
+    "goToCart": "Ir al carrito",
+    "tabs": {
+      "profile": "Mi perfil",
+      "orders": "Mis pedidos",
+      "reviews": "Mis reseñas",
+      "discounts": "Mis descuentos",
+      "sell": "Quiero vender"
+    },
+    "profile": {
+      "saved": "Perfil guardado",
+      "edit": "Editar perfil",
+      "photo": "Foto de perfil",
+      "changePhoto": "Cambiar foto",
+      "errName": "El nombre es obligatorio",
+      "errLastName": "Los apellidos son obligatorios"
+    }
   },
   "auth": {
     "login": "Iniciar sesión",
@@ -150,5 +198,417 @@
     "review": "«Llegó rapidísimo y bien embalado»",
     "title": "Tu tienda, tus pedidos y tus clientes en un panel",
     "lead": "Publica productos, responde mensajes y sigue tus ventas en tiempo real."
+  },
+  "roles": {
+    "seller": "Vendedor",
+    "admin": "Administrador",
+    "buyer": "Comprador"
+  },
+  "shell": {
+    "navigation": "Navegación principal",
+    "openMenu": "Abrir menú"
+  },
+  "charts": {
+    "weekdays": [
+      "Lun",
+      "Mar",
+      "Mié",
+      "Jue",
+      "Vie",
+      "Sáb",
+      "Dom"
+    ],
+    "months": [
+      "Ene",
+      "Feb",
+      "Mar",
+      "Abr",
+      "May",
+      "Jun",
+      "Jul",
+      "Ago",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dic"
+    ],
+    "salesBs": "Ventas (Bs.)",
+    "monthsLong": [
+      "Enero",
+      "Febrero",
+      "Marzo",
+      "Abril",
+      "Mayo",
+      "Junio",
+      "Julio",
+      "Agosto",
+      "Septiembre",
+      "Octubre",
+      "Noviembre",
+      "Diciembre"
+    ]
+  },
+  "vendor": {
+    "workspace": "Panel de vendedor",
+    "nav": {
+      "dashboard": "Inicio",
+      "products": "Mis productos",
+      "orders": "Pedidos",
+      "analytics": "Análisis de ventas",
+      "reports": "Reportes",
+      "company": "Mi empresa"
+    },
+    "subtitle": {
+      "dashboard": "Resumen de tu tienda hoy",
+      "productos": "Publica, edita y controla el stock",
+      "pedidos": "Prepara y actualiza el estado de cada pedido",
+      "analisis": "Qué se vende, cuándo y a quién",
+      "reportes": "Exporta tus ventas y comisiones",
+      "perfil": "Datos y logo de tu tienda"
+    },
+    "dash": {
+      "salesMonth": "Ventas del mes",
+      "orders": "Pedidos del mes",
+      "activeProducts": "Productos activos",
+      "rating": "Calificación",
+      "last7": "Ventas de los últimos 7 días",
+      "last7Hint": "En bolivianos, por día",
+      "seeMore": "Ver análisis",
+      "recentOrders": "Pedidos recientes",
+      "seeAll": "Ver todos",
+      "noOrders": "Aún no tienes pedidos",
+      "lowStock": "Stock bajo",
+      "manage": "Gestionar",
+      "stockOk": "Todos tus productos tienen stock suficiente",
+      "units_one": "{{count}} unidad",
+      "units_other": "{{count}} unidades"
+    },
+    "products": {
+      "required": "Completa los campos obligatorios",
+      "saved": "Producto guardado",
+      "saveError": "No se pudo guardar el producto",
+      "confirmDelete": "¿Eliminar este producto?",
+      "catalog": "Catálogo general",
+      "mine": "Mis productos",
+      "add": "Agregar producto",
+      "noStore": "Tu cuenta aún no tiene una tienda asignada. Espera la aprobación del administrador.",
+      "photo": "Foto",
+      "product": "Producto",
+      "category": "Categoría",
+      "price": "Precio",
+      "stock": "Stock",
+      "otherSeller": "Otro vendedor",
+      "myProduct": "Mi producto",
+      "edit": "Editar producto",
+      "new": "Nuevo producto",
+      "name": "Nombre",
+      "namePh": "Nombre del producto",
+      "description": "Descripción",
+      "descriptionPh": "Qué es, materiales, medidas…",
+      "priceBs": "Precio (Bs.)",
+      "currentImages": "Imágenes actuales",
+      "addImages": "Agregar imágenes",
+      "multiHint": "Puedes elegir varias imágenes a la vez.",
+      "save": "Guardar producto"
+    },
+    "orders": {
+      "title": "Pedidos recibidos",
+      "count_one": "{{count}} pedido",
+      "count_other": "{{count}} pedidos",
+      "empty": "No hay pedidos en esta categoría",
+      "order": "Pedido #{{id}}",
+      "customer": "Cliente",
+      "customerFallback": "Cliente",
+      "noItems": "Sin productos",
+      "markShipped": "Marcar como enviado",
+      "markDelivered": "Marcar como entregado",
+      "returnPending": "Devolución pendiente"
+    },
+    "reports": {
+      "title": "Reportes de ventas",
+      "totalSales": "Ventas totales",
+      "avgTicket": "Ticket promedio",
+      "order": "Pedido",
+      "empty": "No hay ventas en este período"
+    },
+    "company": {
+      "saved": "Datos de la empresa guardados",
+      "back": "Volver al panel",
+      "edit": "Editar información",
+      "logo": "Logo de la tienda",
+      "changeLogo": "Cambiar logo",
+      "name": "Nombre de la empresa",
+      "nit": "NIT / RUT",
+      "address": "Dirección",
+      "city": "Ciudad",
+      "description": "Descripción de la tienda",
+      "errName": "El nombre de la empresa es obligatorio",
+      "errNit": "El NIT/RUT es obligatorio",
+      "errPhone": "El teléfono es obligatorio",
+      "errPhoneLen": "El teléfono debe tener entre 7 y 15 dígitos"
+    },
+    "analytics": {
+      "discountRange": "El descuento debe estar entre 1 y 100",
+      "discountApplied": "Descuento aplicado",
+      "byStatus": "Resumen por estado",
+      "topProducts": "Productos más vendidos",
+      "quantity": "Cantidad vendida",
+      "earned": "Total ganado",
+      "timesBought": "Veces comprado",
+      "noSales": "Aún no hay ventas",
+      "times_one": "{{count}} vez",
+      "times_other": "{{count}} veces",
+      "topCustomers": "Clientes que más compran",
+      "contact": "Contacto",
+      "spent": "Total gastado",
+      "noCustomers": "Aún no hay clientes",
+      "noPhone": "Sin teléfono",
+      "discount": "Descuento",
+      "topCancelled": "Productos más cancelados",
+      "timesCancelled": "Veces cancelado",
+      "noCancelled": "No hay productos cancelados",
+      "discountTitle": "Aplicar descuento al cliente",
+      "discountPct": "Porcentaje de descuento (%)",
+      "discountPctPh": "Ej.: 10, 15, 20",
+      "discountReason": "Motivo del descuento",
+      "discountReasonPh": "Ej.: cliente frecuente, promoción…",
+      "applyDiscount": "Aplicar descuento"
+    }
+  },
+  "admin": {
+    "workspace": "Administración",
+    "nav": {
+      "summary": "Resumen",
+      "users": "Usuarios",
+      "requests": "Solicitudes de vendedores",
+      "categories": "Categorías",
+      "products": "Aprobar productos",
+      "returns": "Devoluciones",
+      "reports": "Reportes"
+    },
+    "subtitle": {
+      "resumen": "El estado del marketplace de un vistazo",
+      "usuarios": "Cuentas y roles de la plataforma",
+      "solicitudes": "Compradores que quieren vender",
+      "categorias": "Organiza el catálogo",
+      "productos": "Revisa publicaciones antes de mostrarlas",
+      "devoluciones": "Solicitudes de devolución pendientes",
+      "reportes": "Ventas, comisiones y exportaciones"
+    },
+    "approve": "Aprobar",
+    "reject": "Rechazar",
+    "summary": {
+      "users": "Usuarios totales",
+      "sellers": "Vendedores",
+      "requests": "Solicitudes de vendedores",
+      "pendingProducts": "Productos pendientes",
+      "pendingReturns": "Devoluciones pendientes"
+    },
+    "users": {
+      "roleUpdated": "Rol actualizado",
+      "role": "Rol",
+      "changeRole": "Cambiar rol"
+    },
+    "requests": {
+      "empty": "No hay solicitudes pendientes",
+      "noName": "Sin nombre",
+      "date": "Fecha de solicitud"
+    },
+    "returns": {
+      "approved": "Devolución aprobada",
+      "rejected": "Devolución rechazada",
+      "empty": "No hay devoluciones pendientes",
+      "reason": "Motivo"
+    },
+    "products": {
+      "approved": "Producto aprobado",
+      "rejected": "Producto rechazado",
+      "reasonRequired": "Escribe el motivo del rechazo",
+      "title": "Aprobación de productos",
+      "pending": "Pendientes",
+      "approvedTab": "Aprobados",
+      "rejectedTab": "Rechazados",
+      "empty": "No hay productos en esta categoría",
+      "noDescription": "Sin descripción",
+      "noCategory": "Sin categoría",
+      "liveInfo": "Aprobado y visible en el catálogo",
+      "rejectReason": "Motivo del rechazo",
+      "rejectTitle": "Rechazar producto",
+      "rejectQuestion": "¿Por qué rechazas este producto? El vendedor verá este motivo.",
+      "rejectPh": "Escribe el motivo…"
+    },
+    "categories": {
+      "nameRequired": "El nombre es obligatorio",
+      "updated": "Categoría actualizada",
+      "created": "Categoría creada",
+      "confirmDelete": "¿Eliminar la categoría «{{name}}»? Sus productos quedarán sin categoría.",
+      "deleted": "Categoría eliminada",
+      "title": "Categorías",
+      "new": "Nueva categoría",
+      "edit": "Editar categoría",
+      "empty": "No hay categorías registradas",
+      "namePh": "Ej.: Electrónica, Ropa, Hogar…",
+      "descPh": "Qué productos incluye"
+    },
+    "reports": {
+      "totalSales": "Ventas totales",
+      "totalCommissions": "Comisiones generadas",
+      "orders": "Pedidos",
+      "monthly": "Ventas por mes · {{year}}",
+      "updated": "Actualizado: {{date}}",
+      "type": "Tipo de reporte",
+      "sales": "Ventas",
+      "commissions": "Comisiones",
+      "noSales": "No hay ventas registradas",
+      "noCommissions": "No hay comisiones registradas",
+      "commission": "Comisión",
+      "sellerAmount": "Monto del vendedor",
+      "cols": {
+        "orderId": "ID pedido",
+        "date": "Fecha",
+        "buyer": "Comprador",
+        "totalBs": "Total (Bs.)",
+        "status": "Estado",
+        "seller": "Vendedor",
+        "commissionBs": "Comisión (Bs.)",
+        "sellerAmountBs": "Monto vendedor (Bs.)"
+      }
+    }
+  },
+  "stock": {
+    "none": "Sin stock",
+    "low_one": "Stock bajo ({{count}})",
+    "low_other": "Stock bajo ({{count}})",
+    "units_one": "{{count}} und.",
+    "units_other": "{{count}} und."
+  },
+  "orderStatus": {
+    "Pendiente": "Pendiente",
+    "Pagada": "Pagada",
+    "Enviado": "Enviado",
+    "Entregado": "Entregado",
+    "Cancelado": "Cancelado",
+    "Cancelada": "Cancelada"
+  },
+  "productStatus": {
+    "Activo": "Activo",
+    "Inactivo": "Inactivo",
+    "Pendiente": "Pendiente",
+    "Aprobado": "Aprobado",
+    "Rechazado": "Rechazado"
+  },
+  "export": {
+    "empty": "No hay datos para exportar"
+  },
+  "chat": {
+    "open": "Abrir chat",
+    "loading": "Cargando conversación…",
+    "with": "Chat con {{name}}",
+    "empty": "Aún no hay mensajes. ¡Escribe tu consulta!",
+    "placeholder": "Escribe un mensaje…"
+  },
+  "notifications": {
+    "title": "Notificaciones",
+    "markAll": "Marcar todas como leídas",
+    "empty": "No tienes notificaciones"
+  },
+  "report": {
+    "title": "Reportar producto",
+    "pickReason": "Elige un motivo para reportar",
+    "sent": "Reporte enviado. El administrador lo revisará.",
+    "error": "No se pudo enviar el reporte",
+    "describe": "Describe el problema (opcional)",
+    "describePh": "Cuéntanos qué pasó…",
+    "send": "Enviar reporte",
+    "reasons": {
+      "1": "Producto dañado o defectuoso",
+      "2": "No coincide con la descripción",
+      "3": "Producto falsificado",
+      "4": "Producto prohibido o ilegal",
+      "5": "Vendedor fraudulento",
+      "6": "Publicidad engañosa",
+      "7": "Otro motivo"
+    }
+  },
+  "rate": {
+    "pick": "Elige una calificación",
+    "title": "Calificar a {{name}}",
+    "stars_one": "{{count}} estrella",
+    "stars_other": "{{count}} estrellas",
+    "placeholder": "Cuéntanos tu experiencia con este vendedor…",
+    "thanks": "¡Gracias por calificar!",
+    "send": "Enviar calificación"
+  },
+  "detail": {
+    "back": "Volver al catálogo",
+    "officialStore": "Tienda oficial",
+    "lastUnits_one": "Última unidad",
+    "lastUnits_other": "Últimas {{count}} unidades",
+    "noDescription": "Sin descripción disponible",
+    "reviews_one": "{{count}} reseña",
+    "reviews_other": "{{count}} reseñas",
+    "verified": "Verificado",
+    "quantity": "Cantidad",
+    "addToCart": "Agregar"
+  },
+  "cartPage": {
+    "enterCode": "Escribe un código de descuento",
+    "codeOk": "Código válido: {{pct}}% de descuento aplicado",
+    "codeError": "No se pudo validar el código",
+    "startShopping": "Empezar a comprar",
+    "summary": "Resumen del pedido",
+    "code": "Código de descuento",
+    "apply": "Aplicar",
+    "subtotal_one": "Subtotal ({{count}} artículo)",
+    "subtotal_other": "Subtotal ({{count}} artículos)",
+    "discount": "Descuento ({{pct}}%)",
+    "shipping": "Envío",
+    "free": "Gratis",
+    "saved": "Ahorraste {{amount}}",
+    "pay": "Ir a pagar",
+    "clear": "Vaciar carrito"
+  },
+  "sell": {
+    "sent": "Solicitud enviada. Espera la aprobación del administrador.",
+    "title": "Vende en MarketPlace Paceño",
+    "lead": "Convierte tu cuenta en vendedor y publica tus productos para compradores de toda La Paz.",
+    "benefits": "Lo que obtienes",
+    "b1": "Llegas a más clientes",
+    "b2": "Comisión baja: solo 3%",
+    "b3": "Estadísticas de ventas",
+    "b4": "Panel de gestión completo",
+    "submit": "Enviar solicitud"
+  },
+  "myOrders": {
+    "confirmCancel": "¿Seguro que quieres cancelar este pedido?",
+    "cancelled": "Pedido cancelado",
+    "reasonRequired": "Escribe el motivo de la devolución",
+    "returnSent": "Solicitud de devolución enviada",
+    "empty": "Aún no tienes pedidos",
+    "cancel": "Cancelar pedido",
+    "requestReturn": "Solicitar devolución",
+    "returnReview": "Devolución en revisión",
+    "isCancelled": "Pedido cancelado",
+    "returnQuestion": "¿Por qué quieres devolver este pedido?",
+    "returnPh": "Escribe el motivo…",
+    "sendRequest": "Enviar solicitud"
+  },
+  "myReviews": {
+    "empty": "Aún no escribiste reseñas",
+    "emptyHint": "Compra productos y califica tu experiencia.",
+    "noComment": "Sin comentario"
+  },
+  "myDiscounts": {
+    "subtitle": "Descuentos que te dieron los vendedores",
+    "empty": "Aún no tienes descuentos",
+    "emptyHint": "Sigue comprando a tus tiendas favoritas para recibir descuentos.",
+    "off": "DESC.",
+    "special": "Descuento especial",
+    "code": "Código",
+    "copied": "Código copiado",
+    "copy": "Copiar código",
+    "validNext": "Válido para tu próxima compra",
+    "howTitle": "¿Cómo uso mi descuento?",
+    "how": "En el carrito, escribe el código en «Código de descuento» y pulsa Aplicar."
   }
 }

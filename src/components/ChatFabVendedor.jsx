@@ -2,14 +2,14 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import Chat from './Chat';
 import './Chat.css';
+import { useTranslation } from 'react-i18next';
 
 export default function ChatFabVendedor({ compradorId, compradorNombre, productoId }) {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [abierto, setAbierto] = useState(false);
   const [notificaciones, setNotificaciones] = useState(0);
 
-  // Solo mostrar para vendedores
-  if (!user || user.rol !== 'Vendedor') return null;
 
   const chatId = {
     id_producto: productoId,
@@ -37,10 +37,12 @@ export default function ChatFabVendedor({ compradorId, compradorNombre, producto
     }
   }, [abierto, productoId]);
 
+  if (!user || user.rol !== 'Vendedor') return null;
+
   return (
     <>
-      <button className="chat-fab" onClick={() => setAbierto(true)}>
-        💬
+      <button className="chat-fab" onClick={() => setAbierto(true)} aria-label={t('chat.open')} title={t('chat.open')}>
+        <i className="ti ti-message-circle" aria-hidden="true" />
         {notificaciones > 0 && (
           <span className="chat-fab-badge">{notificaciones > 9 ? '9+' : notificaciones}</span>
         )}

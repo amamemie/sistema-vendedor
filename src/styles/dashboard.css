@@ -1,0 +1,91 @@
+/* ==========================================================================
+   Piezas comunes de los paneles: métricas, paneles, listas
+   ========================================================================== */
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.metric {
+  --tone: var(--accent);
+  --tone-soft: var(--accent-soft);
+  padding: 20px;
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  isolation: isolate;
+}
+.metric::before {
+  content: ''; position: absolute; right: -40px; top: -40px; width: 140px; height: 140px; border-radius: 50%;
+  background: radial-gradient(closest-side, var(--tone-soft), transparent); z-index: -1;
+  transition: transform 0.6s var(--ease);
+}
+.metric:hover { box-shadow: var(--shadow-lg); }
+.metric:hover::before { transform: scale(1.4); }
+.metric--info { --tone: var(--info); --tone-soft: var(--info-light); }
+.metric--warning { --tone: var(--warning); --tone-soft: var(--warning-light); }
+.metric--star { --tone: var(--star); --tone-soft: var(--warning-light); }
+.metric--error { --tone: var(--error); --tone-soft: var(--error-light); }
+.metric--success { --tone: var(--success); --tone-soft: var(--success-light); }
+.metric-icon {
+  width: 42px; height: 42px; border-radius: 12px;
+  display: grid; place-items: center;
+  background: var(--tone-soft); color: var(--tone);
+  font-size: 21px; margin-bottom: 16px;
+}
+.metric-label { font-size: 13px; color: var(--text-3); font-weight: 500; }
+.metric-value { font-family: var(--font-display); font-size: clamp(22px, 2.2vw, 28px); font-weight: 700; letter-spacing: -0.03em; margin-top: 4px; color: var(--text); }
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 20px;
+  margin-bottom: 20px;
+  min-width: 0;
+  animation: riseIn 0.5s var(--ease) both;
+}
+.panel-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+.panel-head h2 { font-size: 16px; font-weight: 700; letter-spacing: -0.015em; }
+.panel-head p { font-size: 13px; color: var(--text-3); margin-top: 2px; }
+.panel-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 20px; }
+.panel-grid > .panel { margin-bottom: 0; }
+
+.list { list-style: none; margin: 0; padding: 0; }
+.list-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 8px; margin: 0 -8px;
+  border-radius: 10px;
+  transition: background-color var(--dur-fast) var(--ease);
+}
+.list-row + .list-row { border-top: 1px solid var(--border); }
+.list-row:hover { background: var(--surface-2); }
+.list-avatar { width: 36px; height: 36px; flex: none; border-radius: 10px; display: grid; place-items: center; background: var(--accent-soft); color: var(--accent); font-size: 18px; }
+.list-avatar--warn { background: var(--warning-light); color: var(--warning); }
+.list-main { flex: 1; min-width: 0; display: grid; }
+.list-main strong { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.list-main span { font-size: 12.5px; color: var(--text-3); }
+.list-amount { font-weight: 700; font-variant-numeric: tabular-nums; }
+
+@media (max-width: 900px) {
+  .panel-grid { grid-template-columns: 1fr; }
+  .panel-grid > .panel { margin-bottom: 0; }
+}
+
+/* Control segmentado (pestañas compactas) */
+.segmented {
+  display: inline-flex; gap: 2px; padding: 3px;
+  border-radius: var(--radius-pill); background: var(--surface-2); border: 1px solid var(--border);
+}
+.segmented button {
+  display: inline-flex; align-items: center; gap: 6px;
+  min-height: 36px; padding: 0 14px; border: 0; border-radius: var(--radius-pill);
+  background: transparent; color: var(--text-2); font-weight: 600; font-size: 13.5px; cursor: pointer;
+  transition: background-color var(--dur) var(--ease), color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+}
+.segmented button:hover { color: var(--text); }
+.segmented button[aria-selected='true'] { background: var(--surface); color: var(--text); box-shadow: var(--shadow); }

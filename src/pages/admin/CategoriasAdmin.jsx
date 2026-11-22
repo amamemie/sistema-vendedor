@@ -2,8 +2,11 @@
 import { useState, useEffect } from 'react';
 import { api } from '../../services/api';
 import './admin.css';
+import { useTranslation } from 'react-i18next';
+import { toast } from '../../components/ui/toast';
 
 export default function CategoriasAdmin() {
+  const { t } = useTranslation();
   const [categorias, setCategorias] = useState([]);
   const [loading, setLoading] = useState(true);
   const [mostrarModal, setMostrarModal] = useState(false);
@@ -55,7 +58,7 @@ export default function CategoriasAdmin() {
 
   const guardarCategoria = async () => {
     if (!formData.nombre.trim()) {
-      setMensaje('❌ El nombre es requerido');
+      setMensaje({ ok: false, text: t('admin.categories.nameRequired') });
       return;
     }
 
@@ -94,24 +97,24 @@ export default function CategoriasAdmin() {
       const data = await response.json();
       
       if (data.success) {
-        setMensaje(editando ? '✅ Categoría actualizada' : '✅ Categoría creada');
+        setMensaje({ ok: true, text: editando ? t('admin.categories.updated') : t('admin.categories.created') });
         setTimeout(() => {
           setMostrarModal(false);
           cargarCategorias();
         }, 1000);
       } else {
-        setMensaje(`❌ Error: ${data.message}`);
+        setMensaje({ ok: false, text: data.message || t('errors.generic') });
       }
     } catch (error) {
       console.error('Error guardando categoría:', error);
-      setMensaje('❌ Error de conexión');
+      setMensaje({ ok: false, text: t('errors.connection') });
     } finally {
       setEnviando(false);
     }
   };
 
   const eliminarCategoria = async (idCategoria, nombre) => {
-    if (!confirm(`¿Eliminar la categoría "${nombre}"?\nLos productos asociados quedarán sin categoría.`)) {
+    if (!confirm(t('admin.categories.confirmDelete', { name: nombre }))) {
       return;
     }
 
@@ -124,58 +127,58 @@ export default function CategoriasAdmin() {
       const data = await response.json();
       
       if (data.success) {
-        alert('✅ Categoría eliminada');
+        toast(t('admin.categories.deleted'));
         cargarCategorias();
       } else {
-        alert(`❌ Error: ${data.message}`);
+        toast(data.message || t('errors.generic'), 'error');
       }
     } catch (error) {
       console.error('Error eliminando categoría:', error);
-      alert('❌ Error de conexión');
+      toast(t('errors.connection'), 'error');
     }
   };
 
   if (loading) {
-    return <div className="admin-loading">Cargando categorías...</div>;
+    return <div className="skeleton" style={{ height: 320, borderRadius: 16 }} />;
   }
 
   return (
     <div className="categorias-admin">
       <div className="admin-section-header">
-        <h2>📂 Gestión de Categorías</h2>
+        <h2>{t('admin.categories.title')}</h2>
         <button className="admin-btn-primary" onClick={abrirNueva}>
-          + Nueva categoría
+          <i className="ti ti-plus" aria-hidden="true" /> {t('admin.categories.new')}
         </button>
       </div>
 
       <div className="categorias-table">
         <div className="categorias-table-header">
           <span>ID</span>
-          <span>Nombre</span>
-          <span>Detalle</span>
-          <span>Estado</span>
-          <span>Acciones</span>
+          <span>{t('vendor.products.name')}</span>
+          <span>{t('vendor.products.description')}</span>
+          <span>{t('common.status')}</span>
+          <span>{t('common.actions')}</span>
         </div>
         
         {categorias.length === 0 ? (
-          <div className="categorias-empty">No hay categorías registradas</div>
+          <div className="empty-state">{t('admin.categories.empty')}</div>
         ) : (
-          categorias.map(cat => (
-            <div key={cat.id_categoria} className="categorias-table-row">
+          categorias.map((cat, i) => (
+            <div key={cat.id_categoria} className="categorias-table-row" style={{ animation: 'riseIn 0.45s var(--ease) both', animationDelay: `${Math.min(i, 12) * 40}ms` }}>
               <span className="categoria-id">#{cat.id_categoria}</span>
               <span className="categoria-nombre">{cat.nombre}</span>
               <span className="categoria-detalle">{cat.detalle || '—'}</span>
               <span>
                 <span className={`categoria-estado ${cat.estado === 'Activo' ? 'estado-activo' : 'estado-inactivo'}`}>
-                  {cat.estado || 'Activo'}
+                  {t(`productStatus.${cat.estado || 'Activo'}`)}
                 </span>
               </span>
               <div className="categoria-acciones">
-                <button className="btn-icon" onClick={() => abrirEditar(cat)}>
-                  ✏️
+                <button className="btn-icon" onClick={() => abrirEditar(cat)} aria-label={t('common.edit')} title={t('common.edit')}>
+                  <i className="ti ti-edit" aria-hidden="true" />
                 </button>
-                <button className="btn-icon btn-danger-icon" onClick={() => eliminarCategoria(cat.id_categoria, cat.nombre)}>
-                  🗑️
+                <button className="btn-icon btn-danger-icon" onClick={() => eliminarCategoria(cat.id_categoria, cat.nombre)} aria-label={t('common.delete')} title={t('common.delete')}>
+                  <i className="ti ti-trash" aria-hidden="true" />
                 </button>
               </div>
             </div>
@@ -188,57 +191,57 @@ export default function CategoriasAdmin() {
         <div className="modal-overlay" onClick={() => setMostrarModal(false)}>
           <div className="modal-content" onClick={e => e.stopPropagation()}>
             <div className="modal-header">
-              <h3>{editando ? 'Editar categoría' : 'Nueva categoría'}</h3>
-              <button className="modal-close" onClick={() => setMostrarModal(false)}>✕</button>
+              <h3>{editando ? t('admin.categories.edit') : t('admin.categories.new')}</h3>
+              <button className="modal-close" onClick={() => setMostrarModal(false)} aria-label={t('common.close')}><i className="ti ti-x" aria-hidden="true" /></button>
             </div>
             <div className="modal-body">
               {mensaje && (
-                <div className={`modal-mensaje ${mensaje.includes('✅') ? 'success' : 'error'}`}>
-                  {mensaje}
+                <div className={`alert ${mensaje.ok ? 'alert-success' : 'alert-error'}`} role="status">
+                  {mensaje.text}
                 </div>
               )}
               
               <div className="form-group">
-                <label className="form-label">Nombre *</label>
+                <label className="form-label">{t('vendor.products.name')} *</label>
                 <input
                   type="text"
                   name="nombre"
                   className="form-input"
                   value={formData.nombre}
                   onChange={handleChange}
-                  placeholder="Ej: Electrónica, Ropa, Hogar..."
+                  placeholder={t('admin.categories.namePh')}
                 />
               </div>
               
               <div className="form-group">
-                <label className="form-label">Descripción</label>
+                <label className="form-label">{t('vendor.products.description')}</label>
                 <textarea
                   name="detalle"
                   className="form-textarea"
                   value={formData.detalle}
                   onChange={handleChange}
-                  placeholder="Descripción de la categoría"
+                  placeholder={t('admin.categories.descPh')}
                   rows="3"
                 />
               </div>
               
               <div className="form-group">
-                <label className="form-label">Estado</label>
+                <label className="form-label">{t('common.status')}</label>
                 <select
                   name="estado"
                   className="form-select"
                   value={formData.estado}
                   onChange={handleChange}
                 >
-                  <option value="Activo">Activo</option>
-                  <option value="Inactivo">Inactivo</option>
+                  <option value="Activo">{t('productStatus.Activo')}</option>
+                  <option value="Inactivo">{t('productStatus.Inactivo')}</option>
                 </select>
               </div>
             </div>
             <div className="modal-footer">
-              <button className="btn-secondary" onClick={() => setMostrarModal(false)}>Cancelar</button>
-              <button className="btn-primary" onClick={guardarCategoria} disabled={enviando}>
-                {enviando ? 'Guardando...' : 'Guardar'}
+              <button className="btn btn-secondary" onClick={() => setMostrarModal(false)}>{t('common.cancel')}</button>
+              <button className="btn btn-primary" onClick={guardarCategoria} disabled={enviando}>
+                {enviando ? t('common.saving') : t('common.save')}
               </button>
             </div>
           </div>

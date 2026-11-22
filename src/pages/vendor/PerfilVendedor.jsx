@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import { api } from '../../services/api';
 import './vendor.css';
 import { guardarTiendaLocal, cargarTiendaLocal, validarDatosEmpresa, imagenToBase64 } from './vendor.utils';
+import { useTranslation } from 'react-i18next';
 
 export default function PerfilVendedor({ onBack }) {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [tienda, setTienda] = useState({
     nombreEmpresa: '',
@@ -44,7 +45,7 @@ export default function PerfilVendedor({ onBack }) {
     const erroresValidacion = validarDatosEmpresa(tienda);
     if (erroresValidacion.length) {
       setErrores(erroresValidacion);
-      setMensaje('❌ Corrige los errores');
+      setMensaje('');
       return;
     }
 
@@ -52,7 +53,7 @@ export default function PerfilVendedor({ onBack }) {
     setTimeout(() => {
       guardarTiendaLocal(tienda);
       setEditando(false);
-      setMensaje('✅ Datos de la empresa guardados');
+      setMensaje(t('vendor.company.saved'));
       setTimeout(() => setMensaje(''), 3000);
       setLoading(false);
     }, 500);
@@ -61,38 +62,38 @@ export default function PerfilVendedor({ onBack }) {
   return (
     <div className="vendor-content">
       <div className="perfil-vendedor-container">
-        <button onClick={onBack} className="carrito-btn-volver"><span>←</span> Volver al panel</button>
+        <button onClick={onBack} className="btn btn-ghost btn-sm" style={{ marginBottom: 12 }}><i className="ti ti-arrow-left" aria-hidden="true" /> {t('vendor.company.back')}</button>
 
         <div className="perfil-vendedor-card">
           <div className="perfil-vendedor-header">
-            <h1 className="perfil-vendedor-title">🏢 Mi empresa</h1>
-            {!editando && <button className="btn-primary" onClick={() => setEditando(true)}>Editar información</button>}
+            <h2 className="perfil-vendedor-title">{t('vendor.nav.company')}</h2>
+            {!editando && <button className="btn btn-primary" onClick={() => setEditando(true)}><i className="ti ti-pencil" aria-hidden="true" /> {t('vendor.company.edit')}</button>}
           </div>
 
-          {mensaje && <div className="perfil-message success">{mensaje}</div>}
-          {errores.length > 0 && <div className="perfil-error-message">{errores.map(e => <div key={e}>⚠️ {e}</div>)}</div>}
+          {mensaje && <div className="alert alert-success"><i className="ti ti-circle-check" aria-hidden="true" /> {mensaje}</div>}
+          {errores.length > 0 && <div className="alert alert-error" style={{ display: 'grid' }}>{errores.map(e => <div key={e}>{e}</div>)}</div>}
 
           <div className="perfil-vendedor-avatar">
             <div className="perfil-vendedor-avatar-circle">
-              {tienda.logo ? <img src={tienda.logo} alt="Logo" className="perfil-avatar-image" /> : <span className="perfil-vendedor-avatar-letter">🏢</span>}
+              {tienda.logo ? <img src={tienda.logo} alt={t('vendor.company.logo')} className="perfil-avatar-image" /> : <i className="ti ti-building-store perfil-vendedor-avatar-letter" aria-hidden="true" />}
             </div>
-            {editando && <label className="perfil-upload-btn"><input type="file" accept="image/*" onChange={handleLogoChange} style={{ display: 'none' }} /> Cambiar logo</label>}
+            {editando && <label className="perfil-upload-btn"><input type="file" accept="image/*" onChange={handleLogoChange} style={{ display: 'none' }} /> <i className="ti ti-upload" aria-hidden="true" /> {t('vendor.company.changeLogo')}</label>}
           </div>
 
           <div className="perfil-vendedor-form-grid">
-            <div className="perfil-field"><label>Email</label><input type="email" value={user?.email || ''} disabled /></div>
-            <div className="perfil-field"><label>Nombre de la empresa *</label><input name="nombreEmpresa" value={tienda.nombreEmpresa} onChange={handleChange} disabled={!editando} /></div>
-            <div className="perfil-field"><label>NIT / RUT *</label><input name="nit_rut" value={tienda.nit_rut} onChange={handleChange} disabled={!editando} /></div>
-            <div className="perfil-field"><label>Teléfono *</label><input name="telefono" value={tienda.telefono} onChange={handleChange} disabled={!editando} /></div>
-            <div className="perfil-field"><label>Dirección</label><input name="direccion" value={tienda.direccion} onChange={handleChange} disabled={!editando} /></div>
-            <div className="perfil-field"><label>Ciudad</label><input name="ciudad" value={tienda.ciudad} onChange={handleChange} disabled={!editando} /></div>
-            <div className="perfil-field"><label>Descripción de la tienda</label><textarea name="descripcion" value={tienda.descripcion} onChange={handleChange} disabled={!editando} rows="3" /></div>
+            <div className="perfil-field"><label>{t('auth.email')}</label><input type="email" value={user?.email || ''} disabled /></div>
+            <div className="perfil-field"><label>{t('vendor.company.name')} *</label><input name="nombreEmpresa" value={tienda.nombreEmpresa} onChange={handleChange} disabled={!editando} /></div>
+            <div className="perfil-field"><label>{t('vendor.company.nit')} *</label><input name="nit_rut" value={tienda.nit_rut} onChange={handleChange} disabled={!editando} /></div>
+            <div className="perfil-field"><label>{t('auth.phone')} *</label><input name="telefono" value={tienda.telefono} onChange={handleChange} disabled={!editando} /></div>
+            <div className="perfil-field"><label>{t('vendor.company.address')}</label><input name="direccion" value={tienda.direccion} onChange={handleChange} disabled={!editando} /></div>
+            <div className="perfil-field"><label>{t('vendor.company.city')}</label><input name="ciudad" value={tienda.ciudad} onChange={handleChange} disabled={!editando} /></div>
+            <div className="perfil-field"><label>{t('vendor.company.description')}</label><textarea name="descripcion" value={tienda.descripcion} onChange={handleChange} disabled={!editando} rows="3" /></div>
           </div>
 
           {editando && (
             <div className="perfil-actions" style={{ marginTop: 24 }}>
-              <button className="perfil-save-btn" onClick={guardarTienda} disabled={loading}>{loading ? 'Guardando...' : 'Guardar cambios'}</button>
-              <button className="perfil-cancel-btn" onClick={() => setEditando(false)}>Cancelar</button>
+              <button className="perfil-save-btn" onClick={guardarTienda} disabled={loading}>{loading ? t('common.saving') : t('common.saveChanges')}</button>
+              <button className="perfil-cancel-btn" onClick={() => setEditando(false)}>{t('common.cancel')}</button>
             </div>
           )}
         </div>

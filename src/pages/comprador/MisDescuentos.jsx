@@ -2,8 +2,12 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import './comprador.css';
+import { useTranslation } from 'react-i18next';
+import { toast } from '../../components/ui/toast';
+import { formatDate } from '../../i18n/format';
 
 export default function MisDescuentos() {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [descuentos, setDescuentos] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -18,7 +22,7 @@ export default function MisDescuentos() {
       const response = await fetch(`http://localhost/sistema-vendedor/backend/mis_descuentos.php?id_usuario=${user?.id}`);
       const data = await response.json();
       if (data.success) {
-        setDescuentos(data.descuentos || []);
+        setDescuentos((data.descuentos || []).map((d) => ({ ...d, codigo: `DESC-${d.descuento}-${Math.floor(Math.random() * 10000)}` })));
       }
     } catch (error) {
       console.error('Error cargando descuentos:', error);
@@ -26,23 +30,14 @@ export default function MisDescuentos() {
     setLoading(false);
   };
 
-  const formatearFecha = (fecha) => {
-    const d = new Date(fecha);
-    return d.toLocaleDateString('es-ES', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-  };
+  const formatearFecha = (fecha) => formatDate(fecha, { dateStyle: 'long' });
 
-  const generarCodigo = (descuento) => {
-    return `DESC-${descuento}-${Math.floor(Math.random() * 10000)}`;
-  };
+  // El código se genera una sola vez al cargar, así el que se ve es el mismo que se copia.
 
   if (loading) {
     return (
       <div className="mis-descuentos-container">
-        <div className="loading-spinner">Cargando tus descuentos...</div>
+        <div className="skeleton" style={{ height: 200, borderRadius: 16 }} />
       </div>
     );
   }
@@ -50,52 +45,54 @@ export default function MisDescuentos() {
   return (
     <div className="mis-descuentos-container">
       <div className="descuentos-header">
-        <h2>🎁 Mis Descuentos</h2>
-        <p className="descuentos-subtitle">Descuentos especiales que los vendedores te han otorgado</p>
+        <h2>{t('buyer.tabs.discounts')}</h2>
+        <p className="descuentos-subtitle">{t('myDiscounts.subtitle')}</p>
       </div>
 
       {descuentos.length === 0 ? (
         <div className="empty-descuentos">
-          <div className="empty-icon">🎫</div>
-          <h3>No tienes descuentos aún</h3>
-          <p>¡Sigue comprando para obtener descuentos especiales de tus vendedores favoritos!</p>
+          <div className="empty-icon"><i className="ti ti-ticket" aria-hidden="true" /></div>
+          <h3>{t('myDiscounts.empty')}</h3>
+          <p>{t('myDiscounts.emptyHint')}</p>
         </div>
       ) : (
-        <div className="descuentos-grid">
+        <div className="descuentos-grid stagger">
           {descuentos.map((d, idx) => (
-            <div key={idx} className="descuento-card">
+            <div key={idx} className="descuento-card" style={{ '--i': idx }}>
               <div className="descuento-badge">
                 <span className="descuento-porcentaje">{d.descuento}%</span>
-                <span className="descuento-off">OFF</span>
+                <span className="descuento-off">{t('myDiscounts.off')}</span>
               </div>
               
               <div className="descuento-body">
                 <div className="descuento-motivo">
-                  <span className="motivo-icon">🎯</span>
-                  <span className="motivo-text">{d.motivo || 'Descuento especial'}</span>
+                  <i className="ti ti-target-arrow motivo-icon" aria-hidden="true" />
+                  <span className="motivo-text">{d.motivo || t('myDiscounts.special')}</span>
                 </div>
                 <div className="descuento-fecha">
-                  <span className="fecha-icon">📅</span>
+                  <i className="ti ti-calendar fecha-icon" aria-hidden="true" />
                   <span className="fecha-text">{formatearFecha(d.fecha)}</span>
                 </div>
                 <div className="descuento-codigo">
-                  <span className="codigo-label">Código:</span>
-                  <code className="codigo-value">{generarCodigo(d.descuento)}</code>
+                  <span className="codigo-label">{t('myDiscounts.code')}:</span>
+                  <code className="codigo-value">{d.codigo}</code>
                   <button 
                     className="copiar-btn"
                     onClick={() => {
-                      navigator.clipboard.writeText(generarCodigo(d.descuento));
-                      alert('✅ Código copiado');
+                      navigator.clipboard?.writeText(d.codigo);
+                      toast(t('myDiscounts.copied'));
                     }}
+                    aria-label={t('myDiscounts.copy')}
+                    title={t('myDiscounts.copy')}
                   >
-                    📋
+                    <i className="ti ti-copy" aria-hidden="true" />
                   </button>
                 </div>
               </div>
               
               <div className="descuento-footer">
-                <span className="descuento-estado activo">✓ Activo</span>
-                <span className="descuento-uso">Válido para próxima compra</span>
+                <span className="descuento-estado activo"><i className="ti ti-check" aria-hidden="true" /> {t('productStatus.Activo')}</span>
+                <span className="descuento-uso">{t('myDiscounts.validNext')}</span>
               </div>
             </div>
           ))}
@@ -103,8 +100,8 @@ export default function MisDescuentos() {
       )}
 
       <div className="descuentos-info">
-        <p>💡 <strong>¿Cómo usar tu descuento?</strong></p>
-        <p>Al finalizar tu compra, ingresa el código en el campo "Código de descuento" para aplicar el beneficio.</p>
+        <p><i className="ti ti-bulb" aria-hidden="true" /> <strong>{t('myDiscounts.howTitle')}</strong></p>
+        <p>{t('myDiscounts.how')}</p>
       </div>
     </div>
   );

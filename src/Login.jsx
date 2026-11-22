@@ -22,7 +22,7 @@ function Login({ onLoginSuccess }) {
       } else {
         setError(data.message);
       }
-    } catch (err) {
+    } catch {
       setError("Error conectando al servidor");
     }
   };

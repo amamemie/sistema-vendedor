@@ -1,98 +1,103 @@
 import { useState } from 'react';
-import { useAuth } from '../../context/AuthContext';
+import { useTranslation } from 'react-i18next';
+import Prefs from '../../components/ui/Prefs';
+import { imgUrl } from '../../components/store/Store';
+import { formatMoney } from '../../i18n/format';
+import './comprador.css';
+
+const METODOS = [
+  { value: 'tarjeta', icon: 'ti-credit-card' },
+  { value: 'qr', icon: 'ti-qrcode' },
+  { value: 'transferencia', icon: 'ti-building-bank' },
+];
 
 export default function Checkout({ carrito, total, onConfirm, onBack }) {
-  const { user } = useAuth();
+  const { t } = useTranslation();
   const [metodoPago, setMetodoPago] = useState('tarjeta');
   const [loading, setLoading] = useState(false);
   const [direccion, setDireccion] = useState('');
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
-    
-    // Simular proceso de pago
+    // Simula el proceso de pago (igual que antes)
     setTimeout(() => {
       setLoading(false);
-      onConfirm({
-        metodoPago,
-        direccion,
-        fecha: new Date().toISOString()
-      });
+      onConfirm({ metodoPago, direccion, fecha: new Date().toISOString() });
     }, 2000);
   };
 
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--gray-50)' }}>
-      <div style={{ maxWidth: 800, margin: '0 auto', padding: 20 }}>
-        <button onClick={onBack} style={{ marginBottom: 20, background: 'none', border: 'none', cursor: 'pointer', color: 'var(--accent)' }}>← Volver al carrito</button>
-        
-        <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap' }}>
-          {/* Formulario de pago */}
-          <div style={{ flex: 2, background: 'var(--surface)', borderRadius: 12, padding: 24 }}>
-            <h2 style={{ marginBottom: 20 }}>Información de pago</h2>
-            
-            <form onSubmit={handleSubmit}>
-              <div style={{ marginBottom: 16 }}>
-                <label style={{ display: 'block', marginBottom: 5, fontWeight: 500 }}>Dirección de envío</label>
-                <input
-                  type="text"
-                  required
-                  value={direccion}
-                  onChange={(e) => setDireccion(e.target.value)}
-                  placeholder="Calle, número, ciudad"
-                  style={{ width: '100%', padding: 10, border: '1px solid var(--gray-200)', borderRadius: 8 }}
-                />
-              </div>
+    <div className="store-page page-enter">
+      <div className="store-wrap checkout">
+        <div className="detail-top">
+          <button type="button" onClick={onBack} className="btn btn-ghost btn-sm">
+            <i className="ti ti-arrow-left" aria-hidden="true" /> {t('checkout.back')}
+          </button>
+          <Prefs compact />
+        </div>
 
-              <div style={{ marginBottom: 20 }}>
-                <label style={{ display: 'block', marginBottom: 5, fontWeight: 500 }}>Método de pago</label>
-                <div style={{ display: 'flex', gap: 12, flexDirection: 'column' }}>
-                  <label style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                    <input type="radio" name="pago" value="tarjeta" checked={metodoPago === 'tarjeta'} onChange={(e) => setMetodoPago(e.target.value)} />
-                    💳 Tarjeta de crédito/débito
-                  </label>
-                  <label style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                    <input type="radio" name="pago" value="qr" checked={metodoPago === 'qr'} onChange={(e) => setMetodoPago(e.target.value)} />
-                    📱 Código QR
-                  </label>
-                  <label style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                    <input type="radio" name="pago" value="transferencia" checked={metodoPago === 'transferencia'} onChange={(e) => setMetodoPago(e.target.value)} />
-                    🏦 Transferencia bancaria
-                  </label>
-                </div>
-              </div>
+        <ol className="steps" aria-label={t('checkout.steps')}>
+          <li className="is-done"><span><i className="ti ti-check" aria-hidden="true" /></span>{t('cart.title')}</li>
+          <li className="is-current"><span>2</span>{t('checkout.payment')}</li>
+          <li><span>3</span>{t('checkout.confirmation')}</li>
+        </ol>
 
-              <button
-                type="submit"
-                disabled={loading}
-                style={{
-                  width: '100%', padding: 14, background: loading ? 'var(--gray-400)' : 'var(--gray-900)',
-                  color: '#fff', border: 'none', borderRadius: 8, cursor: loading ? 'not-allowed' : 'pointer', fontSize: 16, fontWeight: 600
-                }}
-              >
-                {loading ? 'Procesando pago...' : `Pagar Bs. ${total.toFixed(2)}`}
-              </button>
-            </form>
-          </div>
+        <div className="checkout-grid">
+          <form className="panel checkout-form" onSubmit={handleSubmit}>
+            <h1>{t('checkout.title')}</h1>
 
-          {/* Resumen del pedido */}
-          <div style={{ flex: 1, background: 'var(--surface)', borderRadius: 12, padding: 20, height: 'fit-content' }}>
-            <h3 style={{ marginBottom: 16 }}>Tu pedido</h3>
-            {carrito.slice(0, 3).map(item => (
-              <div key={item.id_producto} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10, fontSize: 13 }}>
-                <span>{item.nombre} x{item.cantidad}</span>
-                <span>Bs. {(item.precio_unitario * item.cantidad).toFixed(2)}</span>
-              </div>
-            ))}
-            {carrito.length > 3 && <div style={{ fontSize: 12, color: 'var(--gray-500)', marginBottom: 10 }}>... y {carrito.length - 3} más</div>}
-            <div style={{ borderTop: '1px solid var(--gray-200)', marginTop: 12, paddingTop: 12 }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 600 }}>
-                <span>Total</span>
-                <span>Bs. {total.toFixed(2)}</span>
-              </div>
+            <label className="field">
+              <span className="field-label">{t('checkout.address')}</span>
+              <span className="input-wrap">
+                <i className="ti ti-map-pin" aria-hidden="true" style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-3)', fontSize: 18 }} />
+                <input className="input" type="text" required autoComplete="street-address" value={direccion} onChange={(e) => setDireccion(e.target.value)} placeholder={t('checkout.addressPh')} />
+              </span>
+            </label>
+
+            <fieldset className="pay-methods">
+              <legend className="field-label">{t('checkout.method')}</legend>
+              {METODOS.map((m) => (
+                <label key={m.value} className={`pay-method${metodoPago === m.value ? ' is-on' : ''}`}>
+                  <input type="radio" name="pago" value={m.value} checked={metodoPago === m.value} onChange={(e) => setMetodoPago(e.target.value)} />
+                  <span className="pay-method-icon"><i className={`ti ${m.icon}`} aria-hidden="true" /></span>
+                  <span className="pay-method-text">
+                    <strong>{t(`checkout.methods.${m.value}`)}</strong>
+                    <small>{t(`checkout.methodsHint.${m.value}`)}</small>
+                  </span>
+                  <i className="ti ti-circle-check pay-method-check" aria-hidden="true" />
+                </label>
+              ))}
+            </fieldset>
+
+            <button type="submit" className="btn btn-ink btn-lg btn-block" disabled={loading}>
+              {loading ? <><span className="btn-spinner" /> {t('checkout.processing')}</> : <><i className="ti ti-lock" aria-hidden="true" /> {t('checkout.pay', { total: formatMoney(total) })}</>}
+            </button>
+            <p className="checkout-secure"><i className="ti ti-shield-check" aria-hidden="true" /> {t('checkout.secure')}</p>
+          </form>
+
+          <aside className="panel checkout-summary">
+            <h2>{t('checkout.yourOrder')}</h2>
+            <ul className="list">
+              {carrito.map((item) => {
+                const src = imgUrl(item.imagen_principal);
+                return (
+                  <li key={item.id_producto} className="list-row">
+                    <span className="drawer-thumb" style={{ width: 48, height: 48 }}>{src ? <img src={src} alt="" /> : <i className="ti ti-photo" aria-hidden="true" />}</span>
+                    <div className="list-main">
+                      <strong>{item.nombre}</strong>
+                      <span>×{item.cantidad}</span>
+                    </div>
+                    <span className="list-amount">{formatMoney(item.precio_unitario * item.cantidad)}</span>
+                  </li>
+                );
+              })}
+            </ul>
+            <div className="checkout-total">
+              <span>{t('common.total')}</span>
+              <strong>{formatMoney(total)}</strong>
             </div>
-          </div>
+          </aside>
         </div>
       </div>
     </div>

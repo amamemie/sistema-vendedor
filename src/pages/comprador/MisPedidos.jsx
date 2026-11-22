@@ -2,8 +2,11 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { obtenerPedidosUsuario, formatearPrecio, formatearFecha } from './comprador.utils';
 import './comprador.css';
+import { useTranslation } from 'react-i18next';
+import { toast } from '../../components/ui/toast';
 
 export default function MisPedidos() {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [pedidos, setPedidos] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -17,7 +20,7 @@ export default function MisPedidos() {
       const userId = user?.id || user?.id_usuario;
       
       if (!userId) {
-        setError('Usuario no identificado');
+        setError(t('errors.noUser'));
         setLoading(false);
         return;
       }
@@ -38,7 +41,7 @@ export default function MisPedidos() {
 
   // Cancelar pedido (solo pendientes)
   const handleCancelar = async (idCompra) => {
-    if (!confirm('¿Estás seguro de que quieres CANCELAR este pedido?')) return;
+    if (!confirm(t('myOrders.confirmCancel'))) return;
     
     setProcesando(idCompra);
     try {
@@ -50,16 +53,16 @@ export default function MisPedidos() {
       const data = await response.json();
       
       if (data.success) {
-        alert('✅ Pedido cancelado correctamente');
+        toast(t('myOrders.cancelled'));
         // Recargar pedidos
         const userId = user?.id || user?.id_usuario;
         const nuevosPedidos = await obtenerPedidosUsuario(userId);
         setPedidos(Array.isArray(nuevosPedidos) ? nuevosPedidos : []);
       } else {
-        alert('❌ Error: ' + data.message);
+        toast(data.message || t('errors.generic'), 'error');
       }
-    } catch (error) {
-      alert('❌ Error de conexión');
+    } catch {
+      toast(t('errors.connection'), 'error');
     } finally {
       setProcesando(null);
     }
@@ -68,7 +71,7 @@ export default function MisPedidos() {
   // Solicitar devolución (solo pagados)
   const handleSolicitarDevolucion = async () => {
     if (!motivoDevolucion.trim()) {
-      alert('⚠️ Por favor, escribe un motivo para la devolución');
+      toast(t('myOrders.reasonRequired'), 'error');
       return;
     }
     
@@ -85,7 +88,7 @@ export default function MisPedidos() {
       const data = await response.json();
       
       if (data.success) {
-        alert('✅ Solicitud de devolución enviada');
+        toast(t('myOrders.returnSent'));
         setMostrarModal(null);
         setMotivoDevolucion('');
         // Recargar pedidos
@@ -93,34 +96,34 @@ export default function MisPedidos() {
         const nuevosPedidos = await obtenerPedidosUsuario(userId);
         setPedidos(Array.isArray(nuevosPedidos) ? nuevosPedidos : []);
       } else {
-        alert('❌ Error: ' + data.message);
+        toast(data.message || t('errors.generic'), 'error');
       }
-    } catch (error) {
-      alert('❌ Error de conexión');
+    } catch {
+      toast(t('errors.connection'), 'error');
     } finally {
       setProcesando(null);
     }
   };
 
   if (loading) {
-    return <div className="loading-spinner">Cargando pedidos...</div>;
+    return <div className="skeleton" style={{ height: 240, borderRadius: 16 }} />;
   }
 
   if (error) {
-    return <div className="error-message">❌ {error}</div>;
+    return <div className="alert alert-error">{error}</div>;
   }
 
   return (
     <div className="mis-pedidos-container">
-      <h2>📦 Mis pedidos</h2>
+      <h2>{t('buyer.tabs.orders')}</h2>
       
       {pedidos.length === 0 ? (
-        <div className="empty-pedidos">
-          <span>🛒</span>
-          <p>No tienes pedidos aún</p>
+        <div className="empty-state">
+          <span className="empty-icon"><i className="ti ti-package" aria-hidden="true" /></span>
+          <p>{t('myOrders.empty')}</p>
         </div>
       ) : (
-        pedidos.map(p => {
+        pedidos.map((p, i) => {
           // Determinar qué botones mostrar
           const esPendiente = p.estado === 'Pendiente';
           const esPagada = p.estado === 'Pagada';
@@ -129,14 +132,14 @@ export default function MisPedidos() {
           const devolucionRechazada = p.solicita_devolucion === 'Rechazado';
           
           return (
-            <div key={p.id_compra} className="pedido-card-comprador">
+            <div key={p.id_compra} className="pedido-card-comprador" style={{ animation: 'riseIn 0.45s var(--ease) both', animationDelay: `${Math.min(i, 10) * 50}ms` }}>
               <div className="pedido-header-comprador">
                 <div>
-                  <strong>Pedido #{p.id_compra}</strong>
-                  <span className="pedido-fecha">📅 {formatearFecha(p.fecha_compra)}</span>
+                  <strong>{t('vendor.orders.order', { id: p.id_compra })}</strong>
+                  <span className="pedido-fecha"><i className="ti ti-calendar" aria-hidden="true" /> {formatearFecha(p.fecha_compra)}</span>
                 </div>
                 <span className={`pedido-estado ${esPendiente ? 'estado-pendiente' : esPagada ? 'estado-pagado' : 'estado-cancelado'}`}>
-                  {p.estado || 'Pendiente'}
+                  {t(`orderStatus.${p.estado || 'Pendiente'}`, { defaultValue: p.estado })}
                 </span>
               </div>
               
@@ -149,12 +152,12 @@ export default function MisPedidos() {
                     </div>
                   ))
                 ) : (
-                  <div className="pedido-item-comprador">Cargando detalles...</div>
+                  <div className="pedido-item-comprador">{t('common.loading')}</div>
                 )}
               </div>
               
               <div className="pedido-total-comprador">
-                <strong>Total: {formatearPrecio(p.total_bruto || 0)}</strong>
+                <strong>{t('common.total')}: {formatearPrecio(p.total_bruto || 0)}</strong>
               </div>
               
               {/* BOTONES DE ACCIÓN */}
@@ -166,7 +169,7 @@ export default function MisPedidos() {
                     onClick={() => handleCancelar(p.id_compra)}
                     disabled={procesando === p.id_compra}
                   >
-                    {procesando === p.id_compra ? 'Procesando...' : '❌ Cancelar pedido'}
+                    {procesando === p.id_compra ? t('common.processing') : <><i className="ti ti-x" aria-hidden="true" /> {t('myOrders.cancel')}</>}
                   </button>
                 )}
                 
@@ -177,26 +180,26 @@ export default function MisPedidos() {
                     onClick={() => setMostrarModal(p.id_compra)}
                     disabled={procesando === p.id_compra}
                   >
-                    🔄 Solicitar devolución
+                    <i className="ti ti-rotate" aria-hidden="true" /> {t('myOrders.requestReturn')}
                   </button>
                 )}
                 
                 {/* Estado de solicitud de devolución */}
                 {tieneSolicitud && (
-                  <span className="devolucion-pendiente">⏳ Devolución en revisión</span>
+                  <span className="devolucion-pendiente"><i className="ti ti-clock" aria-hidden="true" /> {t('myOrders.returnReview')}</span>
                 )}
                 
                 {devolucionAprobada && (
-                  <span className="devolucion-aprobada">✅ Devolución aprobada</span>
+                  <span className="devolucion-aprobada"><i className="ti ti-circle-check" aria-hidden="true" /> {t('admin.returns.approved')}</span>
                 )}
                 
                 {devolucionRechazada && (
-                  <span className="devolucion-rechazada">❌ Devolución rechazada</span>
+                  <span className="devolucion-rechazada"><i className="ti ti-circle-x" aria-hidden="true" /> {t('admin.returns.rejected')}</span>
                 )}
                 
                 {/* Pedido cancelado */}
                 {p.estado === 'Cancelada' && (
-                  <span className="pedido-cancelado">Pedido cancelado</span>
+                  <span className="pedido-cancelado">{t('myOrders.isCancelled')}</span>
                 )}
               </div>
             </div>
@@ -209,27 +212,28 @@ export default function MisPedidos() {
         <div className="modal-overlay" onClick={() => setMostrarModal(null)}>
           <div className="modal-content" onClick={e => e.stopPropagation()}>
             <div className="modal-header">
-              <h3>Solicitar devolución</h3>
-              <button className="modal-close" onClick={() => setMostrarModal(null)}>✕</button>
+              <h3>{t('myOrders.requestReturn')}</h3>
+              <button className="modal-close" onClick={() => setMostrarModal(null)} aria-label={t('common.close')}><i className="ti ti-x" aria-hidden="true" /></button>
             </div>
             <div className="modal-body">
-              <p>¿Por qué quieres devolver este pedido?</p>
+              <p>{t('myOrders.returnQuestion')}</p>
               <textarea
                 className="modal-textarea"
                 rows="4"
-                placeholder="Escribe el motivo de tu devolución..."
+                placeholder={t('myOrders.returnPh')}
+                aria-label={t('admin.returns.reason')}
                 value={motivoDevolucion}
                 onChange={(e) => setMotivoDevolucion(e.target.value)}
               />
             </div>
             <div className="modal-footer">
-              <button className="btn-secondary" onClick={() => setMostrarModal(null)}>Cancelar</button>
+              <button className="btn btn-secondary" onClick={() => setMostrarModal(null)}>{t('common.cancel')}</button>
               <button 
-                className="btn-primary" 
+                className="btn btn-primary" 
                 onClick={handleSolicitarDevolucion}
                 disabled={procesando === mostrarModal}
               >
-                {procesando === mostrarModal ? 'Enviando...' : 'Enviar solicitud'}
+                {procesando === mostrarModal ? t('common.sending') : t('myOrders.sendRequest')}
               </button>
             </div>
           </div>

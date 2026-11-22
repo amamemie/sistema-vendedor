@@ -17,5 +17,12 @@ export default defineConfig([
       globals: globals.browser,
       parserOptions: { ecmaFeatures: { jsx: true } },
     },
+    rules: {
+      // Reglas nuevas del React Compiler (eslint-plugin-react-hooks v7). El proyecto usa
+      // el patrón "cargar datos al montar" (useEffect(() => { cargar() }, [])) en muchas
+      // pantallas; se dejan como advertencia para no cambiar la lógica de datos en el rediseño.
+      'react-hooks/set-state-in-effect': 'warn',
+      'react-hooks/immutability': 'warn',
+    },
   },
 ])

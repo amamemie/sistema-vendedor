@@ -1,41 +1,36 @@
 // ============================================
 // FUNCIONES COMPARTIDAS - ADMINISTRADOR
 // ============================================
+import i18n from '../../i18n';
+import { formatMoney, formatDate } from '../../i18n/format';
 
-export const formatearPrecio = (precio) => {
-  return `Bs. ${parseFloat(precio).toFixed(2)}`;
+export const formatearPrecio = (precio) => formatMoney(precio);
+
+export const formatearFecha = (fecha) => (fecha ? formatDate(fecha) : '-');
+
+const TONES = {
+  Pendiente: ['var(--warning-light)', 'var(--warning)'],
+  Aprobado: ['var(--success-light)', 'var(--success)'],
+  Rechazado: ['var(--error-light)', 'var(--error)'],
+  Activo: ['var(--success-light)', 'var(--success)'],
+  Inactivo: ['var(--error-light)', 'var(--error)'],
 };
 
-export const formatearFecha = (fecha) => {
-  if (!fecha) return '-';
-  return new Date(fecha).toLocaleDateString('es-BO');
+const badge = (estado, ns) => {
+  const [bg, color] = TONES[estado] || ['var(--surface-2)', 'var(--text-2)'];
+  return { bg, color, text: i18n.t(`${ns}.${estado}`, { defaultValue: estado }) };
 };
 
-export const getEstadoBadge = (estado) => {
-  const estados = {
-    'Pendiente': { bg: 'var(--warning-light)', color: 'var(--warning-strong)', text: '⏳ Pendiente' },
-    'Aprobado': { bg: 'var(--success-light)', color: 'var(--success-strong)', text: '✅ Aprobado' },
-    'Rechazado': { bg: 'var(--error-light)', color: '#991b1b', text: '❌ Rechazado' },
-    'Activo': { bg: 'var(--success-light)', color: 'var(--success-strong)', text: '✅ Activo' },
-    'Inactivo': { bg: 'var(--error-light)', color: '#991b1b', text: '❌ Inactivo' }
-  };
-  return estados[estado] || { bg: 'var(--gray-100)', color: 'var(--gray-500)', text: estado };
-};
+export const getEstadoBadge = (estado) => badge(estado, 'productStatus');
 
-export const getEstadoDevolucionBadge = (estado) => {
-  const estados = {
-    'Pendiente': { bg: 'var(--warning-light)', color: 'var(--warning-strong)', text: '⏳ Pendiente' },
-    'Aprobado': { bg: 'var(--success-light)', color: 'var(--success-strong)', text: '✅ Aprobado' },
-    'Rechazado': { bg: 'var(--error-light)', color: '#991b1b', text: '❌ Rechazado' }
-  };
-  return estados[estado] || { bg: 'var(--gray-100)', color: 'var(--gray-500)', text: estado };
-};
+export const getEstadoDevolucionBadge = (estado) => badge(estado, 'productStatus');
 
 export const getRolBadge = (rol) => {
   const roles = {
-    'Admin': { bg: 'var(--accent-soft)', color: '#6d28d9', text: '👑 Admin' },
-    'Vendedor': { bg: 'var(--accent-soft)', color: 'var(--accent-hover)', text: '🏪 Vendedor' },
-    'Comprador': { bg: '#f0fdf4', color: '#166534', text: '🛒 Comprador' }
+    Admin: ['var(--ink)', 'var(--on-ink)', 'roles.admin'],
+    Vendedor: ['var(--accent-soft)', 'var(--accent)', 'roles.seller'],
+    Comprador: ['var(--info-light)', 'var(--info)', 'roles.buyer'],
   };
-  return roles[rol] || { bg: 'var(--gray-100)', color: 'var(--gray-500)', text: rol };
+  const r = roles[rol];
+  return r ? { bg: r[0], color: r[1], text: i18n.t(r[2]) } : { bg: 'var(--surface-2)', color: 'var(--text-2)', text: rol };
 };

@@ -1,6 +1,8 @@
 // src/utils/exportUtils.js
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
+import i18n from '../i18n';
+import { toast } from '../components/ui/toast';
 
 /**
  * Exportar datos a Excel (.xlsx)
@@ -10,7 +12,7 @@ import { saveAs } from 'file-saver';
  */
 export const exportToExcel = (data, filename, sheetName = 'Reporte') => {
   if (!data || data.length === 0) {
-    alert('No hay datos para exportar');
+    toast(i18n.t('export.empty'), 'info');
     return;
   }
   
@@ -29,7 +31,7 @@ export const exportToExcel = (data, filename, sheetName = 'Reporte') => {
  */
 export const exportToCSV = (data, filename) => {
   if (!data || data.length === 0) {
-    alert('No hay datos para exportar');
+    toast(i18n.t('export.empty'), 'info');
     return;
   }
   
@@ -46,7 +48,7 @@ export const exportToCSV = (data, filename) => {
  */
 export const exportToJSON = (data, filename) => {
   if (!data || data.length === 0) {
-    alert('No hay datos para exportar');
+    toast(i18n.t('export.empty'), 'info');
     return;
   }
   

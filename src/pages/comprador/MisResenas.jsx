@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import { obtenerResenasUsuario, formatearFecha, renderEstrellas } from './comprador.utils';
+import { obtenerResenasUsuario, formatearFecha } from './comprador.utils';
 import './comprador.css';
+import { useTranslation } from 'react-i18next';
+import { Stars } from '../../components/store/Store';
 
 export default function MisResenas() {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [resenas, setResenas] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -16,16 +19,13 @@ export default function MisResenas() {
       
       if (!userId) {
         console.error('❌ No hay usuario logueado', user);
-        setError('No se pudo identificar al usuario');
+        setError(t('errors.noUser'));
         setLoading(false);
         return;
       }
       
-      console.log('🔍 Cargando reseñas para usuario ID:', userId);
-      console.log('📦 Datos del usuario:', user);
       
       const data = await obtenerResenasUsuario(userId);
-      console.log('⭐ Reseñas recibidas:', data);
       
       if (data.error) {
         setError(data.error);
@@ -42,7 +42,7 @@ export default function MisResenas() {
   if (loading) {
     return (
       <div className="mis-resenas-container">
-        <div className="loading-spinner">Cargando tus reseñas...</div>
+        <div className="skeleton" style={{ height: 200, borderRadius: 16 }} />
       </div>
     );
   }
@@ -50,50 +50,50 @@ export default function MisResenas() {
   if (error) {
     return (
       <div className="mis-resenas-container">
-        <div className="error-message">❌ {error}</div>
+        <div className="alert alert-error">{error}</div>
       </div>
     );
   }
 
   return (
     <div className="mis-resenas-container">
-      <h2>⭐ Mis reseñas</h2>
+      <h2>{t('buyer.tabs.reviews')}</h2>
       
       {resenas.length === 0 ? (
-        <div className="empty-resenas">
-          <span>📝</span>
-          <p>No has escrito reseñas aún</p>
-          <p className="empty-subtext">¡Compra productos y califica tu experiencia!</p>
+        <div className="empty-state">
+          <span className="empty-icon"><i className="ti ti-star" aria-hidden="true" /></span>
+          <p>{t('myReviews.empty')}</p>
+          <p className="empty-subtext">{t('myReviews.emptyHint')}</p>
         </div>
       ) : (
-        <div className="resenas-list">
-          {resenas.map(r => (
-            <div key={r.id_resena} className="resena-card">
+        <div className="resenas-list stagger">
+          {resenas.map((r, i) => (
+            <div key={r.id_resena} className="resena-card" style={{ '--i': i }}>
               <div className="resena-producto">
                 <div className="resena-producto-imagen">
                   {r.imagen_principal ? (
                     <img 
                       src={`http://localhost/sistema-vendedor/backend/uploads/productos/${r.imagen_principal}`} 
-                      alt={r.producto} 
+                      alt="" 
                     />
                   ) : (
-                    <span>📦</span>
+                    <i className="ti ti-photo" aria-hidden="true" />
                   )}
                 </div>
                 <div className="resena-producto-info">
-                  <div className="resena-producto-nombre">{r.producto || 'Producto'}</div>
-                  <div className="resena-producto-tienda">🏪 {r.nombre_tienda || 'Tienda'}</div>
+                  <div className="resena-producto-nombre">{r.producto || t('vendor.products.product')}</div>
+                  <div className="resena-producto-tienda"><i className="ti ti-building-store" aria-hidden="true" /> {r.nombre_tienda || t('store.store')}</div>
                 </div>
               </div>
               <div className="resena-calificacion">
-                {renderEstrellas(r.calificacion)}
+                <Stars value={r.calificacion} />
                 <span className="calificacion-numero">({r.calificacion}/5)</span>
               </div>
               <div className="resena-comentario">
-                {r.comentario || 'Sin comentario'}
+                {r.comentario || t('myReviews.noComment')}
               </div>
               <div className="resena-fecha">
-                📅 {formatearFecha(r.fecha)}
+                <i className="ti ti-calendar" aria-hidden="true" /> {formatearFecha(r.fecha)}
               </div>
             </div>
           ))}

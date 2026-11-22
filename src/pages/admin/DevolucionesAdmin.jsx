@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
 import { api } from '../../services/api';
-import { formatearPrecio, getEstadoDevolucionBadge } from './admin.utils';
+import { getEstadoDevolucionBadge } from './admin.utils';
 import './admin.css';
+import { useTranslation } from 'react-i18next';
+import { toast } from '../../components/ui/toast';
 
 export default function DevolucionesAdmin() {
+  const { t } = useTranslation();
   const [solicitudes, setSolicitudes] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -28,13 +31,13 @@ export default function DevolucionesAdmin() {
     try {
       const result = await api.procesarDevolucion(idCompra, accion);
       if (result.success) {
-        alert(`✅ Devolución ${accion === 'Aprobar' ? 'aprobada' : 'rechazada'}`);
+        toast(accion === 'Aprobar' ? t('admin.returns.approved') : t('admin.returns.rejected'));
         cargarSolicitudes();
       } else {
-        alert('❌ Error: ' + result.message);
+        toast(result.message || t('errors.generic'), 'error');
       }
-    } catch (error) {
-      alert('Error de conexión');
+    } catch {
+      toast(t('errors.connection'), 'error');
     }
   };
 
@@ -42,34 +45,33 @@ export default function DevolucionesAdmin() {
     cargarSolicitudes();
   }, []);
 
-  if (loading) return <div style={{ padding: 40, textAlign: 'center' }}>Cargando solicitudes...</div>;
+  if (loading) return <div className="skeleton" style={{ height: 240, borderRadius: 16 }} />;
 
   return (
     <div>
-      <h1 style={{ fontSize: 20, marginBottom: 16 }}>🔄 Solicitudes de Devolución</h1>
       {solicitudes.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: 60, color: 'var(--gray-400)' }}>
-          <i className="ti ti-rotate-clockwise" style={{ fontSize: 48, marginBottom: 12 }} />
-          <p>No hay solicitudes de devolución pendientes</p>
+        <div className="empty-state panel">
+          <span className="empty-icon"><i className="ti ti-rotate-clockwise" aria-hidden="true" /></span>
+          <p>{t('admin.returns.empty')}</p>
         </div>
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          {solicitudes.map(s => {
+        <div className="stagger" style={{ display: 'grid', gap: 12 }}>
+          {solicitudes.map((s, i) => {
             const badge = getEstadoDevolucionBadge(s.solicita_devolucion);
             return (
-              <div key={s.id_compra} style={{ background: 'var(--surface)', borderRadius: 12, padding: 16, border: '1px solid var(--gray-200)' }}>
+              <div key={s.id_compra} className="panel" style={{ '--i': i, marginBottom: 0 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 12 }}>
-                  <span style={{ fontWeight: 600 }}>Orden #{s.id_compra}</span>
-                  <span style={{ background: badge.bg, color: badge.color, padding: '3px 8px', borderRadius: 20, fontSize: 11 }}>{badge.text}</span>
+                  <span style={{ fontWeight: 700, fontSize: 16 }}>{t('vendor.orders.order', { id: s.id_compra })}</span>
+                  <span className="badge" style={{ background: badge.bg, color: badge.color }}>{badge.text}</span>
                 </div>
-                <div style={{ fontSize: 13, color: 'var(--gray-500)', marginBottom: 4 }}>Comprador: {s.comprador_nombres} {s.comprador_apellidos}</div>
-                <div style={{ fontSize: 13, color: 'var(--gray-500)', marginBottom: 4 }}>Tienda: {s.nombre_tienda}</div>
-                <div style={{ fontSize: 13, marginBottom: 12, background: 'var(--gray-50)', padding: 10, borderRadius: 8 }}>
-                  <strong>Motivo:</strong> {s.devolucion_motivo}
+                <div style={{ fontSize: 13.5, color: 'var(--text-2)', marginBottom: 4 }}><i className="ti ti-user" aria-hidden="true" /> {t('roles.buyer')}: {s.comprador_nombres} {s.comprador_apellidos}</div>
+                <div style={{ fontSize: 13.5, color: 'var(--text-2)', marginBottom: 4 }}><i className="ti ti-building-store" aria-hidden="true" /> {t('store.store')}: {s.nombre_tienda}</div>
+                <div style={{ fontSize: 13.5, margin: '10px 0 14px', background: 'var(--surface-2)', padding: 12, borderRadius: 10 }}>
+                  <strong>{t('admin.returns.reason')}:</strong> {s.devolucion_motivo}
                 </div>
                 <div style={{ display: 'flex', gap: 10 }}>
-                  <button className="admin-btn-success" onClick={() => procesarDevolucion(s.id_compra, 'Aprobar')}>✓ Aprobar</button>
-                  <button className="admin-btn-danger" onClick={() => procesarDevolucion(s.id_compra, 'Rechazar')}>✗ Rechazar</button>
+                  <button className="admin-btn-success" onClick={() => procesarDevolucion(s.id_compra, 'Aprobar')}><i className="ti ti-check" aria-hidden="true" /> {t('admin.approve')}</button>
+                  <button className="admin-btn-danger" onClick={() => procesarDevolucion(s.id_compra, 'Rechazar')}><i className="ti ti-x" aria-hidden="true" /> {t('admin.reject')}</button>
                 </div>
               </div>
             );

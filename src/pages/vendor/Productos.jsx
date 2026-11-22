@@ -3,11 +3,20 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { api } from '../../services/api';
 import './vendor.css';
-import { formatearPrecio, getEstadoClase, getStockClase, getStockTexto, subirImagen, imagenToBase64 } from './vendor.utils';
+import { formatearPrecio, getEstadoClase, getStockClase, getStockTexto, subirImagen } from './vendor.utils';
+import { useTranslation } from 'react-i18next';
+import { toast } from '../../components/ui/toast';
 
 const BASE_URL = 'http://localhost/sistema-vendedor/backend';
 
+// Agregar función a api si no existe (a nivel de módulo, no durante el render)
+if (!api.getProductosPorVendedor) {
+  api.getProductosPorVendedor = (idVendedor) =>
+    fetch(`${BASE_URL}/productos.php?id_vendedor=${idVendedor}`).then((r) => r.json());
+}
+
 export default function VendorProductos() {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [productos, setProductos] = useState([]);
   const [categorias, setCategorias] = useState([]);
@@ -89,7 +98,7 @@ export default function VendorProductos() {
 
   const guardarProducto = async () => {
     if (!formData.nombre || !formData.precio_unitario || !formData.id_categoria) {
-      alert('❌ Complete los campos obligatorios');
+      toast(t('vendor.products.required'), 'error');
       return;
     }
 
@@ -128,7 +137,7 @@ export default function VendorProductos() {
         esPrincipal = false;
       }
 
-      alert('✅ Producto guardado correctamente');
+      toast(t('vendor.products.saved'));
       setMostrarModal(false);
       setEditando(null);
       setFormData({ 
@@ -136,14 +145,14 @@ export default function VendorProductos() {
         imagenes: [], imagenesExistentes: [] 
       });
       cargarProductos();
-    } catch (error) {
-      alert('❌ Error al guardar producto');
+    } catch {
+      toast(t('vendor.products.saveError'), 'error');
     }
     setSubiendo(false);
   };
 
   const eliminarProducto = async (idProducto) => {
-    if (confirm('¿Eliminar este producto?')) {
+    if (confirm(t('vendor.products.confirmDelete'))) {
       await api.eliminarProducto(idProducto);
       cargarProductos();
     }
@@ -174,89 +183,83 @@ export default function VendorProductos() {
     p.nombre.toLowerCase().includes(busqueda.toLowerCase())
   );
 
-  // Agregar función a api si no existe
-  if (!api.getProductosPorVendedor) {
-    api.getProductosPorVendedor = (idVendedor) => 
-      fetch(`${BASE_URL}/productos.php?id_vendedor=${idVendedor}`)
-        .then(r => r.json());
-  }
 
   return (
     <div className="vendor-content">
       <div className="productos-header">
         <div>
-          <h1 className="productos-title">Mis Productos</h1>
-          <p className="productos-count">{productosFiltrados.length} producto{productosFiltrados.length !== 1 ? 's' : ''}</p>
+          <h2 className="productos-title">{modoVista === 'todos' ? t('vendor.products.catalog') : t('vendor.nav.products')}</h2>
+          <p className="productos-count">{t('store.productCount', { count: productosFiltrados.length })}</p>
         </div>
-        <div style={{ display: 'flex', gap: 12 }}>
-          {/* Botón para cambiar vista */}
+        <div className="productos-toolbar">
           <div className="productos-vista-toggle">
             <button 
               className={`vista-btn ${modoVista === 'mis_productos' ? 'vista-btn-active' : ''}`}
               onClick={() => setModoVista('mis_productos')}
             >
-              📦 Mis productos
+              <i className="ti ti-package" aria-hidden="true" /> {t('vendor.products.mine')}
             </button>
             <button 
               className={`vista-btn ${modoVista === 'todos' ? 'vista-btn-active' : ''}`}
               onClick={() => setModoVista('todos')}
             >
-              🌍 Catálogo general
+              <i className="ti ti-world" aria-hidden="true" /> {t('vendor.products.catalog')}
             </button>
           </div>
           <div className="productos-search">
             <i className="ti ti-search"></i>
-            <input placeholder="Buscar productos..." value={busqueda} onChange={e => setBusqueda(e.target.value)} />
+            <input placeholder={t('store.searchPlaceholder')} aria-label={t('store.search')} value={busqueda} onChange={e => setBusqueda(e.target.value)} />
           </div>
           {modoVista === 'mis_productos' && (
-            <button className="btn-primary" onClick={() => { setEditando(null); setFormData({ nombre: '', descripcion: '', precio_unitario: '', stock: '', id_categoria: '', imagenes: [], imagenesExistentes: [] }); setMostrarModal(true); }}>
-              <i className="ti ti-plus"></i> Agregar producto
+            <button className="btn btn-primary" onClick={() => { setEditando(null); setFormData({ nombre: '', descripcion: '', precio_unitario: '', stock: '', id_categoria: '', imagenes: [], imagenesExistentes: [] }); setMostrarModal(true); }}>
+              <i className="ti ti-plus" aria-hidden="true"></i> {t('vendor.products.add')}
             </button>
           )}
         </div>
       </div>
 
       {!idTienda && modoVista === 'mis_productos' && (
-        <div style={{ background: 'var(--warning-light)', border: '1px solid var(--star)', borderRadius: 8, padding: 12, marginBottom: 16, fontSize: 13 }}>
-          ⚠️ Tu cuenta aún no tiene una tienda asignada. Espera la aprobación del administrador.
-        </div>
+        <div className="alert alert-info"><i className="ti ti-info-circle" aria-hidden="true" /> {t('vendor.products.noStore')}</div>
       )}
 
       {loading ? (
-        <div style={{ textAlign: 'center', padding: 60 }}>Cargando productos...</div>
+        <div className="skeleton" style={{ height: 360, borderRadius: 16 }} />
       ) : (
-        <div className="productos-table">
+        <div className="productos-table stagger">
           <div className="productos-table-header">
-            <span>Foto</span><span>Producto</span><span>Categoría</span><span>Precio</span><span>Stock</span><span>Estado</span><span>Acción</span>
+            <span>{t('vendor.products.photo')}</span><span>{t('vendor.products.product')}</span><span>{t('vendor.products.category')}</span><span>{t('vendor.products.price')}</span><span>{t('vendor.products.stock')}</span><span>{t('common.status')}</span><span>{t('common.actions')}</span>
           </div>
-          {productosFiltrados.map(p => (
-            <div key={p.id_producto} className="productos-table-row">
+          {productosFiltrados.length === 0 && (
+            <div className="empty-state"><i className="ti ti-package-off" style={{ fontSize: 30 }} aria-hidden="true" />{t('store.noResults')}</div>
+          )}
+          {productosFiltrados.map((p, i) => (
+            <div key={p.id_producto} className="productos-table-row" style={{ '--i': i }}>
               <div className="producto-imagen">
-                {p.imagen_principal ? <img src={`${BASE_URL}/${p.imagen_principal}`} alt={p.nombre} /> : <i className="ti ti-photo"></i>}
+                {p.imagen_principal ? <img src={`${BASE_URL}/${p.imagen_principal}`} alt={p.nombre} /> : <i className="ti ti-photo" aria-hidden="true"></i>}
               </div>
               <div>
                 <div className="producto-nombre">{p.nombre}</div>
                 {p.descripcion && <div className="producto-descripcion">{p.descripcion}</div>}
                 {modoVista === 'todos' && p.nombre_tienda && (
-                  <div className="producto-tienda">🏪 {p.nombre_tienda}</div>
+                  <div className="producto-tienda"><i className="ti ti-building-store" aria-hidden="true" /> {p.nombre_tienda}</div>
                 )}
               </div>
               <span>{p.categoria || '—'}</span>
               <span className="producto-precio">{formatearPrecio(p.precio_unitario)}</span>
               <span className={`producto-stock ${getStockClase(p.stock)}`}>{getStockTexto(p.stock)}</span>
-              <span><span className={`producto-estado-badge ${getEstadoClase(p.estado)}`}>{p.estado}</span></span>
+              <span><span className={`producto-estado-badge ${getEstadoClase(p.estado)}`}>{t(`productStatus.${p.estado}`, { defaultValue: p.estado })}</span></span>
               <div className="producto-actions">
                 {modoVista === 'mis_productos' && (
                   <>
-                    <button className="btn-icon" onClick={() => abrirEditar(p)}><i className="ti ti-edit"></i></button>
-                    <button className="btn-icon btn-danger-icon" onClick={() => eliminarProducto(p.id_producto)}><i className="ti ti-trash"></i></button>
+                    <button className="btn-icon" onClick={() => abrirEditar(p)} aria-label={t('common.edit')} title={t('common.edit')}><i className="ti ti-edit" aria-hidden="true"></i></button>
+                    <button className="btn-icon btn-danger-icon" onClick={() => eliminarProducto(p.id_producto)} aria-label={t('common.delete')} title={t('common.delete')}><i className="ti ti-trash" aria-hidden="true"></i></button>
                   </>
                 )}
                 {modoVista === 'todos' && p.id_vendedor !== idVendedor && (
-                  <span className="producto-otro-vendedor">👤 Otro vendedor</span>
+                  <span className="producto-otro-vendedor">{t('vendor.products.otherSeller')}</span>
                 )}
                 {modoVista === 'todos' && p.id_vendedor === idVendedor && (
-                  <span className="producto-mio-badge">Mi producto</span>
+                  <span className="producto-mio-badge">{t('vendor.products.myProduct')}</span>
                 )}
               </div>
             </div>
@@ -269,45 +272,45 @@ export default function VendorProductos() {
         <div className="modal-overlay" onClick={() => setMostrarModal(false)}>
           <div className="modal-content" onClick={e => e.stopPropagation()}>
             <div className="modal-header">
-              <h3 className="modal-title">{editando ? 'Editar producto' : 'Nuevo producto'}</h3>
-              <button className="modal-close" onClick={() => setMostrarModal(false)}>✕</button>
+              <h3 className="modal-title">{editando ? t('vendor.products.edit') : t('vendor.products.new')}</h3>
+              <button className="modal-close" onClick={() => setMostrarModal(false)} aria-label={t('common.close')}><i className="ti ti-x" aria-hidden="true" /></button>
             </div>
             <div className="modal-body">
               <div className="form-group">
-                <label className="form-label">Nombre *</label>
-                <input className="form-input" name="nombre" value={formData.nombre} onChange={handleChange} placeholder="Nombre del producto" />
+                <label className="form-label">{t('vendor.products.name')} *</label>
+                <input className="form-input" name="nombre" value={formData.nombre} onChange={handleChange} placeholder={t('vendor.products.namePh')} />
               </div>
               <div className="form-group">
-                <label className="form-label">Descripción</label>
-                <textarea className="form-textarea" name="descripcion" value={formData.descripcion} onChange={handleChange} placeholder="Descripción del producto"></textarea>
+                <label className="form-label">{t('vendor.products.description')}</label>
+                <textarea className="form-textarea" name="descripcion" value={formData.descripcion} onChange={handleChange} placeholder={t('vendor.products.descriptionPh')}></textarea>
               </div>
               <div className="form-row">
                 <div className="form-group">
-                  <label className="form-label">Precio (Bs.) *</label>
+                  <label className="form-label">{t('vendor.products.priceBs')} *</label>
                   <input className="form-input" type="number" step="0.01" name="precio_unitario" value={formData.precio_unitario} onChange={handleChange} />
                 </div>
                 <div className="form-group">
-                  <label className="form-label">Stock *</label>
+                  <label className="form-label">{t('vendor.products.stock')} *</label>
                   <input className="form-input" type="number" name="stock" value={formData.stock} onChange={handleChange} />
                 </div>
               </div>
               <div className="form-group">
-                <label className="form-label">Categoría *</label>
+                <label className="form-label">{t('vendor.products.category')} *</label>
                 <select className="form-select" name="id_categoria" value={formData.id_categoria} onChange={handleChange}>
-                  <option value="">Seleccionar...</option>
+                  <option value="">{t('common.select')}</option>
                   {categorias.map(c => <option key={c.id_categoria} value={c.id_categoria}>{c.nombre}</option>)}
                 </select>
               </div>
               
               {formData.imagenesExistentes.length > 0 && (
                 <div className="form-group">
-                  <label className="form-label">Imágenes actuales</label>
+                  <label className="form-label">{t('vendor.products.currentImages')}</label>
                   <div className="imagenes-grid">
                     {formData.imagenesExistentes.map((img, idx) => (
                       <div key={idx} className="imagen-item">
-                        <img src={`${BASE_URL}/${img}`} alt="Producto" />
+                        <img src={`${BASE_URL}/${img}`} alt="" />
                         {editando && (
-                          <button className="imagen-item-remove" onClick={() => eliminarImagenExistente(img)}>✕</button>
+                          <button className="imagen-item-remove" onClick={() => eliminarImagenExistente(img)} aria-label={t('common.delete')}><i className="ti ti-x" aria-hidden="true" /></button>
                         )}
                       </div>
                     ))}
@@ -316,23 +319,23 @@ export default function VendorProductos() {
               )}
 
               <div className="form-group">
-                <label className="form-label">Agregar imágenes</label>
+                <label className="form-label">{t('vendor.products.addImages')}</label>
                 <input type="file" accept="image/*" multiple onChange={handleImagenes} className="form-input" />
                 <div className="imagenes-grid">
                   {formData.imagenes.map((img, idx) => (
                     <div key={idx} className="imagen-item">
-                      <img src={img.preview} alt="Preview" />
-                      <button className="imagen-item-remove" onClick={() => eliminarImagenNueva(idx)}>✕</button>
+                      <img src={img.preview} alt="" />
+                      <button className="imagen-item-remove" onClick={() => eliminarImagenNueva(idx)} aria-label={t('common.delete')}><i className="ti ti-x" aria-hidden="true" /></button>
                     </div>
                   ))}
                 </div>
-                <small style={{ fontSize: 11, color: 'var(--gray-400)' }}>Puedes seleccionar múltiples imágenes manteniendo Ctrl</small>
+                <small style={{ fontSize: 12, color: 'var(--text-3)' }}>{t('vendor.products.multiHint')}</small>
               </div>
             </div>
             <div className="modal-footer">
-              <button className="btn-secondary" onClick={() => setMostrarModal(false)}>Cancelar</button>
-              <button className="btn-primary" onClick={guardarProducto} disabled={subiendo}>
-                {subiendo ? 'Guardando...' : 'Guardar producto'}
+              <button className="btn btn-secondary" onClick={() => setMostrarModal(false)}>{t('common.cancel')}</button>
+              <button className="btn btn-primary" onClick={guardarProducto} disabled={subiendo}>
+                {subiendo ? t('common.saving') : t('vendor.products.save')}
               </button>
             </div>
           </div>

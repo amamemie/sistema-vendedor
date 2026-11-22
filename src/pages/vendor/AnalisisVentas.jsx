@@ -1,10 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import './vendor.css';
+import { useTranslation } from 'react-i18next';
+import { toast } from '../../components/ui/toast';
+import { formatMoney } from '../../i18n/format';
 
 const BASE_URL = 'http://localhost/sistema-vendedor/backend';
 
 export default function AnalisisVentas() {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
   const [datos, setDatos] = useState({
@@ -34,13 +38,11 @@ export default function AnalisisVentas() {
     setLoading(false);
   };
 
-  const formatearPrecio = (precio) => {
-    return `Bs. ${parseFloat(precio || 0).toFixed(2)}`;
-  };
+  const formatearPrecio = (precio) => formatMoney(precio || 0);
 
   const aplicarDescuento = async () => {
   if (!descuentoValor || descuentoValor <= 0 || descuentoValor > 100) {
-    alert('⚠️ El descuento debe ser entre 1 y 100');
+    toast(t('vendor.analytics.discountRange'), 'error');
     return;
   }
 
@@ -57,16 +59,16 @@ export default function AnalisisVentas() {
     const data = await response.json();
     
     if (data.success) {
-      alert(data.message);
+      toast(data.message || t('vendor.analytics.discountApplied'));
       setDescuentoModal(null);
       setDescuentoValor('');
       setDescuentoMotivo('');
     } else {
-      alert('❌ ' + data.message);
+      toast(data.message, 'error');
     }
   } catch (error) {
     console.error('Error:', error);
-    alert('❌ Error de conexión');
+    toast(t('errors.connection'), 'error');
   }
 };
 
@@ -77,7 +79,7 @@ export default function AnalisisVentas() {
   if (loading) {
     return (
       <div className="vendor-content">
-        <div className="analisis-loading">📊 Cargando análisis de ventas...</div>
+        <div className="skeleton" style={{ height: 420, borderRadius: 16 }} />
       </div>
     );
   }
@@ -85,32 +87,28 @@ export default function AnalisisVentas() {
   return (
     <div className="vendor-content">
       <div className="analisis-container">
-        <div className="analisis-header">
-          <h1 className="analisis-title">📊 Análisis de Ventas</h1>
-          <p className="analisis-subtitle">Visualiza el rendimiento de tu negocio</p>
-        </div>
 
         {/* Resumen por estado */}
         <div className="analisis-section">
           <h2 className="section-title">
-            <span className="section-icon">📋</span> Resumen por estado
+            <i className="ti ti-list-check section-icon" aria-hidden="true" /> {t('vendor.analytics.byStatus')}
           </h2>
-          <div className="estados-grid">
+          <div className="estados-grid stagger">
             {datos.resumen_estados.map(estado => {
-              let estadoClass = '';
-              let estadoIcon = '';
+              let estadoClass;
+              let estadoIcon;
               switch (estado.estado) {
-                case 'Pagada': estadoClass = 'estado-pagada-card'; estadoIcon = '✅'; break;
-                case 'Enviado': estadoClass = 'estado-enviado-card'; estadoIcon = '📦'; break;
-                case 'Entregado': estadoClass = 'estado-entregado-card'; estadoIcon = '🏠'; break;
-                case 'Cancelado': estadoClass = 'estado-cancelado-card'; estadoIcon = '❌'; break;
-                default: estadoClass = 'estado-pendiente-card'; estadoIcon = '⏳';
+                case 'Pagada': estadoClass = 'estado-pagada-card'; estadoIcon = 'ti-circle-check'; break;
+                case 'Enviado': estadoClass = 'estado-enviado-card'; estadoIcon = 'ti-truck-delivery'; break;
+                case 'Entregado': estadoClass = 'estado-entregado-card'; estadoIcon = 'ti-home-check'; break;
+                case 'Cancelado': estadoClass = 'estado-cancelado-card'; estadoIcon = 'ti-circle-x'; break;
+                default: estadoClass = 'estado-pendiente-card'; estadoIcon = 'ti-clock';
               }
               return (
                 <div key={estado.estado} className={`estado-card ${estadoClass}`}>
-                  <div className="estado-icon">{estadoIcon}</div>
-                  <div className="estado-nombre">{estado.estado || 'Pendiente'}</div>
-                  <div className="estado-cantidad">{estado.cantidad} pedidos</div>
+                  <div className="estado-icon"><i className={`ti ${estadoIcon}`} aria-hidden="true" /></div>
+                  <div className="estado-nombre">{t(`orderStatus.${estado.estado || 'Pendiente'}`)}</div>
+                  <div className="estado-cantidad">{t('vendor.orders.count', { count: Number(estado.cantidad) })}</div>
                   <div className="estado-total">{formatearPrecio(estado.total_ventas)}</div>
                 </div>
               );
@@ -121,23 +119,23 @@ export default function AnalisisVentas() {
         {/* Productos más vendidos */}
         <div className="analisis-section">
           <h2 className="section-title">
-            <span className="section-icon">🏆</span> Productos más vendidos
+            <i className="ti ti-trophy section-icon" aria-hidden="true" /> {t('vendor.analytics.topProducts')}
           </h2>
           <div className="analisis-table-container">
             <table className="analisis-table">
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>Producto</th>
-                  <th>Cantidad</th>
-                  <th>Total ganado</th>
-                  <th>Veces comprado</th>
-                  <th>Acción</th>
+                  <th>{t('vendor.products.product')}</th>
+                  <th>{t('vendor.analytics.quantity')}</th>
+                  <th>{t('vendor.analytics.earned')}</th>
+                  <th>{t('vendor.analytics.timesBought')}</th>
+                  <th>{t('common.actions')}</th>
                 </tr>
               </thead>
               <tbody>
                 {datos.productos_mas_vendidos.length === 0 ? (
-                  <tr><td colSpan="6" className="analisis-empty">No hay datos de ventas aún</td></tr>
+                  <tr><td colSpan="6" className="analisis-empty">{t('vendor.analytics.noSales')}</td></tr>
                 ) : (
                   datos.productos_mas_vendidos.map((p, idx) => (
                     <tr key={p.id_producto}>
@@ -154,12 +152,12 @@ export default function AnalisisVentas() {
                           <span className="producto-nombre">{p.nombre}</span>
                         </div>
                       </td>
-                      <td className="cantidad">{p.total_vendido} uds</td>
+                      <td className="cantidad">{t('vendor.dash.units', { count: Number(p.total_vendido) })}</td>
                       <td className="total">{formatearPrecio(p.total_ganado)}</td>
-                      <td className="veces">{p.veces_comprado} veces</td>
+                      <td className="veces">{t('vendor.analytics.times', { count: Number(p.veces_comprado) })}</td>
                       <td>
                         <button className="btn-ver-producto" onClick={() => verProducto(p)}>
-                          👁️ Ver
+                          <i className="ti ti-eye" aria-hidden="true" /> {t('common.view')}
                         </button>
                       </td>
                     </tr>
@@ -173,24 +171,24 @@ export default function AnalisisVentas() {
         {/* Clientes frecuentes */}
         <div className="analisis-section">
           <h2 className="section-title">
-            <span className="section-icon">👥</span> Clientes que más compran
+            <i className="ti ti-users section-icon" aria-hidden="true" /> {t('vendor.analytics.topCustomers')}
           </h2>
           <div className="analisis-table-container">
             <table className="analisis-table">
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>Cliente</th>
-                  <th>Contacto</th>
-                  <th>Pedidos</th>
-                  <th>Total gastado</th>
-                  <th>Ticket promedio</th>
-                  <th>Acción</th>
+                  <th>{t('vendor.orders.customer')}</th>
+                  <th>{t('vendor.analytics.contact')}</th>
+                  <th>{t('vendor.nav.orders')}</th>
+                  <th>{t('vendor.analytics.spent')}</th>
+                  <th>{t('vendor.reports.avgTicket')}</th>
+                  <th>{t('common.actions')}</th>
                 </tr>
               </thead>
               <tbody>
                 {datos.clientes_frecuentes.length === 0 ? (
-                  <tr><td colSpan="7" className="analisis-empty">No hay clientes registrados</td></tr>
+                  <tr><td colSpan="7" className="analisis-empty">{t('vendor.analytics.noCustomers')}</td></tr>
                 ) : (
                   datos.clientes_frecuentes.map((c, idx) => (
                     <tr key={c.id_comprador}>
@@ -198,14 +196,14 @@ export default function AnalisisVentas() {
                       <td className="cliente-nombre">{c.nombres} {c.apellidos}</td>
                       <td className="cliente-contacto">
                         <div>{c.email}</div>
-                        <div className="cliente-telefono">{c.telefono || 'Sin teléfono'}</div>
+                        <div className="cliente-telefono">{c.telefono || t('vendor.analytics.noPhone')}</div>
                       </td>
                       <td className="pedidos">{c.total_pedidos}</td>
                       <td className="gastado">{formatearPrecio(c.total_gastado)}</td>
                       <td className="promedio">{formatearPrecio(c.ticket_promedio)}</td>
                       <td>
                         <button className="btn-descuento" onClick={() => setDescuentoModal(c.id_comprador)}>
-                          🎁 Descuento
+                          <i className="ti ti-discount" aria-hidden="true" /> {t('vendor.analytics.discount')}
                         </button>
                       </td>
                     </tr>
@@ -219,21 +217,21 @@ export default function AnalisisVentas() {
         {/* Productos más cancelados */}
         <div className="analisis-section">
           <h2 className="section-title">
-            <span className="section-icon">⚠️</span> Productos más cancelados
+            <i className="ti ti-alert-triangle section-icon" aria-hidden="true" /> {t('vendor.analytics.topCancelled')}
           </h2>
           <div className="analisis-table-container">
             <table className="analisis-table">
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>Producto</th>
-                  <th>Veces cancelado</th>
-                  <th>Acción</th>
+                  <th>{t('vendor.products.product')}</th>
+                  <th>{t('vendor.analytics.timesCancelled')}</th>
+                  <th>{t('common.actions')}</th>
                 </tr>
               </thead>
               <tbody>
                 {datos.productos_mas_cancelados.length === 0 ? (
-                  <tr><td colSpan="4" className="analisis-empty">No hay productos cancelados</td></tr>
+                  <tr><td colSpan="4" className="analisis-empty">{t('vendor.analytics.noCancelled')}</td></tr>
                 ) : (
                   datos.productos_mas_cancelados.map((p, idx) => (
                     <tr key={p.id_producto}>
@@ -250,10 +248,10 @@ export default function AnalisisVentas() {
                           <span className="producto-nombre">{p.nombre}</span>
                         </div>
                       </td>
-                      <td className="cancelado">{p.veces_cancelado} veces</td>
+                      <td className="cancelado">{t('vendor.analytics.times', { count: Number(p.veces_cancelado) })}</td>
                       <td>
                         <button className="btn-ver-producto" onClick={() => verProducto(p)}>
-                          👁️ Ver
+                          <i className="ti ti-eye" aria-hidden="true" /> {t('common.view')}
                         </button>
                       </td>
                     </tr>
@@ -270,8 +268,8 @@ export default function AnalisisVentas() {
         <div className="modal-overlay" onClick={() => setProductoModal(null)}>
           <div className="modal-content" onClick={e => e.stopPropagation()}>
             <div className="modal-header">
-              <h3>📦 {productoModal.nombre}</h3>
-              <button className="modal-close" onClick={() => setProductoModal(null)}>✕</button>
+              <h3>{productoModal.nombre}</h3>
+              <button className="modal-close" onClick={() => setProductoModal(null)} aria-label={t('common.close')}><i className="ti ti-x" aria-hidden="true" /></button>
             </div>
             <div className="modal-body">
               {productoModal.imagen_principal && (
@@ -280,14 +278,14 @@ export default function AnalisisVentas() {
                 </div>
               )}
               <div className="producto-modal-info">
-                <p><strong>💰 Precio:</strong> {formatearPrecio(productoModal.precio_unitario)}</p>
-                <p><strong>📊 Total vendido:</strong> {productoModal.total_vendido || 0} unidades</p>
-                <p><strong>💵 Total ganado:</strong> {formatearPrecio(productoModal.total_ganado || 0)}</p>
-                <p><strong>🔄 Veces comprado:</strong> {productoModal.veces_comprado || 0} veces</p>
+                <p><strong>{t('vendor.products.price')}:</strong> {formatearPrecio(productoModal.precio_unitario)}</p>
+                <p><strong>{t('vendor.analytics.quantity')}:</strong> {t('vendor.dash.units', { count: Number(productoModal.total_vendido || 0) })}</p>
+                <p><strong>{t('vendor.analytics.earned')}:</strong> {formatearPrecio(productoModal.total_ganado || 0)}</p>
+                <p><strong>{t('vendor.analytics.timesBought')}:</strong> {t('vendor.analytics.times', { count: Number(productoModal.veces_comprado || 0) })}</p>
               </div>
             </div>
             <div className="modal-footer">
-              <button className="btn-secondary" onClick={() => setProductoModal(null)}>Cerrar</button>
+              <button className="btn btn-secondary" onClick={() => setProductoModal(null)}>{t('common.close')}</button>
             </div>
           </div>
         </div>
@@ -298,37 +296,37 @@ export default function AnalisisVentas() {
         <div className="modal-overlay" onClick={() => setDescuentoModal(null)}>
           <div className="modal-content" onClick={e => e.stopPropagation()}>
             <div className="modal-header">
-              <h3>🎁 Aplicar descuento al cliente</h3>
-              <button className="modal-close" onClick={() => setDescuentoModal(null)}>✕</button>
+              <h3>{t('vendor.analytics.discountTitle')}</h3>
+              <button className="modal-close" onClick={() => setDescuentoModal(null)} aria-label={t('common.close')}><i className="ti ti-x" aria-hidden="true" /></button>
             </div>
             <div className="modal-body">
               <div className="form-group">
-                <label className="form-label">Porcentaje de descuento (%)</label>
+                <label className="form-label">{t('vendor.analytics.discountPct')}</label>
                 <input 
                   type="number" 
                   className="form-input" 
                   value={descuentoValor}
                   onChange={(e) => setDescuentoValor(e.target.value)}
-                  placeholder="Ej: 10, 15, 20"
+                  placeholder={t('vendor.analytics.discountPctPh')}
                   min="1"
                   max="100"
                 />
               </div>
               <div className="form-group">
-                <label className="form-label">Motivo del descuento</label>
+                <label className="form-label">{t('vendor.analytics.discountReason')}</label>
                 <textarea 
                   className="form-textarea"
                   rows="3"
                   value={descuentoMotivo}
                   onChange={(e) => setDescuentoMotivo(e.target.value)}
-                  placeholder="Ej: Cliente frecuente, Promoción especial..."
+                  placeholder={t('vendor.analytics.discountReasonPh')}
                 />
               </div>
             </div>
             <div className="modal-footer">
-              <button className="btn-secondary" onClick={() => setDescuentoModal(null)}>Cancelar</button>
-              <button className="btn-primary" onClick={aplicarDescuento}>
-                Aplicar descuento
+              <button className="btn btn-secondary" onClick={() => setDescuentoModal(null)}>{t('common.cancel')}</button>
+              <button className="btn btn-primary" onClick={aplicarDescuento}>
+                {t('vendor.analytics.applyDiscount')}
               </button>
             </div>
           </div>

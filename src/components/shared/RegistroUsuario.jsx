@@ -27,7 +27,7 @@ function RegistroUsuario() {
       const data = await resp.json();
       setMsg(data.message);
       if (data.success) setFormData(initialState);
-    } catch (error) {
+    } catch {
       setMsg("Error de conexión con el servidor");
     }
   };

@@ -1,3 +1,5 @@
+import i18n from '../../i18n';
+import { formatMoney, formatDate } from '../../i18n/format';
 // ============================================
 // UTILIDADES COMPARTIDAS - COMPRADOR
 // ============================================
@@ -62,17 +64,7 @@ export const calcularCantidadItems = (carrito) => {
   return carrito.reduce((sum, item) => sum + item.cantidad, 0);
 };
 
-export const formatearPrecio = (precio) => {
-  // Convertir a número si es string
-  let numero = typeof precio === 'string' ? parseFloat(precio) : precio;
-  
-  // Si es null, undefined o NaN, mostrar 0
-  if (numero === null || numero === undefined || isNaN(numero)) {
-    numero = 0;
-  }
-  
-  return `Bs. ${numero.toFixed(2)}`;
-};
+export const formatearPrecio = (precio) => formatMoney(precio);
 
 // ============================================
 // FUNCIONES DE FECHA
@@ -80,8 +72,7 @@ export const formatearPrecio = (precio) => {
 
 export const formatearFecha = (fecha) => {
   if (!fecha) return '-';
-  const d = new Date(fecha);
-  return d.toLocaleDateString('es-BO');
+  return formatDate(fecha);
 };
 
 // ============================================
@@ -110,12 +101,12 @@ export const guardarPerfil = (perfil) => {
 
 export const validarPerfil = (perfil) => {
   const errores = [];
-  if (!perfil.nombres?.trim()) errores.push('El nombre es requerido');
-  if (!perfil.apellidos?.trim()) errores.push('Los apellidos son requeridos');
+  if (!perfil.nombres?.trim()) errores.push(i18n.t('buyer.profile.errName'));
+  if (!perfil.apellidos?.trim()) errores.push(i18n.t('buyer.profile.errLastName'));
   if (perfil.telefono?.trim()) {
     const telefonoLimpio = perfil.telefono.replace(/\D/g, '');
     if (!/^\d{7,15}$/.test(telefonoLimpio)) {
-      errores.push('El teléfono debe tener entre 7 y 15 dígitos');
+      errores.push(i18n.t('vendor.company.errPhoneLen'));
     }
   }
   return errores;
@@ -150,19 +141,20 @@ export const reportarProducto = async (idProducto, motivo, descripcion) => {
     return data;
   } catch (error) {
     console.error('Error al reportar producto:', error);
-    return { success: false, message: 'Error de conexión' };
+    return { success: false, message: i18n.t('errors.connection') };
   }
 };
 
+// `value` se envía al backend (en español, como antes); `label` se muestra traducido.
 export const motivosReporte = [
-  { id: 1, label: 'Producto dañado o defectuoso', icon: '🔧' },
-  { id: 2, label: 'Producto no coincide con la descripción', icon: '📸' },
-  { id: 3, label: 'Producto falsificado', icon: '⚠️' },
-  { id: 4, label: 'Producto prohibido o ilegal', icon: '🚫' },
-  { id: 5, label: 'Vendedor fraudulento', icon: '👤' },
-  { id: 6, label: 'Publicidad engañosa', icon: '📢' },
-  { id: 7, label: 'Otro motivo', icon: '📝' }
-];
+  { id: 1, value: 'Producto dañado o defectuoso', icon: 'ti-tool' },
+  { id: 2, value: 'Producto no coincide con la descripción', icon: 'ti-photo-x' },
+  { id: 3, value: 'Producto falsificado', icon: 'ti-alert-triangle' },
+  { id: 4, value: 'Producto prohibido o ilegal', icon: 'ti-ban' },
+  { id: 5, value: 'Vendedor fraudulento', icon: 'ti-user-x' },
+  { id: 6, value: 'Publicidad engañosa', icon: 'ti-speakerphone' },
+  { id: 7, value: 'Otro motivo', icon: 'ti-dots' },
+].map((m) => ({ ...m, get label() { return i18n.t(`report.reasons.${m.id}`); } }));
 
 // ============================================
 // FUNCIONES DE PEDIDOS Y RESEÑAS
@@ -204,7 +196,7 @@ export const obtenerPedidosUsuario = async (userId) => {
 
 export const solicitarSerVendedor = async (userId, datosEmpresa) => {
   if (!userId) {
-    return { success: false, message: 'Usuario no identificado' };
+    return { success: false, message: i18n.t('errors.noUser') };
   }
   try {
     const response = await fetch('http://localhost/sistema-vendedor/backend/solicitar_vendedor.php', {
@@ -215,7 +207,7 @@ export const solicitarSerVendedor = async (userId, datosEmpresa) => {
     return await response.json();
   } catch (error) {
     console.error('Error al solicitar ser vendedor:', error);
-    return { success: false, message: 'Error de conexión' };
+    return { success: false, message: i18n.t('errors.connection') };
   }
 };
 // ============================================
@@ -234,7 +226,7 @@ export const renderEstrellas = (calificacion) => {
 export const solicitarDevolucion = async (idCompra, motivo) => {
   if (!idCompra) {
     console.error('❌ idCompra no proporcionado');
-    return { success: false, message: 'ID de compra requerido' };
+    return { success: false, message: i18n.t('errors.noOrder') };
   }
   
   try {
@@ -250,6 +242,6 @@ export const solicitarDevolucion = async (idCompra, motivo) => {
     return data;
   } catch (error) {
     console.error('Error al solicitar devolución:', error);
-    return { success: false, message: 'Error de conexión' };
+    return { success: false, message: i18n.t('errors.connection') };
   }
 };

@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
+import { useTranslation } from 'react-i18next';
+import Prefs from '../../components/ui/Prefs';
 import './comprador.css';
 import {
   cargarCarrito,
-  guardarCarrito,
   actualizarCantidad,
   eliminarDelCarrito,
   vaciarCarrito,
@@ -13,6 +14,7 @@ import {
 } from './comprador.utils';
 
 export default function Carrito({ onCheckout, onBack }) {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [carrito, setCarrito] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -37,7 +39,7 @@ export default function Carrito({ onCheckout, onBack }) {
   };
 
   const handleVaciar = () => {
-    if (confirm('¿Vaciar todo el carrito?')) {
+    if (confirm(t('cart.confirmClear'))) {
       const nuevoCarrito = vaciarCarrito();
       setCarrito(nuevoCarrito);
     }
@@ -46,7 +48,7 @@ export default function Carrito({ onCheckout, onBack }) {
   // Verificar código de descuento
   const verificarDescuento = async () => {
     if (!codigoDescuento.trim()) {
-      setMensajeDescuento('⚠️ Ingresa un código de descuento');
+      setMensajeDescuento(t('cartPage.enterCode'));
       return;
     }
 
@@ -56,13 +58,13 @@ export default function Carrito({ onCheckout, onBack }) {
       
       if (data.success) {
         setDescuentoAplicado(data.descuento);
-        setMensajeDescuento(`✅ ¡Código válido! ${data.descuento}% de descuento aplicado`);
+        setMensajeDescuento(t('cartPage.codeOk', { pct: data.descuento }));
       } else {
         setDescuentoAplicado(null);
-        setMensajeDescuento(`❌ ${data.message}`);
+        setMensajeDescuento(data.message);
       }
-    } catch (error) {
-      setMensajeDescuento('❌ Error al validar código');
+    } catch {
+      setMensajeDescuento(t('cartPage.codeError'));
     }
   };
 
@@ -80,35 +82,38 @@ export default function Carrito({ onCheckout, onBack }) {
     return (
       <div className="carrito-container">
         <div className="carrito-content">
-          <p>Cargando carrito...</p>
+          <div className="skeleton" style={{ height: 320, borderRadius: 16 }} />
         </div>
       </div>
     );
   }
 
   return (
-    <div className="carrito-container">
+    <div className="carrito-container page-enter">
       <div className="carrito-content">
-        <button onClick={onBack} className="carrito-btn-volver">
-          <span>←</span> Volver a la tienda
-        </button>
+        <div className="detail-top">
+          <button onClick={onBack} className="btn btn-ghost btn-sm">
+            <i className="ti ti-arrow-left" aria-hidden="true" /> {t('auth.backToStore')}
+          </button>
+          <Prefs compact />
+        </div>
 
-        <h1 className="carrito-title">🛒 Mi carrito ({cantidad} items)</h1>
+        <h1 className="carrito-title">{t('cart.title')} <span>· {t('cart.items', { count: cantidad })}</span></h1>
 
         {carrito.length === 0 ? (
           <div className="carrito-empty">
-            <span style={{ fontSize: 48 }}>🛒</span>
-            <p>Tu carrito está vacío</p>
-            <button onClick={onBack} className="btn-primary" style={{ marginTop: 16 }}>
-              Comenzar a comprar
+            <span className="empty-icon"><i className="ti ti-shopping-cart" aria-hidden="true" /></span>
+            <p>{t('cart.empty')}</p>
+            <button onClick={onBack} className="btn btn-ink" style={{ marginTop: 16 }}>
+              {t('cartPage.startShopping')}
             </button>
           </div>
         ) : (
           <div className="carrito-layout">
             {/* Lista de productos */}
-            <div className="carrito-productos">
-              {carrito.map(item => (
-                <div key={item.id_producto} className="carrito-item">
+            <div className="carrito-productos stagger">
+              {carrito.map((item, i) => (
+                <div key={item.id_producto} className="carrito-item" style={{ '--i': i }}>
                   <div className="carrito-item-imagen">
                     {item.imagen_principal ? (
                       <img 
@@ -116,33 +121,36 @@ export default function Carrito({ onCheckout, onBack }) {
                         alt={item.nombre} 
                       />
                     ) : (
-                      <span>📦</span>
+                      <i className="ti ti-photo" aria-hidden="true" />
                     )}
                   </div>
                   <div className="carrito-item-info">
                     <div className="carrito-item-nombre">{item.nombre}</div>
-                    <div className="carrito-item-tienda">{item.nombre_tienda || 'Tienda oficial'}</div>
+                    <div className="carrito-item-tienda">{item.nombre_tienda || t('detail.officialStore')}</div>
                     <div className="carrito-item-precio">{formatearPrecio(item.precio_unitario)}</div>
                   </div>
                   <div className="carrito-item-controles">
                     <button 
                       className="carrito-item-btn"
                       onClick={() => handleActualizarCantidad(item.id_producto, item.cantidad - 1)}
+                      aria-label={t('cart.less')}
                     >
-                      -
+                      <i className="ti ti-minus" aria-hidden="true" />
                     </button>
                     <span className="carrito-item-cantidad">{item.cantidad}</span>
                     <button 
                       className="carrito-item-btn"
                       onClick={() => handleActualizarCantidad(item.id_producto, item.cantidad + 1)}
+                      aria-label={t('cart.more')}
                     >
-                      +
+                      <i className="ti ti-plus" aria-hidden="true" />
                     </button>
                     <button 
                       className="carrito-item-eliminar"
                       onClick={() => handleEliminar(item.id_producto)}
+                      aria-label={t('cart.remove')}
                     >
-                      🗑️
+                      <i className="ti ti-trash" aria-hidden="true" />
                     </button>
                   </div>
                 </div>
@@ -151,7 +159,7 @@ export default function Carrito({ onCheckout, onBack }) {
 
             {/* Resumen del pedido */}
             <div className="carrito-resumen">
-              <h3 className="carrito-resumen-title">Resumen del pedido</h3>
+              <h3 className="carrito-resumen-title">{t('cartPage.summary')}</h3>
               
               {/* Código de descuento */}
               <div className="carrito-descuento-section">
@@ -159,7 +167,8 @@ export default function Carrito({ onCheckout, onBack }) {
                   <input
                     type="text"
                     className="descuento-input"
-                    placeholder="🎁 Código de descuento"
+                    placeholder={t('cartPage.code')}
+                    aria-label={t('cartPage.code')}
                     value={codigoDescuento}
                     onChange={(e) => setCodigoDescuento(e.target.value.toUpperCase())}
                   />
@@ -168,7 +177,7 @@ export default function Carrito({ onCheckout, onBack }) {
                     onClick={verificarDescuento}
                     disabled={!codigoDescuento.trim()}
                   >
-                    Aplicar
+                    {t('cartPage.apply')}
                   </button>
                 </div>
                 {mensajeDescuento && (
@@ -179,30 +188,30 @@ export default function Carrito({ onCheckout, onBack }) {
               </div>
 
               <div className="carrito-resumen-linea">
-                <span>Subtotal ({cantidad} items)</span>
+                <span>{t('cartPage.subtotal', { count: cantidad })}</span>
                 <span>{formatearPrecio(total)}</span>
               </div>
               
               {descuentoAplicado && (
                 <div className="carrito-resumen-descuento">
-                  <span>Descuento ({descuentoAplicado}%)</span>
+                  <span>{t('cartPage.discount', { pct: descuentoAplicado })}</span>
                   <span className="descuento-valor">-{formatearPrecio(ahorro)}</span>
                 </div>
               )}
               
               <div className="carrito-resumen-linea">
-                <span>Envío</span>
-                <span>Gratis</span>
+                <span>{t('cartPage.shipping')}</span>
+                <span>{t('cartPage.free')}</span>
               </div>
               
               <div className="carrito-resumen-total">
-                <span>Total</span>
+                <span>{t('common.total')}</span>
                 <span>{formatearPrecio(totalConDescuento)}</span>
               </div>
               
               {descuentoAplicado && (
                 <div className="carrito-ahorro">
-                  💰 Ahorraste {formatearPrecio(ahorro)}
+                  <i className="ti ti-pig-money" aria-hidden="true" /> {t('cartPage.saved', { amount: formatearPrecio(ahorro) })}
                 </div>
               )}
               
@@ -210,13 +219,13 @@ export default function Carrito({ onCheckout, onBack }) {
                 className="carrito-btn-pagar"
                 onClick={() => onCheckout(carrito, totalConDescuento, descuentoAplicado, codigoDescuento)}
               >
-                Proceder al pago
+                {t('cartPage.pay')} <i className="ti ti-arrow-right" aria-hidden="true" />
               </button>
               <button 
                 className="carrito-btn-vaciar"
                 onClick={handleVaciar}
               >
-                Vaciar carrito
+                {t('cartPage.clear')}
               </button>
             </div>
           </div>

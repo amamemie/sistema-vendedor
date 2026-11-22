@@ -2,14 +2,14 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import Chat from './Chat';
 import './Chat.css';
+import { useTranslation } from 'react-i18next';
 
 export default function ChatFab({ vendedorId, vendedorNombre, productoId }) {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [abierto, setAbierto] = useState(false);
   const [notificaciones, setNotificaciones] = useState(0);
 
-  // Solo mostrar para compradores
-  if (!user || user.rol !== 'Comprador') return null;
 
   // Crear objeto chatId con los datos que espera useChat
   const chatId = {
@@ -39,10 +39,12 @@ export default function ChatFab({ vendedorId, vendedorNombre, productoId }) {
     }
   }, [abierto, productoId]);
 
+  if (!user || user.rol !== 'Comprador') return null;
+
   return (
     <>
-      <button className="chat-fab" onClick={() => setAbierto(true)}>
-        💬
+      <button className="chat-fab" onClick={() => setAbierto(true)} aria-label={t('chat.open')} title={t('chat.open')}>
+        <i className="ti ti-message-circle" aria-hidden="true" />
         {notificaciones > 0 && (
           <span className="chat-fab-badge">{notificaciones > 9 ? '9+' : notificaciones}</span>
         )}

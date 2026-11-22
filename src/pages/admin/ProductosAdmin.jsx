@@ -2,10 +2,14 @@
 import { useState, useEffect } from 'react';
 import { api } from '../../services/api';
 import './admin.css';
+import { useTranslation } from 'react-i18next';
+import { toast } from '../../components/ui/toast';
+import { formatMoney, formatDate } from '../../i18n/format';
 
 const BASE_URL = 'http://localhost/sistema-vendedor/backend';
 
 export default function ProductosAdmin() {
+  const { t } = useTranslation();
   const [productos, setProductos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filtro, setFiltro] = useState('Pendiente');
@@ -35,20 +39,20 @@ export default function ProductosAdmin() {
     try {
       const result = await api.aprobarProducto(idProducto, 'Aprobado');
       if (result.success) {
-        alert('✅ Producto aprobado');
+        toast(t('admin.products.approved'));
         cargarProductos();
       } else {
-        alert('❌ Error: ' + result.message);
+        toast(result.message || t('errors.generic'), 'error');
       }
-    } catch (error) {
-      alert('❌ Error al aprobar');
+    } catch {
+      toast(t('errors.generic'), 'error');
     }
     setProcesando(false);
   };
 
   const rechazarProducto = async (idProducto) => {
     if (!motivoRechazo.trim()) {
-      alert('⚠️ Debes escribir un motivo de rechazo');
+      toast(t('admin.products.reasonRequired'), 'error');
       return;
     }
     
@@ -56,15 +60,15 @@ export default function ProductosAdmin() {
     try {
       const result = await api.aprobarProducto(idProducto, 'Rechazado', motivoRechazo);
       if (result.success) {
-        alert('❌ Producto rechazado');
+        toast(t('admin.products.rejected'), 'info');
         setMostrarModal(null);
         setMotivoRechazo('');
         cargarProductos();
       } else {
-        alert('❌ Error: ' + result.message);
+        toast(result.message || t('errors.generic'), 'error');
       }
-    } catch (error) {
-      alert('❌ Error al rechazar');
+    } catch {
+      toast(t('errors.generic'), 'error');
     }
     setProcesando(false);
   };
@@ -76,58 +80,51 @@ export default function ProductosAdmin() {
     return true;
   });
 
-  const formatearPrecio = (precio) => {
-    return `Bs. ${precio.toFixed(2)}`;
-  };
-
-  const formatearFecha = (fecha) => {
-    if (!fecha) return '-';
-    const d = new Date(fecha);
-    return d.toLocaleDateString('es-BO');
-  };
+  const formatearPrecio = (precio) => formatMoney(precio);
+  const formatearFecha = (fecha) => (fecha ? formatDate(fecha) : '-');
 
   if (loading) {
-    return <div className="admin-loading">Cargando productos pendientes...</div>;
+    return <div className="skeleton" style={{ height: 360, borderRadius: 16 }} />;
   }
 
   return (
     <div className="productos-admin">
       <div className="admin-section-header">
-        <h2>📦 Aprobación de Productos</h2>
+        <h2>{t('admin.products.title')}</h2>
         <div className="productos-filtros">
           <button 
             className={`filtro-btn ${filtro === 'Pendiente' ? 'filtro-btn-active' : ''}`}
             onClick={() => setFiltro('Pendiente')}
           >
-            Pendientes ({productos.filter(p => p.estado_admin === 'Pendiente' || !p.estado_admin).length})
+            {t('admin.products.pending')} ({productos.filter(p => p.estado_admin === 'Pendiente' || !p.estado_admin).length})
           </button>
           <button 
             className={`filtro-btn ${filtro === 'Aprobado' ? 'filtro-btn-active' : ''}`}
             onClick={() => setFiltro('Aprobado')}
           >
-            Aprobados
+            {t('admin.products.approvedTab')}
           </button>
           <button 
             className={`filtro-btn ${filtro === 'Rechazado' ? 'filtro-btn-active' : ''}`}
             onClick={() => setFiltro('Rechazado')}
           >
-            Rechazados
+            {t('admin.products.rejectedTab')}
           </button>
         </div>
       </div>
 
       {productosFiltrados.length === 0 ? (
-        <div className="productos-empty">No hay productos en esta categoría</div>
+        <div className="empty-state panel"><span className="empty-icon"><i className="ti ti-package-off" aria-hidden="true" /></span>{t('admin.products.empty')}</div>
       ) : (
-        <div className="productos-pendientes-grid">
-          {productosFiltrados.map(producto => (
-            <div key={producto.id_producto} className="producto-pendiente-card">
+        <div className="productos-pendientes-grid stagger">
+          {productosFiltrados.map((producto, i) => (
+            <div key={producto.id_producto} className="producto-pendiente-card" style={{ '--i': i }}>
               {/* Imagen */}
               <div className="producto-pendiente-imagen">
                 {producto.imagen_principal ? (
                   <img src={`${BASE_URL}/${producto.imagen_principal}`} alt={producto.nombre} />
                 ) : (
-                  <div className="producto-pendiente-sin-imagen">📦</div>
+                  <div className="producto-pendiente-sin-imagen"><i className="ti ti-photo" aria-hidden="true" /></div>
                 )}
               </div>
               
@@ -139,21 +136,21 @@ export default function ProductosAdmin() {
                   {producto.descripcion ? (
                     <p>{producto.descripcion}</p>
                   ) : (
-                    <p className="sin-descripcion">Sin descripción</p>
+                    <p className="sin-descripcion">{t('admin.products.noDescription')}</p>
                   )}
                 </div>
                 
                 <div className="producto-pendiente-detalles">
                   <div className="detalle-item">
-                    <span className="detalle-label">💰 Precio:</span>
+                    <span className="detalle-label">{t('vendor.products.price')}</span>
                     <span className="detalle-valor">{formatearPrecio(producto.precio_unitario)}</span>
                   </div>
                   <div className="detalle-item">
-                    <span className="detalle-label">📂 Categoría:</span>
-                    <span className="detalle-valor">{producto.categoria || 'Sin categoría'}</span>
+                    <span className="detalle-label">{t('vendor.products.category')}</span>
+                    <span className="detalle-valor">{producto.categoria || t('admin.products.noCategory')}</span>
                   </div>
                   <div className="detalle-item">
-                    <span className="detalle-label">📅 Fecha:</span>
+                    <span className="detalle-label">{t('common.date')}</span>
                     <span className="detalle-valor">{formatearFecha(producto.fecha_creacion)}</span>
                   </div>
                 </div>
@@ -161,14 +158,14 @@ export default function ProductosAdmin() {
                 {/* Información del vendedor */}
                 <div className="producto-pendiente-vendedor">
                   <div className="vendedor-header">
-                    <span className="vendedor-icon">🏪</span>
-                    <span className="vendedor-titulo">Vendedor</span>
+                    <i className="ti ti-building-store vendedor-icon" aria-hidden="true" />
+                    <span className="vendedor-titulo">{t('roles.seller')}</span>
                   </div>
                   <div className="vendedor-info">
-                    <div><strong>Tienda:</strong> {producto.nombre_tienda || 'Sin tienda'}</div>
-                    <div><strong>Vendedor:</strong> {producto.vendedor_nombre_completo}</div>
-                    <div><strong>Email:</strong> {producto.vendedor_email || 'No disponible'}</div>
-                    <div><strong>ID Vendedor:</strong> #{producto.id_vendedor || 'N/A'}</div>
+                    <div><strong>{t('store.store')}:</strong> {producto.nombre_tienda || '—'}</div>
+                    <div><strong>{t('roles.seller')}:</strong> {producto.vendedor_nombre_completo}</div>
+                    <div><strong>{t('auth.email')}:</strong> {producto.vendedor_email || '—'}</div>
+                    <div><strong>ID:</strong> #{producto.id_vendedor || '—'}</div>
                   </div>
                 </div>
               </div>
@@ -176,7 +173,7 @@ export default function ProductosAdmin() {
               {/* Estado y acciones */}
               <div className="producto-pendiente-acciones">
                 <div className={`producto-estado-badge estado-${producto.estado_admin?.toLowerCase() || 'pendiente'}`}>
-                  {producto.estado_admin || 'Pendiente'}
+                  {t(`productStatus.${producto.estado_admin || 'Pendiente'}`)}
                 </div>
                 
                 {(producto.estado_admin === 'Pendiente' || !producto.estado_admin) && (
@@ -186,25 +183,25 @@ export default function ProductosAdmin() {
                       onClick={() => aprobarProducto(producto.id_producto)}
                       disabled={procesando}
                     >
-                      ✅ Aprobar
+                      <i className="ti ti-check" aria-hidden="true" /> {t('admin.approve')}
                     </button>
                     <button 
                       className="btn-rechazar"
                       onClick={() => setMostrarModal(producto.id_producto)}
                       disabled={procesando}
                     >
-                      ❌ Rechazar
+                      <i className="ti ti-x" aria-hidden="true" /> {t('admin.reject')}
                     </button>
                   </div>
                 )}
                 
                 {producto.estado_admin === 'Aprobado' && (
-                  <div className="aprobado-info">✓ Producto aprobado y visible en el catálogo</div>
+                  <div className="aprobado-info"><i className="ti ti-circle-check" aria-hidden="true" /> {t('admin.products.liveInfo')}</div>
                 )}
                 
                 {producto.estado_admin === 'Rechazado' && producto.rechazo_motivo && (
                   <div className="rechazado-info">
-                    <strong>Motivo de rechazo:</strong>
+                    <strong>{t('admin.products.rejectReason')}:</strong>
                     <p>{producto.rechazo_motivo}</p>
                   </div>
                 )}
@@ -219,27 +216,28 @@ export default function ProductosAdmin() {
         <div className="modal-overlay" onClick={() => setMostrarModal(null)}>
           <div className="modal-content" onClick={e => e.stopPropagation()}>
             <div className="modal-header">
-              <h3>Rechazar producto</h3>
-              <button className="modal-close" onClick={() => setMostrarModal(null)}>✕</button>
+              <h3>{t('admin.products.rejectTitle')}</h3>
+              <button className="modal-close" onClick={() => setMostrarModal(null)} aria-label={t('common.close')}><i className="ti ti-x" aria-hidden="true" /></button>
             </div>
             <div className="modal-body">
-              <p>¿Por qué motivo rechazas este producto?</p>
+              <p>{t('admin.products.rejectQuestion')}</p>
               <textarea
                 className="modal-textarea"
                 rows="4"
-                placeholder="Escribe el motivo del rechazo..."
+                placeholder={t('admin.products.rejectPh')}
+                aria-label={t('admin.products.rejectReason')}
                 value={motivoRechazo}
                 onChange={(e) => setMotivoRechazo(e.target.value)}
               />
             </div>
             <div className="modal-footer">
-              <button className="btn-secondary" onClick={() => setMostrarModal(null)}>Cancelar</button>
+              <button className="btn btn-secondary" onClick={() => setMostrarModal(null)}>{t('common.cancel')}</button>
               <button 
-                className="btn-danger" 
+                className="btn btn-danger" 
                 onClick={() => rechazarProducto(mostrarModal)}
                 disabled={procesando}
               >
-                {procesando ? 'Procesando...' : 'Rechazar producto'}
+                {procesando ? t('common.processing') : t('admin.products.rejectTitle')}
               </button>
             </div>
           </div>

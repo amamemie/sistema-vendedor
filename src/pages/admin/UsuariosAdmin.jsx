@@ -2,8 +2,11 @@ import { useState, useEffect } from 'react';
 import { api } from '../../services/api';
 import { getRolBadge } from './admin.utils';
 import './admin.css';
+import { useTranslation } from 'react-i18next';
+import { toast } from '../../components/ui/toast';
 
 export default function UsuariosAdmin() {
+  const { t } = useTranslation();
   const [usuarios, setUsuarios] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editando, setEditando] = useState(null);
@@ -19,11 +22,11 @@ export default function UsuariosAdmin() {
   const cambiarRol = async (idUsuario, rol) => {
     const result = await api.actualizarRolUsuario(idUsuario, rol);
     if (result.success) {
-      alert('✅ Rol actualizado');
+      toast(t('admin.users.roleUpdated'));
       cargarUsuarios();
       setEditando(null);
     } else {
-      alert('❌ Error: ' + result.message);
+      toast(result.message || t('errors.generic'), 'error');
     }
   };
 
@@ -31,14 +34,14 @@ export default function UsuariosAdmin() {
     cargarUsuarios();
   }, []);
 
-  if (loading) return <div style={{ padding: 40, textAlign: 'center' }}>Cargando usuarios...</div>;
+  if (loading) return <div className="skeleton" style={{ height: 360, borderRadius: 16 }} />;
 
   return (
     <div>
-      <h1 style={{ fontSize: 20, marginBottom: 16 }}>👥 Gestión de Usuarios</h1>
+      <div className="table-scroll panel" style={{ padding: 0 }}>
       <table className="admin-table">
         <thead>
-          <tr><th>ID</th><th>Email</th><th>Rol actual</th><th>Acciones</th></tr>
+          <tr><th>ID</th><th>{t('auth.email')}</th><th>{t('admin.users.role')}</th><th>{t('common.actions')}</th></tr>
         </thead>
         <tbody>
           {usuarios.map(u => {
@@ -47,18 +50,18 @@ export default function UsuariosAdmin() {
               <tr key={u.id_usuario}>
                 <td>#{u.id_usuario}</td>
                 <td>{u.email}</td>
-                <td><span style={{ background: rolBadge.bg, color: rolBadge.color, padding: '3px 8px', borderRadius: 20, fontSize: 11 }}>{rolBadge.text}</span></td>
+                <td><span className="badge" style={{ background: rolBadge.bg, color: rolBadge.color }}>{rolBadge.text}</span></td>
                 <td>
                   {editando === u.id_usuario ? (
                     <div style={{ display: 'flex', gap: 8 }}>
-                      <select value={nuevoRol} onChange={e => setNuevoRol(e.target.value)} style={{ padding: '5px 10px', borderRadius: 6, border: '1px solid var(--gray-200)' }}>
-                        <option value="Comprador">Comprador</option><option value="Vendedor">Vendedor</option><option value="Admin">Admin</option>
+                      <select value={nuevoRol} onChange={e => setNuevoRol(e.target.value)} className="form-select" style={{ width: 'auto', minHeight: 36 }} aria-label={t('admin.users.role')}>
+                        <option value="Comprador">{t('roles.buyer')}</option><option value="Vendedor">{t('roles.seller')}</option><option value="Admin">{t('roles.admin')}</option>
                       </select>
-                      <button className="admin-btn-success" onClick={() => cambiarRol(editando, nuevoRol)}>Guardar</button>
-                      <button className="admin-btn-primary" onClick={() => setEditando(null)}>Cancelar</button>
+                      <button className="admin-btn-success" onClick={() => cambiarRol(editando, nuevoRol)}>{t('common.save')}</button>
+                      <button className="admin-btn-primary" onClick={() => setEditando(null)}>{t('common.cancel')}</button>
                     </div>
                   ) : (
-                    <button className="admin-btn-primary" onClick={() => { setEditando(u.id_usuario); setNuevoRol(u.rol); }}>Cambiar rol</button>
+                    <button className="admin-btn-primary" onClick={() => { setEditando(u.id_usuario); setNuevoRol(u.rol); }}><i className="ti ti-user-cog" aria-hidden="true" /> {t('admin.users.changeRole')}</button>
                   )}
                 </td>
               </tr>
@@ -66,6 +69,7 @@ export default function UsuariosAdmin() {
           })}
         </tbody>
       </table>
+      </div>
     </div>
   );
 }

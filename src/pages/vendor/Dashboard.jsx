@@ -1,139 +1,146 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/AuthContext';
 import { api } from '../../services/api';
 import './vendor.css';
-import { formatearPrecio } from './vendor.utils';
 import VentasChart from '../../components/vendor/VentasChart';
+import Tilt from '../../components/ui/Tilt';
+import CountUp from '../../components/ui/CountUp';
+import { formatMoney, formatDate, formatNumber } from '../../i18n/format';
 
-export default function VendorDashboard() {
+function Metric({ label, value, icon, tone, format, index }) {
+  return (
+    <Tilt className={`metric metric--${tone}`} style={{ '--i': index }} max={8}>
+      <div className="metric-icon tilt-pop"><i className={`ti ti-${icon}`} aria-hidden="true" /></div>
+      <div className="metric-label">{label}</div>
+      <div className="metric-value">
+        <CountUp value={value} format={format} />
+      </div>
+    </Tilt>
+  );
+}
+
+export default function VendorDashboard({ onNavigate }) {
+  const { t } = useTranslation();
   const { user } = useAuth();
-  const [stats, setStats] = useState({
-    ventasMes: 0,
-    pedidosMes: 0,
-    productosActivos: 0,
-    calificacion: 0
-  });
+  const [stats, setStats] = useState({ ventasMes: 0, pedidosMes: 0, productosActivos: 0, calificacion: 0 });
   const [ventasSemana, setVentasSemana] = useState([0, 0, 0, 0, 0, 0, 0]);
   const [pedidosRecientes, setPedidosRecientes] = useState([]);
   const [productosBajoStock, setProductosBajoStock] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const cargarDashboard = async () => {
-    setLoading(true);
-    try {
-      // Cargar productos del vendedor
-      const productos = await api.getProductos(user?.id_tienda);
-      if (Array.isArray(productos)) {
-        const activos = productos.filter(p => p.estado === 'Activo').length;
-        const bajoStock = productos.filter(p => p.stock > 0 && p.stock <= 5);
-        setProductosBajoStock(bajoStock.slice(0, 5));
-        setStats(prev => ({ ...prev, productosActivos: activos }));
-      }
-
-      // Cargar pedidos
-      const pedidos = await api.getPedidosVendedor?.(user?.id_tienda) || [];
-      if (Array.isArray(pedidos)) {
-        const mesActual = new Date().getMonth();
-        const pedidosMes = pedidos.filter(p => new Date(p.fecha_compra).getMonth() === mesActual);
-        const ventasMes = pedidosMes.reduce((sum, p) => sum + parseFloat(p.total_bruto || 0), 0);
-        
-        setStats(prev => ({ ...prev, ventasMes, pedidosMes: pedidosMes.length }));
-        setPedidosRecientes(pedidos.slice(0, 4));
-      }
-
-      // Ventas semanales (en producción vendría de API)
-      setVentasSemana([120, 250, 180, 320, 280, 450, 380]);
-      
-    } catch (error) {
-      console.error('Error cargando dashboard:', error);
-    }
-    setLoading(false);
-  };
-
   useEffect(() => {
+    const cargarDashboard = async () => {
+      setLoading(true);
+      try {
+        const productos = await api.getProductos(user?.id_tienda);
+        if (Array.isArray(productos)) {
+          const activos = productos.filter((p) => p.estado === 'Activo').length;
+          setProductosBajoStock(productos.filter((p) => p.stock > 0 && p.stock <= 5).slice(0, 5));
+          setStats((prev) => ({ ...prev, productosActivos: activos }));
+        }
+
+        const pedidos = (await api.getPedidosVendedor?.(user?.id_tienda)) || [];
+        if (Array.isArray(pedidos)) {
+          const mesActual = new Date().getMonth();
+          const pedidosMes = pedidos.filter((p) => new Date(p.fecha_compra).getMonth() === mesActual);
+          const ventasMes = pedidosMes.reduce((sum, p) => sum + parseFloat(p.total_bruto || 0), 0);
+          setStats((prev) => ({ ...prev, ventasMes, pedidosMes: pedidosMes.length }));
+          setPedidosRecientes(pedidos.slice(0, 5));
+        }
+
+        // Ventas semanales de referencia (en producción vendrían de la API)
+        setVentasSemana([120, 250, 180, 320, 280, 450, 380]);
+      } catch (error) {
+        console.error('Error cargando dashboard:', error);
+      }
+      setLoading(false);
+    };
     cargarDashboard();
   }, [user?.id_tienda]);
-
-  const MetricCard = ({ label, value, change, changeType, icon, color }) => (
-    <div className="dashboard-card">
-      <div className="dashboard-card-icon" style={{ background: `${color}15`, color }}>
-        <i className={`ti ti-${icon}`}></i>
-      </div>
-      <div className="dashboard-card-info">
-        <div className="dashboard-card-label">{label}</div>
-        <div className="dashboard-card-value">{typeof value === 'number' ? formatearPrecio(value) : value}</div>
-        {change && <div className={`dashboard-card-change ${changeType === 'up' ? 'change-up' : changeType === 'down' ? 'change-down' : 'change-neutral'}`}>{change}</div>}
-      </div>
-    </div>
-  );
 
   if (loading) {
     return (
       <div className="vendor-content">
-        <div style={{ textAlign: 'center', padding: 60 }}>Cargando dashboard...</div>
+        <div className="metrics">
+          {[0, 1, 2, 3].map((i) => <div key={i} className="skeleton" style={{ height: 132, borderRadius: 16 }} />)}
+        </div>
+        <div className="skeleton" style={{ height: 320, borderRadius: 16, marginTop: 20 }} />
       </div>
     );
   }
 
+  const int = (n) => formatNumber(Math.round(n));
+
   return (
     <div className="vendor-content">
-      {/* Tarjetas de métricas */}
-      <div className="dashboard-stats">
-        <MetricCard label="Ventas del mes" value={stats.ventasMes} icon="cash" color="var(--success)" />
-        <MetricCard label="Pedidos" value={stats.pedidosMes} icon="shopping-cart" color="var(--accent)" />
-        <MetricCard label="Productos activos" value={stats.productosActivos} icon="package" color="var(--warning)" />
-        <MetricCard label="Calificación" value={`${stats.calificacion} ★`} icon="star" color="var(--accent)" />
+      <div className="metrics stagger">
+        <Metric index={0} label={t('vendor.dash.salesMonth')} value={stats.ventasMes} icon="cash" tone="accent" format={formatMoney} />
+        <Metric index={1} label={t('vendor.dash.orders')} value={stats.pedidosMes} icon="shopping-cart" tone="info" format={int} />
+        <Metric index={2} label={t('vendor.dash.activeProducts')} value={stats.productosActivos} icon="package" tone="warning" format={int} />
+        <Metric index={3} label={t('vendor.dash.rating')} value={stats.calificacion} icon="star" tone="star" format={(n) => `${n.toFixed(1)} ★`} />
       </div>
 
-      {/* Gráfico de ventas semanales */}
-      <div className="dashboard-chart">
-        <div className="dashboard-chart-header">
-          <span className="dashboard-chart-title">Ventas de los últimos 7 días</span>
-          <span className="dashboard-chart-link">Ver más →</span>
-        </div>
-        <div style={{ height: 280, marginTop: 8 }}>
-          <VentasChart ventasSemana={ventasSemana} />
-        </div>
-      </div>
-
-      {/* Pedidos recientes y Stock bajo */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: 16 }}>
-        {/* Pedidos recientes */}
-        <div className="dashboard-chart">
-          <div className="dashboard-chart-header">
-            <span className="dashboard-chart-title">Pedidos recientes</span>
-            <span className="dashboard-chart-link">Ver todos →</span>
+      <section className="panel">
+        <header className="panel-head">
+          <div>
+            <h2>{t('vendor.dash.last7')}</h2>
+            <p>{t('vendor.dash.last7Hint')}</p>
           </div>
+          <button type="button" className="btn btn-ghost btn-sm" onClick={() => onNavigate?.('analisis')}>
+            {t('vendor.dash.seeMore')} <i className="ti ti-arrow-right" aria-hidden="true" />
+          </button>
+        </header>
+        <VentasChart ventasSemana={ventasSemana} />
+      </section>
+
+      <div className="panel-grid">
+        <section className="panel">
+          <header className="panel-head">
+            <h2>{t('vendor.dash.recentOrders')}</h2>
+            <button type="button" className="btn btn-ghost btn-sm" onClick={() => onNavigate?.('pedidos')}>
+              {t('vendor.dash.seeAll')} <i className="ti ti-arrow-right" aria-hidden="true" />
+            </button>
+          </header>
           {pedidosRecientes.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: 40, color: 'var(--gray-400)' }}>No hay pedidos recientes</div>
+            <div className="empty-state"><i className="ti ti-inbox" style={{ fontSize: 28 }} aria-hidden="true" />{t('vendor.dash.noOrders')}</div>
           ) : (
-            pedidosRecientes.map(p => (
-              <div key={p.id_compra} style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid var(--gray-200)' }}>
-                <span style={{ fontWeight: 500 }}>#{p.id_compra}</span>
-                <span style={{ fontSize: 12, color: 'var(--gray-500)' }}>{new Date(p.fecha_compra).toLocaleDateString()}</span>
-                <span>{formatearPrecio(p.total_bruto)}</span>
-              </div>
-            ))
+            <ul className="list stagger">
+              {pedidosRecientes.map((p, i) => (
+                <li key={p.id_compra} className="list-row" style={{ '--i': i }}>
+                  <span className="list-avatar"><i className="ti ti-receipt" aria-hidden="true" /></span>
+                  <div className="list-main">
+                    <strong>#{p.id_compra}</strong>
+                    <span>{formatDate(p.fecha_compra)}</span>
+                  </div>
+                  <span className="list-amount">{formatMoney(p.total_bruto)}</span>
+                </li>
+              ))}
+            </ul>
           )}
-        </div>
+        </section>
 
-        {/* Productos con stock bajo */}
-        <div className="dashboard-chart">
-          <div className="dashboard-chart-header">
-            <span className="dashboard-chart-title">Productos con stock bajo</span>
-            <span className="dashboard-chart-link">Gestionar →</span>
-          </div>
+        <section className="panel">
+          <header className="panel-head">
+            <h2>{t('vendor.dash.lowStock')}</h2>
+            <button type="button" className="btn btn-ghost btn-sm" onClick={() => onNavigate?.('productos')}>
+              {t('vendor.dash.manage')} <i className="ti ti-arrow-right" aria-hidden="true" />
+            </button>
+          </header>
           {productosBajoStock.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: 40, color: 'var(--gray-400)' }}>✓ Todos los productos tienen stock suficiente</div>
+            <div className="empty-state"><i className="ti ti-circle-check" style={{ fontSize: 28, color: 'var(--success)' }} aria-hidden="true" />{t('vendor.dash.stockOk')}</div>
           ) : (
-            productosBajoStock.map(p => (
-              <div key={p.id_producto} style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid var(--gray-200)' }}>
-    <span>{p.nombre}</span>
-    <span style={{ color: 'var(--error)', fontWeight: 600 }}>{p.stock} und.</span>
-  </div>
-            ))
+            <ul className="list stagger">
+              {productosBajoStock.map((p, i) => (
+                <li key={p.id_producto} className="list-row" style={{ '--i': i }}>
+                  <span className="list-avatar list-avatar--warn"><i className="ti ti-alert-triangle" aria-hidden="true" /></span>
+                  <div className="list-main"><strong>{p.nombre}</strong></div>
+                  <span className="badge badge-error">{t('vendor.dash.units', { count: Number(p.stock) })}</span>
+                </li>
+              ))}
+            </ul>
           )}
-        </div>
+        </section>
       </div>
     </div>
   );

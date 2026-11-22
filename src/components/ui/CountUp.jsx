@@ -8,15 +8,12 @@ export default function CountUp({ value, duration = 900, format = (n) => Math.ro
 
   useEffect(() => {
     const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-    if (reduce) {
-      setN(target);
-      return;
-    }
+    const total = reduce ? 0 : duration;
     const start = performance.now();
     const origin = from.current;
     let raf;
     const tick = (now) => {
-      const p = Math.min(1, (now - start) / duration);
+      const p = total === 0 ? 1 : Math.min(1, (now - start) / total);
       const eased = 1 - Math.pow(1 - p, 3);
       setN(origin + (target - origin) * eased);
       if (p < 1) raf = requestAnimationFrame(tick);

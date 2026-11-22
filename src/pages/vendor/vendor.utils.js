@@ -2,7 +2,8 @@
 // UTILIDADES COMPARTIDAS - VENDEDOR
 // ============================================
 
-import { api } from '../../services/api';
+import i18n from '../../i18n';
+import { formatMoney, formatDate } from '../../i18n/format';
 
 // ============================================
 // FUNCIONES DE PRODUCTOS
@@ -11,9 +12,7 @@ import { api } from '../../services/api';
 /**
  * Formatear precio
  */
-export const formatearPrecio = (precio) => {
-  return `Bs. ${parseFloat(precio).toFixed(2)}`;
-};
+export const formatearPrecio = (precio) => formatMoney(precio);
 
 /**
  * Obtener clase CSS según estado del producto
@@ -35,9 +34,9 @@ export const getStockClase = (stock) => {
  * Obtener texto según nivel de stock
  */
 export const getStockTexto = (stock) => {
-  if (stock <= 0) return 'Sin stock';
-  if (stock <= 5) return `⚠️ Stock bajo (${stock})`;
-  return `${stock} und.`;
+  if (stock <= 0) return i18n.t('stock.none');
+  if (stock <= 5) return i18n.t('stock.low', { count: Number(stock) });
+  return i18n.t('stock.units', { count: Number(stock) });
 };
 
 /**
@@ -57,7 +56,7 @@ export const subirImagen = async (idProducto, archivo, esPrincipal = 0) => {
     return await response.json();
   } catch (error) {
     console.error('Error al subir imagen:', error);
-    return { success: false, message: 'Error de conexión' };
+    return { success: false, message: i18n.t('errors.connection') };
   }
 };
 
@@ -80,13 +79,10 @@ export const imagenToBase64 = (file) => {
 /**
  * Estados de pedido con sus clases CSS
  */
-export const estadosPedido = [
-  { value: 'Pendiente', label: '⏳ Pendiente' },
-  { value: 'Pagada', label: '✅ Pagada' },
-  { value: 'Enviado', label: '📦 Enviado' },
-  { value: 'Entregado', label: '🏠 Entregado' },
-  { value: 'Cancelado', label: '❌ Cancelado' }
-];
+export const estadosPedido = ['Pendiente', 'Pagada', 'Enviado', 'Entregado', 'Cancelado'].map((value) => ({
+  value,
+  get label() { return i18n.t(`orderStatus.${value}`); },
+}));
 
 /**
  * Obtener clase CSS del estado del pedido
@@ -106,14 +102,7 @@ export const getEstadoPedidoClase = (estado) => {
  * Obtener texto del estado del pedido
  */
 export const getEstadoPedidoTexto = (estado) => {
-  const textos = {
-    'Pendiente': '⏳ Pendiente',
-    'Pagada': '✅ Pagada',
-    'Enviado': '📦 Enviado',
-    'Entregado': '🏠 Entregado',
-    'Cancelado': '❌ Cancelado'
-  };
-  return textos[estado] || estado;
+  return i18n.t(`orderStatus.${estado}`, { defaultValue: estado });
 };
 
 // ============================================
@@ -125,16 +114,14 @@ export const getEstadoPedidoTexto = (estado) => {
  */
 export const formatearFecha = (fecha) => {
   if (!fecha) return '-';
-  const d = new Date(fecha);
-  return d.toLocaleDateString('es-BO');
+  return formatDate(fecha);
 };
 
 /**
  * Obtener nombre del mes
  */
 export const getNombreMes = (mes) => {
-  const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-  return meses[mes] || '';
+  return i18n.t('charts.monthsLong', { returnObjects: true })[mes] || '';
 };
 
 // ============================================
@@ -161,11 +148,11 @@ export const cargarTiendaLocal = () => {
  */
 export const validarDatosEmpresa = (datos) => {
   const errores = [];
-  if (!datos.nombreEmpresa?.trim()) errores.push('El nombre de la empresa es requerido');
-  if (!datos.nit_rut?.trim()) errores.push('El NIT/RUT es requerido');
-  if (!datos.telefono?.trim()) errores.push('El teléfono es requerido');
+  if (!datos.nombreEmpresa?.trim()) errores.push(i18n.t('vendor.company.errName'));
+  if (!datos.nit_rut?.trim()) errores.push(i18n.t('vendor.company.errNit'));
+  if (!datos.telefono?.trim()) errores.push(i18n.t('vendor.company.errPhone'));
   if (datos.telefono && !/^\d{7,15}$/.test(datos.telefono.replace(/\D/g, ''))) {
-    errores.push('El teléfono debe tener entre 7 y 15 dígitos');
+    errores.push(i18n.t('vendor.company.errPhoneLen'));
   }
   return errores;
 };

@@ -1,20 +1,36 @@
-import { useState } from 'react';
+import { useState, lazy, Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from '../components/ui/toast';
 import { formatMoney } from '../i18n/format';
 import { useAuth } from '../context/AuthContext';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
-import VendorLayout from '../pages/vendor/VendorLayout';
-import AdminPanel from '../pages/admin/AdminPanel';
+const VendorLayout = lazy(() => import('../pages/vendor/VendorLayout'));
+const AdminPanel = lazy(() => import('../pages/admin/AdminPanel'));
 import CatalogoPublico from '../pages/public/CatalogoPublico';
 import CatalogoComprador from '../pages/comprador/CatalogoComprador';
-import DetalleProducto from '../pages/comprador/DetalleProducto';
-import Carrito from '../pages/comprador/Carrito';
-import Checkout from '../pages/comprador/Checkout';
-import PerfilComprador from '../pages/comprador/PerfilComprador';
+const DetalleProducto = lazy(() => import('../pages/comprador/DetalleProducto'));
+const Carrito = lazy(() => import('../pages/comprador/Carrito'));
+const Checkout = lazy(() => import('../pages/comprador/Checkout'));
+const PerfilComprador = lazy(() => import('../pages/comprador/PerfilComprador'));
+
+function PageFallback() {
+  return (
+    <div style={{ minHeight: '100svh', display: 'grid', placeItems: 'center' }} aria-busy="true">
+      <span className="btn-spinner" style={{ width: 28, height: 28, color: 'var(--accent)' }} />
+    </div>
+  );
+}
 
 export default function AppRouter() {
+  return (
+    <Suspense fallback={<PageFallback />}>
+      <Routes />
+    </Suspense>
+  );
+}
+
+function Routes() {
   const { user } = useAuth();
   const { t } = useTranslation();
   const [showAuthModal, setShowAuthModal] = useState(false);
@@ -106,7 +122,7 @@ if (user.rol === 'Comprador') {
         <Checkout
           carrito={carritoCompra}
           total={totalCompra}
-          onConfirm={(datos) => {
+          onConfirm={() => {
             toast(t('checkout.success', { total: formatMoney(totalCompra) }));
             localStorage.removeItem('carrito');
             setVistaComprador('catalogo');
