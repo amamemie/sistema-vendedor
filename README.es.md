@@ -9,7 +9,7 @@ compran a todas desde un solo carrito. Tiene tres roles, cada uno con su propio 
 
 🇬🇧 [Read in English](README.md)
 
-### 👉 [Ver la demo en vivo](https://amamemie.github.io/sistema-vendedor/)
+### [Ver la demo en vivo](https://amamemie.github.io/sistema-vendedor/)
 
 ![Portada del marketplace](docs/capturas/portada.png)
 

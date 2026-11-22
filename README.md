@@ -9,7 +9,7 @@ all of them in a single cart. It has three roles, each with its own dashboard:
 
 🇪🇸 [Leer en español](README.es.md)
 
-### 👉 [See the live demo](https://amamemie.github.io/sistema-vendedor/)
+### [See the live demo](https://amamemie.github.io/sistema-vendedor/)
 
 ![Marketplace home page](docs/capturas/portada.png)
 
